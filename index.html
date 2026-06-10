@@ -1179,7 +1179,49 @@ function openJiraModal(){
   document.getElementById("jiraModal").style.display="flex";
 }
 function openQuickModal(file,title,icon){window.open(`https://hunet-cs.github.io/cs-knowledge/${file}`,"_blank");}
-function downloadAllEntries(type){if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const wb=XLSX.utils.book_new();const headers=["분류","제목","고객문의유형","필수확인질문","답변내용","이관기준","주의사항","기업명","카테고리","상품명","구분","상태","작성자","작성일"];const toRow=e=>[e.part||"",e.title||"",e.customerQ||"",e.checkQ||"",e.steps||"",e.escalation||"",e.caution||"",e.company||"",e.companyCat||"",e.productName||"",e.productSection||"",e.status||"",e.updatedBy||"",e.updatedAt||""];if(type==="b2b"){const companies=[...new Set(entries.filter(e=>e.part==="B2B 상위기업").map(e=>e.company).filter(Boolean))];if(!companies.length){alert("B2B 데이터가 없습니다.");return;}companies.forEach(co=>{const rows=entries.filter(e=>e.company===co);const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);ws["!cols"]=headers.map(()=>({wch:20}));XLSX.utils.book_append_sheet(wb,ws,co.slice(0,30));});const all=entries.filter(e=>e.part==="B2B 상위기업");const wsAll=XLSX.utils.aoa_to_sheet([headers,...all.map(toRow)]);XLSX.utils.book_append_sheet(wb,wsAll,"전체");XLSX.writeFile(wb,`지식창고_B2B_전체_${today()}.xlsx`);}else{const partMap={list:"전체",error:"오류 처리방법",product:"상품 안내"};const part=partMap[type];const rows=part==="전체"?entries:entries.filter(e=>e.part===part);if(!rows.length){alert("데이터가 없습니다.");return;}const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);ws["!cols"]=headers.map(()=>({wch:20}));XLSX.utils.book_append_sheet(wb,ws,part);XLSX.writeFile(wb,`지식창고_${part}_${today()}.xlsx`);}}
+function _sheetName(raw,used){
+  let n=String(raw||"시트").replace(/[\\\/\?\*\[\]:]/g,"_").replace(/^'+|'+$/g,"").trim().slice(0,28);
+  if(!n)n="시트";
+  let base=n,i=2;
+  while(used.has(n)){n=(base.slice(0,25)+"_"+i).slice(0,31);i++;}
+  used.add(n);
+  return n;
+}
+function downloadAllEntries(type){
+  if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}
+  try{
+    const wb=XLSX.utils.book_new();
+    const used=new Set();
+    const headers=["분류","제목","고객문의유형","필수확인질문","답변내용","이관기준","주의사항","기업명","카테고리","상품명","구분","상태","작성자","작성일"];
+    const toRow=e=>[e.part||"",e.title||"",e.customerQ||"",e.checkQ||"",e.steps||"",e.escalation||"",e.caution||"",e.company||"",e.companyCat||"",e.productName||"",e.productSection||"",e.status||"",e.updatedBy||"",e.updatedAt||""];
+    if(type==="b2b"){
+      const companies=[...new Set(entries.filter(e=>e.part==="B2B 상위기업").map(e=>e.company).filter(Boolean))];
+      if(!companies.length){alert("B2B 데이터가 없습니다.");return;}
+      companies.forEach(co=>{
+        const rows=entries.filter(e=>e.company===co);
+        const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);
+        ws["!cols"]=headers.map(()=>({wch:20}));
+        XLSX.utils.book_append_sheet(wb,ws,_sheetName(co,used));
+      });
+      const all=entries.filter(e=>e.part==="B2B 상위기업");
+      const wsAll=XLSX.utils.aoa_to_sheet([headers,...all.map(toRow)]);
+      XLSX.utils.book_append_sheet(wb,wsAll,_sheetName("전체",used));
+      XLSX.writeFile(wb,`지식창고_B2B_전체_${today()}.xlsx`);
+    }else{
+      const partMap={list:"전체",error:"오류 처리방법",product:"상품 안내"};
+      const part=partMap[type];
+      const rows=part==="전체"?entries:entries.filter(e=>e.part===part);
+      if(!rows.length){alert("데이터가 없습니다.");return;}
+      const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);
+      ws["!cols"]=headers.map(()=>({wch:20}));
+      XLSX.utils.book_append_sheet(wb,ws,_sheetName(part,used));
+      XLSX.writeFile(wb,`지식창고_${part}_${today()}.xlsx`);
+    }
+  }catch(err){
+    console.error(err);
+    alert("다운로드 중 오류가 발생했어요: "+err.message);
+  }
+}
 function downloadEntry(id){const e=entries.find(x=>x.id===id);if(!e)return;const lines=[`제목: ${e.title||""}`,`분류: ${e.part||""}`,e.company?`기업: ${e.company}`:"",e.productName?`상품: ${e.productName}`:"",`작성일: ${e.updatedAt||""}`,`작성자: ${e.updatedBy||""}`,"",e.customerQ?`[문의 유형]\n${e.customerQ}`:"",e.checkQ?`\n[필수 확인 질문]\n${e.checkQ}`:"",e.steps?`\n[답변/처리 방법]\n${e.steps}`:"",e.escalation?`\n[이관 기준]\n${e.escalation}`:"",e.caution?`\n[주의사항]\n${e.caution}`:"",e.script?`\n[상담사 멘트]\n${e.script}`:""].filter(Boolean).join("\n");const blob=new Blob([lines],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`${e.title||"항목"}.txt`;a.click();URL.revokeObjectURL(url);}
 function toggleMobMenu(){const menu=document.getElementById("mobMenu");const overlay=document.getElementById("mobOverlay");const isOpen=menu.classList.toggle("open");overlay.classList.toggle("show",isOpen);document.body.style.overflow=isOpen?"hidden":"";}
 function toggleSidebar(){const sb=document.querySelector(".sb");const collapsed=sb.classList.toggle("collapsed");localStorage.setItem("sbCollapsed",collapsed?"1":"");const icon=sb.querySelector(".sb-toggle i");if(icon)icon.className=collapsed?"ti ti-layout-sidebar-left-expand":"ti ti-layout-sidebar-left-collapse";}
