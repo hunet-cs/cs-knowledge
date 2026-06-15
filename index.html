@@ -346,6 +346,13 @@ body.locked .app{filter:blur(2px);pointer-events:none;user-select:none}
 .ds-img img{max-width:280px;max-height:200px;object-fit:contain;display:block}
 .img-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .img-lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain}
+.pfold{border:1px solid var(--border);border-radius:10px;margin-bottom:7px;overflow:hidden}
+.pfold summary{cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:9px;list-style:none;background:var(--card)}
+.pfold summary::-webkit-details-marker{display:none}
+.pfold summary::marker{content:""}
+.pfold summary:hover{background:var(--p50)}
+.pf-chev{transition:transform .15s}
+.pfold[open] summary .pf-chev{transform:rotate(90deg)}
 body.is-admin .admin-only{display:flex!important}
 body.is-admin .admin-only.inline{display:inline-flex!important}
 body.is-admin .admin-only.block{display:block!important}
@@ -1072,13 +1079,26 @@ function parsePolicy(raw){
   parts.forEach(p=>{const m=p.match(/^\s*(\d{1,2})\.\s*([가-힣A-Za-z()·\/]{2,12})\s*([\s\S]*)$/);if(m){items.push({n:m[1],label:m[2],body:(m[3]||"").trim()});}else if(p.trim())intro.push(p.trim());});
   return{chips,items,intro:intro.join("\n")};
 }
+const POLICY_CATS=[
+  {name:"회원관리",icon:"ti-user-check",kw:["회원","가입","탈퇴","대상","아이디","로그인","비번","비밀번호","사번"]},
+  {name:"수강관리",icon:"ti-book-2",kw:["운영기간","수강","신청","입과","자율","취소","제한","상시","결재","연간","학습","과정","마이크로","오프라인"]},
+  {name:"기간·재응시",icon:"ti-refresh",kw:["기간연장","재응시","재신청","선수료","연장","재수강"]},
+  {name:"수료·평가",icon:"ti-certificate",kw:["수료","이수","설문","평가","역량","학점","진도","독려","교재"]},
+  {name:"시스템·접속",icon:"ti-device-desktop",kw:["모바일","커스텀","lms","LMS","원격","sso","SSO","CP","앱","사이트","연수원","포팅","외부"]},
+  {name:"기타",icon:"ti-dots",kw:[]}
+];
 function renderPolicyHtml(raw){
   const {chips,items,intro}=parsePolicy(raw);
   const TONE={info:["#E6F1FB","#0C447C"],warn:["#FAEEDA","#854F0B"],danger:["#FCEBEB","#A32D2D"]};
+  const groups={};
+  items.forEach(it=>{let cat="기타";for(const c of POLICY_CATS){if(c.name!=="기타"&&c.kw.some(k=>it.label.includes(k))){cat=c.name;break;}}(groups[cat]=groups[cat]||[]).push(it);});
   let h="";
   if(chips.length)h+='<div style="margin-bottom:10px;display:flex;flex-wrap:wrap">'+chips.map(c=>{const t=TONE[c[1]];return `<span style="display:inline-flex;font-size:11.5px;padding:3px 9px;border-radius:6px;margin:0 5px 5px 0;background:${t[0]};color:${t[1]};font-weight:600">${esc(c[0])}</span>`;}).join("")+"</div>";
-  if(intro)h+=`<div style="font-size:12.5px;line-height:1.6;color:var(--t2);background:var(--bg);padding:9px 11px;border-radius:8px;margin-bottom:${items.length?"10px":"0"};white-space:pre-wrap">${esc(intro)}</div>`;
-  if(items.length)h+='<div style="display:flex;flex-direction:column;gap:6px">'+items.map(it=>`<div style="display:flex;gap:9px;align-items:flex-start"><span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--p);background:var(--p50);padding:3px 9px;border-radius:6px;min-width:78px;text-align:center">${esc(it.label)}</span><span style="font-size:13px;line-height:1.65;color:var(--t1);white-space:pre-wrap;flex:1;min-width:0">${esc(it.body)||"-"}</span></div>`).join("")+"</div>";
+  if(intro)h+=`<div style="font-size:12.5px;line-height:1.6;color:var(--t2);background:var(--bg);padding:9px 11px;border-radius:8px;margin-bottom:10px;white-space:pre-wrap">${esc(intro)}</div>`;
+  POLICY_CATS.forEach(c=>{const g=groups[c.name];if(!g||!g.length)return;
+    const body=g.map(it=>`<div style="display:flex;gap:9px;align-items:flex-start"><span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--p);background:var(--p50);padding:3px 9px;border-radius:6px;min-width:78px;text-align:center">${esc(it.label)}</span><span style="font-size:13px;line-height:1.65;color:var(--t1);white-space:pre-wrap;flex:1;min-width:0">${esc(it.body)||"-"}</span></div>`).join("");
+    h+=`<details class="pfold"><summary><div style="width:30px;height:30px;background:var(--p50);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${c.icon}" style="font-size:16px;color:var(--p)"></i></div><span style="flex:1;font-size:13.5px;font-weight:700;color:var(--t1)">${c.name}</span><span style="font-size:12px;color:var(--t3);margin-right:2px">${g.length}건</span><i class="ti ti-chevron-right pf-chev" style="font-size:15px;color:var(--t3)"></i></summary><div style="padding:4px 14px 12px;display:flex;flex-direction:column;gap:7px">${body}</div></details>`;
+  });
   if(!items.length&&!intro)h=`<div style="font-size:13px;line-height:1.7;color:var(--t1);white-space:pre-wrap">${esc(raw)}</div>`;
   return h;
 }
