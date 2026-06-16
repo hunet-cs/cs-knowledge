@@ -105,6 +105,7 @@ html,body{background:var(--sb);font-family:var(--font);font-size:13px;color:var(
 .cat-pink .home-cat-icon{background:#FCE7F3;color:#DB2777}
 .cat-red .home-cat-icon{background:#FEE2E2;color:#DC2626}
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.home-toprow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:stretch}
 .home-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
 .hcard-hd{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .hcard-title{font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:6px}
@@ -409,6 +410,9 @@ body.is-admin .admin-only.block{display:block!important}
 .mob-menu.open{transform:translateX(0)}
 .mob-ham{display:none;width:36px;height:36px;background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
 @media(max-width:768px){
+  .home-toprow{grid-template-columns:1fr!important}
+  #quickMenu{overflow-x:auto;padding-bottom:4px}
+  #quickMenu>*{flex-shrink:0}
   html,body{overflow:auto!important;height:auto!important}
   .app{flex-direction:column;height:auto!important;min-height:100vh;overflow:visible!important}
   .app-main{width:100%;min-width:0;overflow:visible!important}
@@ -541,7 +545,7 @@ body.is-admin .admin-only.block{display:block!important}
             </div>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:24px;align-items:stretch">
+        <div class="home-toprow" style="margin-bottom:24px">
           <div class="home-card" style="padding:14px 20px;min-width:0">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
               <span class="hcard-title" style="font-size:13px"><i class="ti ti-calendar-today"></i>오늘 근무 현황 <span style="font-size:11px;color:var(--t3);font-weight:400" id="todayDateLabel"></span></span>
