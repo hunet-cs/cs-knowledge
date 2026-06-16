@@ -39,10 +39,19 @@ html,body{background:var(--sb);font-family:var(--font);font-size:13px;color:var(
 .sb-scroll::-webkit-scrollbar{width:3px}
 .sb-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .sb-sec{padding:6px 14px 2px;font-size:9.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em}
-.sb-item{display:flex;align-items:center;gap:9px;padding:8px 14px;color:var(--sb-t);cursor:pointer;font-size:12.5px;border-left:2.5px solid transparent;transition:all .12s;user-select:none;margin:1px 0}
+.sb-item{display:flex;align-items:center;gap:11px;padding:11px 16px;color:var(--sb-t);cursor:pointer;font-size:14px;border-left:2.5px solid transparent;transition:all .12s;user-select:none;margin:1px 0}
 .sb-item:hover{background:var(--sb-h);color:var(--t1)}
 .sb-item.on{background:var(--sb-a);color:var(--p);border-left-color:var(--p);font-weight:600}
-.sb-item i{font-size:16px;flex-shrink:0;opacity:.85}
+.sb-item i{font-size:18px;flex-shrink:0;opacity:1;width:32px;height:32px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center}
+.sb-item i.ti-home-2{color:#F5731E;background:#FFEEDF}
+.sb-item i.ti-users{color:#185FA5;background:#E6F1FB}
+.sb-item i.ti-briefcase{color:#534AB7;background:#EEEDFE}
+.sb-item i.ti-book-2{color:#0F6E56;background:#E1F5EE}
+.sb-item i.ti-alert-triangle{color:#A32D2D;background:#FCEBEB}
+.sb-item i.ti-headset{color:#993556;background:#FBEAF0}
+.sb-item i.ti-speakerphone{color:#854F0B;background:#FAEEDA}
+.sb-item i.ti-user-circle{color:#5F5E5A;background:#F1EFE8}
+.sb-item .sb-chev{font-size:15px!important;color:var(--t3);width:auto;height:auto;background:none}
 .sb-item .sb-badge-new{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:6px}
 .sb-item .sb-chev{margin-left:auto;font-size:14px;opacity:.6;transition:transform .15s}
 .sb-ops-sub{display:none;margin:0 0 4px 0}
@@ -482,10 +491,10 @@ body.is-admin .admin-only.block{display:block!important}
         <div class="sb-item on" data-view="home" onclick="goHome()"><i class="ti ti-home-2"></i><span>홈</span></div>
         <div class="sb-divider"></div>
         <div class="sb-item" data-view="b2c" onclick="filterPart2('B2C')"><i class="ti ti-users"></i><span>B2C</span></div>
-        <div class="sb-item" data-view="b2b" onclick="filterPart2('B2B 상위기업')"><i class="ti ti-building-skyscraper"></i><span>B2B</span></div>
-        <div class="sb-item" data-view="product" onclick="filterPart2('상품 안내')"><i class="ti ti-package"></i><span>상품 안내</span></div>
-        <div class="sb-item" data-view="error" onclick="openErrorView()"><i class="ti ti-bug"></i><span>오류 처리방법</span></div>
-        <div class="sb-item" data-view="ops" onclick="toggleOpsMenu()"><i class="ti ti-clipboard-check"></i><span>운영지원</span><i class="ti ti-chevron-down sb-chev" id="opsChevron" style="transform:rotate(-90deg)"></i></div>
+        <div class="sb-item" data-view="b2b" onclick="filterPart2('B2B 상위기업')"><i class="ti ti-briefcase"></i><span>B2B</span></div>
+        <div class="sb-item" data-view="product" onclick="filterPart2('상품 안내')"><i class="ti ti-book-2"></i><span>상품 안내</span></div>
+        <div class="sb-item" data-view="error" onclick="openErrorView()"><i class="ti ti-alert-triangle"></i><span>오류 처리방법</span></div>
+        <div class="sb-item" data-view="ops" onclick="toggleOpsMenu()"><i class="ti ti-headset"></i><span>운영지원</span><i class="ti ti-chevron-down sb-chev" id="opsChevron" style="transform:rotate(-90deg)"></i></div>
         <div class="sb-ops-sub" id="opsSubMenu">
           <div class="sb-sub-item" data-sub="에듀매니저" onclick="filterOpsSub('에듀매니저')"><i class="ti ti-user-cog"></i><span>에듀매니저</span></div>
           <div class="sb-sub-item" data-sub="랩스(LABS)" onclick="filterOpsSub('랩스(LABS)')"><i class="ti ti-flask"></i><span>랩스 (LABS)</span></div>
@@ -498,7 +507,7 @@ body.is-admin .admin-only.block{display:block!important}
           <div class="sb-sub-item" data-sub="업무 요청·이관" onclick="filterOpsSub('업무 요청·이관')"><i class="ti ti-send"></i><span>업무 요청·이관</span></div>
         </div>
         <div class="sb-divider"></div>
-        <div class="sb-item" data-view="notices" onclick="setView('notices')"><i class="ti ti-bell"></i><span>공지사항</span><span class="sb-badge-new" id="noticeBadge" style="display:none">N</span></div>
+        <div class="sb-item" data-view="notices" onclick="setView('notices')"><i class="ti ti-speakerphone"></i><span>공지사항</span><span class="sb-badge-new" id="noticeBadge" style="display:none">N</span></div>
         <div class="sb-item" data-view="myspace" onclick="openMySpace()"><i class="ti ti-user-circle"></i><span>마이스페이스</span></div>
       </div>
     </div>
@@ -791,10 +800,10 @@ body.is-admin .admin-only.block{display:block!important}
     <div class="sb-item" onclick="goHome();toggleMobMenu()"><i class="ti ti-home-2"></i><span>홈</span></div>
     <div class="sb-divider"></div>
     <div class="sb-item" onclick="filterPart2('B2C');toggleMobMenu()"><i class="ti ti-users"></i><span>B2C</span></div>
-    <div class="sb-item" onclick="filterPart2('B2B 상위기업');toggleMobMenu()"><i class="ti ti-building-skyscraper"></i><span>B2B</span></div>
-    <div class="sb-item" onclick="filterPart2('상품 안내');toggleMobMenu()"><i class="ti ti-package"></i><span>상품 안내</span></div>
-    <div class="sb-item" onclick="openErrorView();toggleMobMenu()"><i class="ti ti-bug"></i><span>오류 처리방법</span></div>
-    <div class="sb-item" onclick="filterPart2('운영지원');toggleMobMenu()"><i class="ti ti-clipboard-check"></i><span>운영지원</span></div>
+    <div class="sb-item" onclick="filterPart2('B2B 상위기업');toggleMobMenu()"><i class="ti ti-briefcase"></i><span>B2B</span></div>
+    <div class="sb-item" onclick="filterPart2('상품 안내');toggleMobMenu()"><i class="ti ti-book-2"></i><span>상품 안내</span></div>
+    <div class="sb-item" onclick="openErrorView();toggleMobMenu()"><i class="ti ti-alert-triangle"></i><span>오류 처리방법</span></div>
+    <div class="sb-item" onclick="filterPart2('운영지원');toggleMobMenu()"><i class="ti ti-headset"></i><span>운영지원</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('에듀매니저');toggleMobMenu()"><i class="ti ti-user-cog"></i><span>에듀매니저</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('랩스(LABS)');toggleMobMenu()"><i class="ti ti-flask"></i><span>랩스 (LABS)</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('CTI');toggleMobMenu()"><i class="ti ti-headset"></i><span>CTI</span></div>
@@ -805,7 +814,7 @@ body.is-admin .admin-only.block{display:block!important}
     <div class="sb-sub-item" onclick="filterOpsSub('앱 설치 지원');toggleMobMenu()"><i class="ti ti-device-mobile"></i><span>앱 설치 지원</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('업무 요청·이관');toggleMobMenu()"><i class="ti ti-send"></i><span>업무 요청·이관</span></div>
     <div class="sb-divider"></div>
-    <div class="sb-item" onclick="setView('notices');toggleMobMenu()"><i class="ti ti-bell"></i><span>공지사항</span></div>
+    <div class="sb-item" onclick="setView('notices');toggleMobMenu()"><i class="ti ti-speakerphone"></i><span>공지사항</span></div>
     <div class="sb-item" onclick="openMySpace();toggleMobMenu()"><i class="ti ti-user-circle"></i><span>마이스페이스</span></div>
     <div class="sb-item" onclick="setView('bookmarks');toggleMobMenu()"><i class="ti ti-bookmark"></i><span>즐겨찾기</span></div>
   </div>
