@@ -104,12 +104,12 @@ html,body{background:var(--sb);font-family:var(--font);font-size:13px;color:var(
 .home-greeting h1{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-bottom:4px}
 .home-greeting p{font-size:13px;color:var(--t2)}
 .home-cats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
-.home-cat{background:var(--card);border:1px solid rgba(255,138,61,.15);border-radius:var(--r2);padding:28px 16px 22px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(30,40,60,.07);position:relative;overflow:hidden}
+.home-cat{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:22px 16px 20px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(30,40,60,.07);position:relative;overflow:hidden}
 .home-cat:hover{box-shadow:0 8px 24px rgba(30,40,60,.18);transform:translateY(-3px);border-color:rgba(255,138,61,.3)}
 .home-cat-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 8px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.home-cat-emoji{font-size:34px;line-height:1;margin:4px auto 6px}
-.home-cat-label{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3;letter-spacing:-.3px}
-.home-cat-cnt{font-size:12px;color:var(--t3);font-weight:500}
+.home-cat-emoji{font-size:24px;line-height:1;margin:2px auto 8px}
+.home-cat-label{font-size:16px;font-weight:700;color:var(--t1);line-height:1.3;letter-spacing:-.3px}
+.home-cat-cnt{font-size:12.5px;color:var(--t3);font-weight:500;margin-top:2px}
 .cat-blue .home-cat-icon{background:#E9ECF1;color:#16181D}
 .cat-green .home-cat-icon{background:#D1FAE5;color:#059669}
 .cat-purple .home-cat-icon{background:#E9ECF1;color:#16181D}
@@ -1453,12 +1453,12 @@ function renderHome(){
   if(window.loadTodaySchedule)window.loadTodaySchedule();
   if(window.loadFirebaseNotices)window.loadFirebaseNotices();else renderLocalNotices();
   const quickItems=[
-    {label:"신규입사자 온보딩",icon:"ti-rocket",color:"#16181D",bg:"#E9ECF1",action:`openQuickModal('onboarding.html','신규입사자 온보딩','ti-rocket')`},
-    {label:"시험 사이트",icon:"ti-clipboard-check",color:"#059669",bg:"#D1FAE5",action:`openQuickModal('quiz.html','시험 사이트','ti-clipboard-check')`},
-    {label:"팀 캘린더",icon:"ti-calendar",color:"#0284C7",bg:"#E0F2FE",action:`openQuickModal('calendar.html','팀 캘린더','ti-calendar')`},
-    {label:"Slack",icon:"ti-brand-slack",color:"#4A154B",bg:"#F9F0FF",action:`openSlackModal()`},
-    {label:"Jira",icon:"ti-layout-kanban",color:"#0052CC",bg:"#DBEAFE",action:`openJiraModal()`},
-    {label:"Confluence",icon:"ti-books",color:"#1D4ED8",bg:"#EFF6FF",action:`openConfluenceModal()`},
+    {label:"신규입사자 온보딩",icon:"ti-rocket",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('onboarding.html','신규입사자 온보딩','ti-rocket')`},
+    {label:"시험 사이트",icon:"ti-clipboard-check",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('quiz.html','시험 사이트','ti-clipboard-check')`},
+    {label:"팀 캘린더",icon:"ti-calendar",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('calendar.html','팀 캘린더','ti-calendar')`},
+    {label:"Slack",icon:"ti-brand-slack",color:"#16181D",bg:"#F1F3F5",action:`openSlackModal()`},
+    {label:"Jira",icon:"ti-layout-kanban",color:"#16181D",bg:"#F1F3F5",action:`openJiraModal()`},
+    {label:"Confluence",icon:"ti-books",color:"#16181D",bg:"#F1F3F5",action:`openConfluenceModal()`},
   ];
   document.getElementById("quickMenu").innerHTML=quickItems.map(q=>`<div style="position:relative"><button onclick="${q.action}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;min-width:110px;height:130px;background:${q.bg};border:1.5px solid ${q.color}33;border-radius:16px;color:${q.color};font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;box-shadow:0 2px 10px ${q.color}15;flex-shrink:0" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px ${q.color}25'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 10px ${q.color}15'"><i class="ti ${q.icon}" style="font-size:28px"></i>${q.label}</button></div>`).join("");
   const cats=[
