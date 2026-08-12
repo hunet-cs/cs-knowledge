@@ -532,9 +532,9 @@ body{background:var(--bg)}
 .home-card-headline{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 8px}
 .home-card-title-lg{font-size:17px;font-weight:800;letter-spacing:-.35px;color:var(--t1)}
 .today-date{font-size:11.5px;font-weight:500;color:#687386;margin-left:12px}
-.work-card,.quick-card{min-height:190px}
+.work-card,.quick-card{min-height:225px}
 #todayScheduleWidget{padding:6px 20px 18px}
-.work-summary{display:flex;align-items:center;justify-content:center;gap:40px;padding:0 0 8px}
+.work-summary{display:flex;align-items:center;justify-content:center;gap:44px;padding:4px 0 12px}
 .work-summary-item{display:flex;align-items:center;gap:10px;font-size:14px;color:#343A45}
 .work-summary-item i{font-size:24px;color:#15803D}
 .work-summary-item strong{font-size:23px;color:#111827;margin-left:3px}
@@ -571,16 +571,45 @@ body{background:var(--bg)}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-<style id="v5-quickmenu-fix">
-.home-toprow{align-items:stretch!important}
-.work-card,.quick-card{min-height:190px!important;padding-bottom:10px!important}
-.quick-menu-grid,#quickMenu{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:8px!important}
-.quick-menu-item{height:86px!important;min-width:0!important;padding:10px 6px!important;border:1px solid #E3E8EF!important;background:#fff!important;border-radius:11px!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:6px!important;font-family:var(--font)!important;font-size:11.5px!important;font-weight:600!important;color:var(--t1)!important;cursor:pointer!important;transition:.15s ease!important}
-.quick-menu-item:hover{background:#F8FAFC!important;border-color:#CBD5E1!important;transform:translateY(-1px)!important}
-.quick-menu-item i{font-size:21px!important;color:#14213D!important}.quick-menu-item span{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
-.work-duty-box{margin-bottom:0!important}
-@media(max-width:1200px){.quick-menu-grid,#quickMenu{grid-template-columns:repeat(3,minmax(0,1fr))!important}.work-card,.quick-card{min-height:auto!important}}
+<style id="v6-compact-fix">
+.work-card,.quick-card{
+  min-height:190px!important;
+}
+.work-card{
+  padding-top:12px!important;
+  padding-bottom:10px!important;
+}
+.quick-card{
+  padding-top:12px!important;
+  padding-bottom:10px!important;
+}
+.work-summary{
+  padding-top:0!important;
+  padding-bottom:8px!important;
+}
+.work-duty-box{
+  margin-top:0!important;
+}
+.quick-menu-grid,#quickMenu{
+  gap:8px!important;
+}
+.quick-menu-btn{
+  height:86px!important;
+  padding:8px 5px!important;
+  gap:5px!important;
+  box-shadow:none!important;
+}
+.quick-menu-btn i{
+  font-size:20px!important;
+}
+.quick-menu-btn span{
+  font-size:11.5px!important;
+}
+@media(max-width:1100px){
+  .work-card,.quick-card{min-height:auto!important;}
+}
 </style>
+
 </head>
 <body class="locked">
 
@@ -1604,15 +1633,14 @@ function renderHome(){
   if(window.loadTodaySchedule)window.loadTodaySchedule();
   if(window.loadFirebaseNotices)window.loadFirebaseNotices();else renderLocalNotices();
   const quickItems=[
-    {label:"신규입사자 온보딩",icon:"ti-rocket",action:`openQuickModal('onboarding.html','신규입사자 온보딩','ti-rocket')`},
-    {label:"시험 사이트",icon:"ti-clipboard-check",action:`openQuickModal('quiz.html','시험 사이트','ti-clipboard-check')`},
-    {label:"팀 캘린더",icon:"ti-calendar",action:`openQuickModal('calendar.html','팀 캘린더','ti-calendar')`},
-    {label:"Slack",icon:"ti-brand-slack",action:`openSlackModal()`},
-    {label:"Jira",icon:"ti-layout-kanban",action:`openJiraModal()`},
-    {label:"Confluence",icon:"ti-books",action:`openConfluenceModal()`},
+    {label:"신규입사자 온보딩",icon:"ti-rocket",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('onboarding.html','신규입사자 온보딩','ti-rocket')`},
+    {label:"시험 사이트",icon:"ti-clipboard-check",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('quiz.html','시험 사이트','ti-clipboard-check')`},
+    {label:"팀 캘린더",icon:"ti-calendar",color:"#16181D",bg:"#F1F3F5",action:`openQuickModal('calendar.html','팀 캘린더','ti-calendar')`},
+    {label:"Slack",icon:"ti-brand-slack",color:"#16181D",bg:"#F1F3F5",action:`openSlackModal()`},
+    {label:"Jira",icon:"ti-layout-kanban",color:"#16181D",bg:"#F1F3F5",action:`openJiraModal()`},
+    {label:"Confluence",icon:"ti-books",color:"#16181D",bg:"#F1F3F5",action:`openConfluenceModal()`},
   ];
-  const qm=document.getElementById("quickMenu");
-  if(qm)qm.innerHTML=quickItems.map(q=>`<button class="quick-menu-item" onclick="${q.action}" title="${q.label}"><i class="ti ${q.icon}"></i><span>${q.label}</span></button>`).join("");flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;min-width:110px;height:130px;background:${q.bg};border:1.5px solid ${q.color}33;border-radius:16px;color:${q.color};font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;box-shadow:0 2px 10px ${q.color}15;flex-shrink:0" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px ${q.color}25'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 10px ${q.color}15'"><i class="ti ${q.icon}" style="font-size:28px"></i>${q.label}</button></div>`).join("");
+  document.getElementById("quickMenu").innerHTML=quickItems.map(q=>`<div style="position:relative"><button onclick="${q.action}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;min-width:110px;height:130px;background:${q.bg};border:1.5px solid ${q.color}33;border-radius:16px;color:${q.color};font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;box-shadow:0 2px 10px ${q.color}15;flex-shrink:0" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px ${q.color}25'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 10px ${q.color}15'"><i class="ti ${q.icon}" style="font-size:28px"></i>${q.label}</button></div>`).join("");
   const cats=[
     {label:"B2C",emoji:"🎓",cnt:()=>entries.filter(e=>e.part==="B2C").length,action:"filterPart2('B2C')"},
     {label:"B2B",emoji:"🏢",cnt:()=>entries.filter(e=>e.part==="B2B 상위기업").length,action:"filterPart2('B2B 상위기업')"},
@@ -1777,10 +1805,9 @@ function renderHome(){
     {label:"팀 캘린더",icon:"ti-calendar",action:`openQuickModal('calendar.html','팀 캘린더','ti-calendar')`},
     {label:"Slack",icon:"ti-brand-slack",action:`openSlackModal()`},
     {label:"Jira",icon:"ti-layout-kanban",action:`openJiraModal()`},
-    {label:"Confluence",icon:"ti-books",action:`openConfluenceModal()`},
+    {label:"Confluence",icon:"ti-books",action:`openConfluenceModal()`}
   ];
-  const qm=document.getElementById("quickMenu");
-  if(qm)qm.innerHTML=quickItems.map(q=>`<button class="quick-menu-item" onclick="${q.action}" title="${q.label}"><i class="ti ${q.icon}"></i><span>${q.label}</span></button>`).join("");
+  const qm=document.getElementById("quickMenu"); if(qm)qm.innerHTML=quickItems.map(q=>`<button class="quick-menu-btn" onclick="${q.action}"><i class="ti ${q.icon}"></i><span>${q.label}</span></button>`).join("");
   const cats=[
     {label:"B2B 기업 맞춤 정책",icon:"ti-building",cnt:entries.filter(e=>e.part==="B2B 상위기업").length,action:"filterPart2('B2B 상위기업')"},
     {label:"상품·서비스 안내",icon:"ti-package",cnt:entries.filter(e=>e.part==="상품 안내").length,action:"filterPart2('상품 안내')"},
