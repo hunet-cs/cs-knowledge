@@ -610,6 +610,70 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v7-toprow-compact">
+/* 상단 2개 카드: 아래 여백 축소 */
+.work-card,.quick-card{
+  min-height:158px!important;
+}
+.home-card-headline{
+  padding:14px 20px 5px!important;
+}
+#todayScheduleWidget{
+  padding:2px 20px 10px!important;
+}
+.work-summary{
+  padding:0 0 6px!important;
+}
+.work-summary-item i{font-size:20px!important}
+.work-summary-item strong{font-size:21px!important}
+.work-summary-divider{height:30px!important}
+.work-duty{
+  padding:8px 7px 7px!important;
+}
+.work-duty-name{
+  margin-top:4px!important;
+  font-size:12px!important;
+}
+
+/* 퀵메뉴: 6개를 무조건 한 줄, 버튼 자체도 축소 */
+.quick-menu-grid,#quickMenu{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:8px!important;
+  padding:10px 20px 10px!important;
+  align-items:start!important;
+}
+.quick-menu-btn{
+  width:100%!important;
+  min-width:0!important;
+  height:72px!important;
+  padding:7px 4px!important;
+  border-radius:10px!important;
+  gap:4px!important;
+  font-size:10.5px!important;
+}
+.quick-menu-btn i{
+  font-size:18px!important;
+}
+.quick-menu-btn span{
+  font-size:10.5px!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  max-width:100%!important;
+}
+
+/* 화면이 아주 좁을 때만 3열 */
+@media(max-width:900px){
+  .quick-menu-grid,#quickMenu{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  .work-card,.quick-card{min-height:auto!important;}
+}
+</style>
+
 </head>
 <body class="locked">
 
