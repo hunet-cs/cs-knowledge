@@ -2011,9 +2011,14 @@ curView="list";showView("viewList");setSbView("");renderResults();closeDetailPan
 function toggleOpsMenu(){const sub=document.getElementById("opsSubMenu");const chev=document.getElementById("opsChevron");const willOpen=sub.style.display==="none"||sub.style.display==="";sub.style.display=willOpen?"block":"none";if(chev)chev.style.transform=willOpen?"rotate(0deg)":"rotate(-90deg)";if(willOpen)filterPart2("운영지원");}
 
 function renderOpsUnified(sub="",id=null){
-  filterPart="운영지원";filterSub=sub||"전체";curView="list";showView("viewList");setSbView("ops");
+  filterPart="운영지원";
+  filterSub=sub||"전체";
+  curView="list";
+  showView("viewList");
+  setSbView("ops");
+
   let list=entries.filter(e=>e.part==="운영지원"&&e.status!=="hidden");
-  if(sub)list=list.filter(e=>e.opsSub===sub);
+  if(sub) list=list.filter(e=>e.opsSub===sub);
   list=list.sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
 
   document.getElementById("listTitle").textContent=sub||"운영지원";
@@ -2028,15 +2033,24 @@ function renderOpsUnified(sub="",id=null){
   </div>`).join("");
 
   if(!id){
+    // B2B의 '기업 목록' 첫 화면과 같은 개념: 목록만 전체 폭
     document.getElementById("resultsList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>${esc(sub||"운영지원")}</strong><span class="unified-pane-sub">${list.length}건</span></div>
-      <div class="unified-list">${rows}</div>
+      <div class="unified-pane-head">
+        <strong>${esc(sub||"운영지원")}</strong>
+        <span class="unified-pane-sub">${list.length}건</span>
+      </div>
+      <div class="unified-list">
+        ${rows || `<div class="unified-empty">등록된 문서가 없습니다.</div>`}
+      </div>
     </div>`;
   }else{
+    // B2B에서 기업 클릭 후와 동일: 왼쪽 목록 + 오른쪽 상세
     const selected=list.find(e=>e.id===id);
     document.getElementById("resultsList").innerHTML=`<div class="unified-split">
       ${uListPane(sub||"운영지원",rows,`${list.length}건`)}
-      ${selected?uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,`openEdit('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>`}
+      ${selected
+        ? uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,`openEdit('${selected.id}')`)
+        : `<div class="unified-pane"><div class="unified-empty">왼쪽 목록에서 문서를 선택해 주세요.</div></div>`}
     </div>`;
   }
   closeDetailPanel();
@@ -2537,6 +2551,46 @@ window.addEventListener('load',function(){
     history.replaceState({...(history.state||{}),kms:{type:"home"}},'',location.href);
   }
 });
+</script>
+
+
+<script id="v14-ops-submenu-fix">
+(function(){
+  window.openOpsSubUnified = function(sub){
+    kmsPushState({type:"ops",sub:sub,detailId:null});
+    filterPart="운영지원";
+    filterSub=sub;
+    curView="list";
+    showView("viewList");
+    setSbView("ops");
+
+    document.querySelectorAll(".sb-sub-item").forEach(function(el){
+      el.classList.toggle("on", el.dataset.sub===sub);
+    });
+    var om=document.getElementById("opsSubMenu");
+    if(om) om.style.display="block";
+
+    renderOpsUnified(sub, null);
+  };
+
+  // 기존 filterOpsSub도 동일 동작으로 덮어씀
+  window.filterOpsSub = function(sub){
+    openOpsSubUnified(sub);
+  };
+
+  // 사이드바 운영지원 하위 메뉴의 기존 onclick이 무엇이든
+  // data-sub 기준으로 B2B형 흐름을 강제
+  document.addEventListener("click", function(ev){
+    var item=ev.target.closest(".sb-sub-item");
+    if(!item) return;
+    var sub=item.dataset.sub;
+    if(!sub) return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+    openOpsSubUnified(sub);
+  }, true);
+})();
 </script>
 
 </body>
