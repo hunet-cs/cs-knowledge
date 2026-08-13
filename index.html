@@ -936,6 +936,59 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v12-real-split">
+/* 실제 화면 기준: B2B와 같은 1/3 : 2/3 2분할 */
+#viewList #resultsList,
+#viewProducts #prResultsList,
+#viewErrors #errList{
+  width:100%!important;
+  max-width:none!important;
+}
+#viewList .unified-split,
+#viewProducts .unified-split,
+#viewErrors .unified-split{
+  display:grid!important;
+  grid-template-columns:34% calc(66% - 14px)!important;
+  gap:14px!important;
+  width:100%!important;
+  max-width:none!important;
+  align-items:start!important;
+}
+#viewList .unified-pane,
+#viewProducts .unified-pane,
+#viewErrors .unified-pane{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+#viewList .unified-pane.unified-left,
+#viewProducts .unified-pane.unified-left,
+#viewErrors .unified-pane.unified-left{
+  display:block!important;
+  min-height:590px!important;
+}
+#viewList .unified-pane:not(.unified-left),
+#viewProducts .unified-pane:not(.unified-left),
+#viewErrors .unified-pane:not(.unified-left){
+  display:block!important;
+  min-height:590px!important;
+}
+#viewList .unified-list,
+#viewProducts .unified-list,
+#viewErrors .unified-list{
+  max-height:650px!important;
+  overflow-y:auto!important;
+}
+@media(max-width:900px){
+  #viewList .unified-split,
+  #viewProducts .unified-split,
+  #viewErrors .unified-split{
+    grid-template-columns:1fr!important;
+  }
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1955,7 +2008,7 @@ function renderOpsUnified(sub="",id=null){
   const selected=list.find(e=>e.id===id);
   document.getElementById("resultsList").innerHTML=`<div class="unified-split">
     ${uListPane(sub||"운영지원",rows,`${list.length}건`)}
-    ${uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,selected?`openEdit('${selected.id}')`:"")}
+    ${selected?uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,`openEdit('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">왼쪽 목록에서 항목을 선택해 주세요.</div></div>`}
   </div>`;
   closeDetailPanel();
 }
@@ -1981,15 +2034,19 @@ function renderB2CUnified(id=null){
   const selected=list.find(e=>e.id===id);
   document.getElementById("resultsList").innerHTML=`<div class="unified-split">
     ${uListPane("B2C 문서",rows,`${list.length}건`)}
-    ${uDocDetail(selected,"renderB2CUnified()",selected?`openEdit('${selected.id}')`:"")}
+    ${selected?uDocDetail(selected,"renderB2CUnified()",`openEdit('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">왼쪽 목록에서 문서를 선택해 주세요.</div></div>`}
   </div>`;
   closeDetailPanel();
 }
 
 async function uploadFileToStorage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=e=>resolve(e.target.result);reader.onerror=()=>reject(new Error("파일 읽기 실패"));reader.readAsDataURL(file);});}
 function getProductList(){return Object.keys(productProfiles||{}).sort((a,b)=>a.localeCompare(b,"ko"));}
-function renderProductView(product="전체",section=null){kmsPushState({type:"product",product,section});window._curRender=()=>renderProductView(product,section);
-  curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");
+function renderProductView(product="전체",section=null){
+  kmsPushState({type:"product",product,section});
+  window._curRender=()=>renderProductView(product,section);
+  curView="products";selectedProduct=product;selectedProductSection=section;
+  showView("viewProducts");setSbView("product");
+
   const isAdmin=currentUser&&currentUser.role==="admin";
   const all=entries.filter(e=>e.part==="상품 안내");
   const products=getProductList();
@@ -2006,91 +2063,82 @@ function renderProductView(product="전체",section=null){kmsPushState({type:"pr
     </div>`;
   }).join("");
 
+  let rightHtml="";
   if(product==="전체"){
-    document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-      ${uListPane("상품 목록",productRows,`${products.length}개`)}
-      <div class="unified-pane"><div class="unified-empty">왼쪽에서 상품을 선택해 주세요.</div></div>
-    </div>`;
-    return;
-  }
+    rightHtml=`<div class="unified-pane"><div class="unified-empty">왼쪽 상품 목록에서 항목을 선택해 주세요.</div></div>`;
+  }else{
+    const faq=all.filter(e=>e.productName===product&&e.productSection==="FAQ");
+    const proposal=all.filter(e=>e.productName===product&&e.productSection==="제안서");
 
-  const faq=all.filter(e=>e.productName===product&&e.productSection==="FAQ");
-  const proposal=all.filter(e=>e.productName===product&&e.productSection==="제안서");
-  if(!section){
-    document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-      ${uListPane("상품 목록",productRows,`${products.length}개`)}
-      <div class="unified-pane">
+    if(!section){
+      rightHtml=`<div class="unified-pane">
         <div class="unified-detail">
-          <div class="unified-breadcrumb"><button class="ops-back-btn" onclick="renderProductView('전체')"><i class="ti ti-arrow-left"></i>상품 목록</button></div>
-          <div class="unified-titlebar"><h2>${esc(product)}</h2>${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openAddProductForm('${esc(product)}')">상품 수정</button></div>`:""}</div>
+          <div class="unified-breadcrumb"><span>상품 안내</span><i class="ti ti-chevron-right"></i><span>${esc(product)}</span></div>
+          <div class="unified-titlebar">
+            <h2>${esc(product)}</h2>
+            ${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openAddProductForm('${esc(product)}')">수정</button></div>`:""}
+          </div>
           <div class="unified-section-grid">
-            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','FAQ')"><span class="unified-section-name">FAQ</span><span class="unified-section-count">${faq.length}건</span><i class="ti ti-chevron-right"></i></div>
-            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','제안서')"><span class="unified-section-name">제안서</span><span class="unified-section-count">${proposal.length}건</span><i class="ti ti-chevron-right"></i></div>
+            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','FAQ')">
+              <span class="unified-section-name">FAQ</span><span class="unified-section-count">${faq.length}건</span><i class="ti ti-chevron-right"></i>
+            </div>
+            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','제안서')">
+              <span class="unified-section-name">제안서</span><span class="unified-section-count">${proposal.length}건</span><i class="ti ti-chevron-right"></i>
+            </div>
           </div>
         </div>
-      </div>
-    </div>`;
-    return;
+      </div>`;
+    }else{
+      const docs=section==="FAQ"?faq:proposal;
+      rightHtml=`<div class="unified-pane">
+        <div class="unified-detail">
+          <div class="unified-breadcrumb">
+            <button class="ops-back-btn" onclick="renderProductView('${esc(product)}')"><i class="ti ti-arrow-left"></i>${esc(product)}</button>
+            <span>${esc(section)}</span>
+          </div>
+          <div class="unified-titlebar">
+            <h2>${esc(section)}</h2><span class="unified-chip">${docs.length}건</span>
+            ${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openProductEntryForm('','${esc(product)}','${esc(section)}')">추가</button></div>`:""}
+          </div>
+          <div class="b2b-docs" style="padding:0">
+            ${docs.length?`<div class="b2b-doc-head"><span>문서명</span><span>내용 요약</span><span>조회</span><span>수정일</span><span></span></div>
+              ${docs.map(e=>`<div class="b2b-doc-row" onclick="${section==="FAQ"?`renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')`:`openProductFile('${esc(e.fileUrl||"")}')`}">
+                <span class="b2b-doc-title">${esc(e.title)}</span>
+                <span class="b2b-doc-prev">${esc((e.steps||e.customerQ||"").split("\n")[0])}</span>
+                <span class="b2b-doc-meta">${(e.views||0).toLocaleString()}회</span>
+                <span class="b2b-doc-meta">${esc(e.updatedAt||"")}</span>
+                <i class="ti ti-chevron-right"></i>
+              </div>`).join("")}
+            `:`<div class="unified-empty" style="min-height:260px">등록된 ${esc(section)}가 없습니다.</div>`}
+          </div>
+        </div>
+      </div>`;
+    }
   }
 
-  const target=section==="FAQ"?faq:proposal;
-  const first=target[0]||null;
-  const rows=target.map(e=>`<div class="unified-row" onclick="${section==="FAQ"?`renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')`:`openProductFile('${esc(e.fileUrl||"")}')`}">
-    <span class="unified-title">${esc(e.title)}</span>
-    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
-    <span class="unified-date">${esc(e.updatedAt||"")}</span>
-    <i class="ti ti-chevron-right"></i>
-  </div>`).join("");
   document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-    ${uListPane(`${product} · ${section}`,rows,`${target.length}건`)}
-    ${section==="FAQ" ? uDocDetail(first,`renderProductView('${esc(product)}')`, first?`openProductEntryForm('${first.id}','${esc(product)}','FAQ')`:"") :
-      `<div class="unified-pane"><div class="unified-detail"><div class="unified-breadcrumb"><button class="ops-back-btn" onclick="renderProductView('${esc(product)}')"><i class="ti ti-arrow-left"></i>${esc(product)}</button></div><div class="unified-titlebar"><h2>제안서</h2>${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openProductEntryForm('','${esc(product)}','제안서')">추가</button></div>`:""}</div><div class="unified-empty">${target.length?"왼쪽 제안서를 클릭하면 파일이 열립니다.":"등록된 제안서가 없습니다."}</div></div></div>`}
+    ${uListPane("상품 목록",productRows,`${products.length}개`)}
+    ${rightHtml}
   </div>`;
 }
 function renderProductEntryUnified(product,section,id){
-  const allProducts=entries.filter(e=>e.part==="상품 안내");
+  const all=entries.filter(e=>e.part==="상품 안내");
   const products=getProductList();
-  const docs=allProducts.filter(e=>e.productName===product&&e.productSection===section);
+  const docs=all.filter(e=>e.productName===product&&e.productSection===section);
   const selected=docs.find(e=>e.id===id);
-
   const productRows=products.map(p=>{
-    const cnt=allProducts.filter(e=>e.productName===p).length;
+    const cnt=all.filter(e=>e.productName===p).length;
     return `<div class="unified-row${p===product?" on":""}" onclick="renderProductView('${esc(p)}')">
-      <span class="unified-title">${esc(p)}</span>
-      <span class="unified-count">${cnt}건</span>
-      <span class="unified-date"></span>
-      <i class="ti ti-chevron-right"></i>
+      <span class="unified-title">${esc(p)}</span><span class="unified-count">${cnt}건</span><span class="unified-date"></span><i class="ti ti-chevron-right"></i>
     </div>`;
   }).join("");
 
   document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
     ${uListPane("상품 목록",productRows,`${products.length}개`)}
-    <div class="unified-pane">
-      <div class="unified-detail">
-        <div class="unified-breadcrumb">
-          <button class="ops-back-btn" onclick="renderProductView('${esc(product)}','${esc(section)}')"><i class="ti ti-arrow-left"></i>${esc(section)} 목록</button>
-          <span>${esc(product)}</span>
-        </div>
-        ${selected?`
-          <div class="unified-titlebar">
-            <h2>${esc(selected.title)}</h2>
-            <span class="unified-chip">${esc(section)}</span>
-            ${selected.updatedAt?`<span class="unified-chip">${esc(selected.updatedAt)}</span>`:""}
-            ${currentUser&&currentUser.role==="admin"?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')">수정</button></div>`:""}
-          </div>
-          <div class="unified-card">
-            ${uField("문의 유형",selected.customerQ)}
-            ${uField("필수 확인",selected.checkQ)}
-            ${uField("답변",selected.steps)}
-            ${uField("관련 매뉴얼",selected.relatedManuals)}
-          </div>
-          ${selected.caution&&selected.caution.trim()?`<div class="unified-caution"><strong>주의사항</strong><div>${esc(selected.caution)}</div></div>`:""}
-        `:`<div class="unified-empty">문서를 선택해 주세요.</div>`}
-      </div>
-    </div>
+    ${selected?uDocDetail(selected,`renderProductView('${esc(product)}','${esc(section)}')`,`openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')`)
+      :`<div class="unified-pane"><div class="unified-empty">문서를 선택해 주세요.</div></div>`}
   </div>`;
-}
-function openAddProductForm(product=""){if(!requireAdmin())return;const p=productProfiles[product]||{};const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:420px"><div class="modal-hd"><h2>${product?"상품 수정":"상품 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">상품명 *</label><input id="prName" value="${esc(product)}" placeholder="예: 패키지과정, MBA, FLEX"></div><div class="mrow"><label class="mlbl">설명</label><input id="prDesc" value="${esc(p.desc||"")}" placeholder="간단한 상품 설명"></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveProduct('${esc(product)}')">저장</button></div></div></div>`;ov.style.display="flex";}
+}function openAddProductForm(product=""){if(!requireAdmin())return;const p=productProfiles[product]||{};const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:420px"><div class="modal-hd"><h2>${product?"상품 수정":"상품 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">상품명 *</label><input id="prName" value="${esc(product)}" placeholder="예: 패키지과정, MBA, FLEX"></div><div class="mrow"><label class="mlbl">설명</label><input id="prDesc" value="${esc(p.desc||"")}" placeholder="간단한 상품 설명"></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveProduct('${esc(product)}')">저장</button></div></div></div>`;ov.style.display="flex";}
 function saveProduct(oldName){const name=document.getElementById("prName").value.trim();if(!name){alert("상품명을 입력해주세요.");return;}if(name!==oldName&&oldName){const prev=productProfiles[oldName]||{};delete productProfiles[oldName];entries=entries.map(e=>e.productName===oldName?{...e,productName:name}:e);productProfiles[name]=prev;}productProfiles[name]={...(productProfiles[name]||{}),desc:document.getElementById("prDesc").value.trim()};saveAll();closeModal();renderProductView("전체");}
 function openProductEntryForm(id,product,section){if(!requireAdmin())return;const e=id?entries.find(x=>x.id===id):null;const isProposal=section==="제안서";const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:560px"><div class="modal-hd"><h2>${e?"수정":"추가"} · ${esc(product)} ${esc(section)}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">제목 *</label><input id="pe_title" value="${esc(e?.title||"")}" placeholder="${isProposal?"예: 2024년 법인 제안서":"예: 수강기간은 얼마나 되나요?"}"></div>${isProposal?`<div class="mrow"><label class="mlbl">설명</label><textarea id="pe_desc" placeholder="제안서에 대한 간단한 설명">${esc(e?.customerQ||"")}</textarea></div><div class="mrow"><label class="mlbl">파일 업로드</label>${e?.fileUrl?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 10px;background:#F3F5F9;border-radius:7px;font-size:12px"><i class="ti ti-paperclip" style="color:var(--p)"></i><span style="flex:1">${esc(e.fileName||"파일")}</span><a href="${esc(e.fileUrl)}" target="_blank" class="tb-btn" style="height:26px;padding:0 9px;font-size:11px">보기</a></div>`:""}<div class="img-upload-area" onclick="document.getElementById('prFileInput').click()" id="prDropZone"><i class="ti ti-cloud-upload" style="font-size:22px;color:var(--t3);display:block;margin-bottom:6px"></i><div style="font-size:12px;color:var(--t2)" id="prFileLabel">클릭하여 파일 선택 (PDF, PPT, Word, 이미지)</div><input type="file" id="prFileInput" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" onchange="onProductFileSelect(this)"></div></div>`:`<div class="mrow"><label class="mlbl">답변 *</label><textarea id="pe_steps" style="min-height:90px" placeholder="답변 내용을 입력하세요">${esc(e?.steps||"")}</textarea></div><div class="mrow warn"><label class="mlbl">주의사항</label><textarea id="pe_caution" placeholder="주의해야 할 사항">${esc(e?.caution||"")}</textarea></div>`}</div><div class="modal-foot"><div>${e?`<button class="btn-cancel" style="color:var(--red);border-color:#FECACA" onclick="deleteProductEntry('${e.id}','${esc(product)}','${esc(section)}')"><i class="ti ti-trash" style="font-size:11px"></i>삭제</button>`:""}</div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" id="pe_saveBtn" onclick="saveProductEntry('${id||""}','${esc(product)}','${esc(section)}')">저장</button></div></div></div>`;ov.style.display="flex";}
 let _prFile=null;
@@ -2115,7 +2163,7 @@ function renderErrorList(id=null){
   const selected=list.find(e=>e.id===id);
   document.getElementById("errList").innerHTML=`<div class="unified-split">
     ${uListPane("오류 처리방법",rows,`${list.length}건`)}
-    ${uDocDetail(selected,"renderErrorList()",selected?`openErrorForm('${selected.id}')`:"")}
+    ${selected?uDocDetail(selected,"renderErrorList()",`openErrorForm('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">왼쪽 목록에서 오류 항목을 선택해 주세요.</div></div>`}
   </div>`;
   closeDetailPanel();
 }
