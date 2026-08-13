@@ -1107,6 +1107,83 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v16-search-enhance">
+/* 검색 자동완성 확장 */
+.search-dd{
+  max-height:520px!important;
+  overflow-y:auto!important;
+}
+.search-home-section{padding:12px 14px}
+.search-home-section + .search-home-section{border-top:1px solid #EEF1F5}
+.search-home-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;font-size:11px;font-weight:750;color:#596779
+}
+.search-home-clear{
+  border:0;background:none;color:#8A94A6;font-size:10.5px;cursor:pointer;padding:2px 4px
+}
+.search-home-clear:hover{color:#2563EB}
+.search-recent-row{
+  display:flex;align-items:center;gap:8px;min-height:34px;
+  padding:0 4px;border-radius:7px;cursor:pointer
+}
+.search-recent-row:hover{background:#F6F9FE}
+.search-recent-row i{font-size:14px;color:#8491A3}
+.search-recent-text{flex:1;font-size:12px;color:#253143}
+.search-recent-remove{
+  width:24px;height:24px;border:0;background:none;border-radius:6px;
+  color:#A1A9B5;cursor:pointer
+}
+.search-recent-remove:hover{background:#EEF3FA;color:#2563EB}
+.search-popular{
+  display:flex;flex-wrap:wrap;gap:6px
+}
+.search-pop-chip{
+  height:28px;padding:0 10px;border:1px solid #DDE5F0;background:#F7FAFF;
+  border-radius:14px;font-size:11px;color:#315B9D;cursor:pointer
+}
+.search-pop-chip:hover{background:#EAF2FF;border-color:#BFD4FF}
+.search-tip{
+  margin:2px 14px 12px;padding:9px 11px;border-radius:8px;
+  background:#F2F7FF;color:#55709D;font-size:10.5px
+}
+.sd-group-label{
+  padding:9px 13px 5px;font-size:10.5px;font-weight:750;color:#8692A4
+}
+
+/* 관련 문서 */
+.related-reco{
+  margin-top:12px;border:1px solid #D9E5F8;border-radius:11px;overflow:hidden;background:#FBFDFF
+}
+.related-reco-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-bottom:1px solid #E6EDF7;
+  font-size:11px;font-weight:750;color:#315B9D
+}
+.related-reco-list{display:flex;flex-direction:column}
+.related-reco-item{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;
+  border-bottom:1px solid #EDF2F8;cursor:pointer
+}
+.related-reco-item:last-child{border-bottom:none}
+.related-reco-item:hover{background:#F2F7FF}
+.related-reco-icon{
+  width:28px;height:28px;border-radius:7px;background:#EAF2FF;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#2563EB
+}
+.related-reco-body{flex:1;min-width:0}
+.related-reco-title{
+  font-size:11.5px;font-weight:700;color:#283548;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.related-reco-meta{
+  margin-top:2px;font-size:10px;color:#8894A5;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.related-reco-arrow{font-size:13px;color:#A1ACB9}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1178,7 +1255,7 @@ body{background:var(--bg)}
       <button class="mob-ham" onclick="toggleMobMenu()" aria-label="메뉴"><i class="ti ti-menu-2"></i></button>
       <div class="topbar-search">
         <i class="ti ti-search" style="color:var(--t3)"></i>
-        <input id="mainSearch" type="text" placeholder="문서 검색" oninput="onSearchInput(this.value)" onkeydown="onSearchKey(event)" autocomplete="off">
+        <input id="mainSearch" type="text" placeholder="문서 검색" onfocus="showSearchHome()" oninput="onSearchInput(this.value)" onkeydown="onSearchKey(event)" autocomplete="off">
         <div class="search-dd" id="searchDd"></div>
       </div>
       <button class="tb-btn primary" onclick="doSearch()"><i class="ti ti-search" style="font-size:13px"></i>검색</button>
@@ -2086,6 +2163,7 @@ function uDocDetail(e,backJs,editJs=""){
         ${uField("관련 매뉴얼",e.relatedManuals)}
       </div>
       ${e.caution&&e.caution.trim()?`<div class="unified-caution"><strong>주의사항</strong><div>${esc(e.caution)}</div></div>`:""}
+      ${relatedDocsHtml(e)}
     </div>
   </div>`;
 }
@@ -2325,15 +2403,120 @@ function saveError(eid){const g=id=>(document.getElementById(id)||{value:""}).va
 function deleteError(id){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();closeDetailPanel();renderErrorList();}
 function showAllRecent(){setView("recent");}
 function initFilters(){const coSel=document.getElementById("f-co");if(coSel)coSel.innerHTML=`<option value="전체">전체</option>`+B2B_COS.map(c=>`<option value="${esc(c)}">${c}</option>`).join("");const ptSel=document.getElementById("f-part");if(ptSel)ptSel.innerHTML=`<option value="전체">전체</option>`+PARTS.map(p=>`<option value="${esc(p)}">${p}</option>`).join("");}
-function doSearch(){closeDetailPanel();curView="list";filterMultiple=[];showChips=true;searchQ=document.getElementById("mainSearch").value.trim();filterPart="전체";filterCo="전체";filterSub="전체";showView("viewList");renderResults();if(searchQ&&getFiltered().length===0)logMissingSearch(searchQ);}
+
+const SEARCH_HISTORY_KEY="kms_recent_searches_v1";
+
+function getRecentSearches(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY)||"[]");
+    return Array.isArray(arr)?arr.slice(0,6):[];
+  }catch(e){return[];}
+}
+function saveRecentSearch(q){
+  q=(q||"").trim();
+  if(!q)return;
+  let arr=getRecentSearches().filter(x=>x!==q);
+  arr.unshift(q);
+  arr=arr.slice(0,6);
+  try{localStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(arr));}catch(e){}
+}
+function removeRecentSearch(q){
+  const arr=getRecentSearches().filter(x=>x!==q);
+  try{localStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(arr));}catch(e){}
+  showSearchHome();
+}
+function clearRecentSearches(){
+  try{localStorage.removeItem(SEARCH_HISTORY_KEY);}catch(e){}
+  showSearchHome();
+}
+function searchFromHistory(q){
+  const input=document.getElementById("mainSearch");
+  if(input)input.value=q;
+  hideDd();
+  doSearch();
+}
+function getPopularSearchKeywords(){
+  const stop=new Set(["방법","안내","관련","문의","확인","처리","요청","등록","변경","사용","지원","대한","하는","어떻게","있나요","해주세요"]);
+  const score={};
+  entries.filter(e=>e.status!=="hidden").forEach(e=>{
+    const weight=Math.max(1,Math.min(20,Math.round((e.views||0)/10)+1));
+    const txt=[e.title,e.customerQ,e.company,e.opsSub,e.productName].filter(Boolean).join(" ");
+    (txt.match(/[가-힣A-Za-z0-9]{2,}/g)||[]).forEach(w=>{
+      if(stop.has(w)||w.length<2)return;
+      score[w]=(score[w]||0)+weight;
+    });
+  });
+  return Object.entries(score).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
+}
+function showSearchHome(){
+  const input=document.getElementById("mainSearch");
+  if(!input||input.value.trim())return;
+  const dd=document.getElementById("searchDd");
+  if(!dd)return;
+  const recent=getRecentSearches();
+  const popular=getPopularSearchKeywords();
+  dd.innerHTML=`
+    <div class="search-home-section">
+      <div class="search-home-hd"><span><i class="ti ti-history"></i> 최근 검색어</span>${recent.length?`<button class="search-home-clear" onclick="clearRecentSearches()">전체삭제</button>`:""}</div>
+      ${recent.length?recent.map(q=>`<div class="search-recent-row" onclick="searchFromHistory('${esc(q).replace(/'/g,"&#39;")}')"><i class="ti ti-clock"></i><span class="search-recent-text">${esc(q)}</span><button class="search-recent-remove" onclick="event.stopPropagation();removeRecentSearch('${esc(q).replace(/'/g,"&#39;")}')"><i class="ti ti-x"></i></button></div>`).join(""):`<div style="font-size:11px;color:#A0A9B5;padding:6px 3px">최근 검색어가 없습니다.</div>`}
+    </div>
+    <div class="search-home-section">
+      <div class="search-home-hd"><span><i class="ti ti-flame"></i> 인기 검색어</span></div>
+      <div class="search-popular">${popular.map(q=>`<button class="search-pop-chip" onclick="searchFromHistory('${esc(q).replace(/'/g,"&#39;")}')">${esc(q)}</button>`).join("")}</div>
+    </div>
+    <div class="search-tip"><i class="ti ti-bulb" style="font-size:12px"></i> TIP. 찾으시는 문서의 핵심 키워드를 입력해 보세요.</div>`;
+  dd.style.display="block";
+}
+function relatedDocsFor(entry,limit=5){
+  if(!entry)return[];
+  const baseTokens=[entry.title,entry.customerQ,entry.company,entry.opsSub,entry.productName,entry.companyCat]
+    .filter(Boolean).join(" ").toLowerCase().match(/[가-힣a-z0-9]{2,}/g)||[];
+  const tokenSet=new Set(baseTokens);
+  return entries
+    .filter(e=>e.id!==entry.id&&e.status!=="hidden")
+    .map(e=>{
+      let score=0;
+      if(e.part===entry.part)score+=3;
+      if(entry.company&&e.company===entry.company)score+=5;
+      if(entry.opsSub&&e.opsSub===entry.opsSub)score+=4;
+      if(entry.productName&&e.productName===entry.productName)score+=5;
+      if(entry.companyCat&&e.companyCat===entry.companyCat)score+=3;
+      const txt=entryText(e);
+      tokenSet.forEach(t=>{if(txt.includes(t))score+=1;});
+      return {e,score};
+    })
+    .filter(x=>x.score>2)
+    .sort((a,b)=>b.score-a.score||(b.e.views||0)-(a.e.views||0))
+    .slice(0,limit)
+    .map(x=>x.e);
+}
+function relatedDocsHtml(entry){
+  const rel=relatedDocsFor(entry,5);
+  if(!rel.length)return"";
+  return `<div class="related-reco full">
+    <div class="related-reco-hd"><span><i class="ti ti-files"></i> 관련 문서</span><span>${rel.length}개 추천</span></div>
+    <div class="related-reco-list">
+      ${rel.map(r=>{
+        const meta=[r.company||r.opsSub||r.productName||r.part,r.updatedAt].filter(Boolean).join(" · ");
+        return `<div class="related-reco-item" onclick="openDetail('${r.id}')">
+          <div class="related-reco-icon"><i class="ti ti-file-text"></i></div>
+          <div class="related-reco-body"><div class="related-reco-title">${esc(r.title)}</div><div class="related-reco-meta">${esc(meta)}</div></div>
+          <i class="ti ti-chevron-right related-reco-arrow"></i>
+        </div>`;
+      }).join("")}
+    </div>
+  </div>`;
+}
+
+function doSearch(){closeDetailPanel();curView="list";filterMultiple=[];showChips=true;searchQ=document.getElementById("mainSearch").value.trim();if(searchQ)saveRecentSearch(searchQ);filterPart="전체";filterCo="전체";filterSub="전체";showView("viewList");renderResults();if(searchQ&&getFiltered().length===0)logMissingSearch(searchQ);}
 function resetFilters(){searchQ="";filterCo="전체";filterPart="전체";filterSub="전체";filterMultiple=[];document.getElementById("mainSearch").value="";}
 function highlight(text,q){if(!q||!text)return esc(text||"");const tokens=q.toLowerCase().split(/\s+/).filter(Boolean);let result=esc(text);tokens.forEach(t=>{const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');result=result.replace(re,'<span class="hl">$1</span>');});return result;}
 function entryText(e){return ["title","company","customerQ","cause","steps","productType","productName","productSection","lmsCat","adminSub","opsSub","caution","escalation","done","script","relatedManuals","checkQ","exceptions"].map(k=>(e[k]||"")).join(" ").toLowerCase();}
 function matchQuery(text,q){const tokens=q.split(/\s+/).filter(Boolean);if(tokens.length>1) return tokens.every(t=>text.includes(t));if(text.includes(q)) return true;for(let i=1;i<q.length;i++){const a=q.slice(0,i),b=q.slice(i);if(a.length>=1&&b.length>=1&&text.includes(a)&&text.includes(b)) return true;}return false;}
 function getFiltered(){const isAdmin=currentUser&&currentUser.role==="admin";return entries.filter(e=>{if(!isAdmin&&e.status==="hidden")return false;if(filterMultiple.length){if(!filterMultiple.includes(e.part))return false;}else if(filterPart!=="전체"&&e.part!==filterPart)return false;if(filterCo!=="전체"&&e.company!==filterCo)return false;if(filterSub!=="전체"){const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";if(sub!==filterSub)return false;}if(searchQ) return matchQuery(entryText(e),searchQ.toLowerCase());return true;});}
 let _ddTimer=null,_ddFocus=-1,_ddItems=[];
-function onSearchInput(val){clearTimeout(_ddTimer);_ddFocus=-1;if(!val.trim()){hideDd();return;}_ddTimer=setTimeout(()=>showDd(val),180);}
-function showDd(q){const isAdmin=currentUser&&currentUser.role==="admin";const qq=q.toLowerCase();const coHits=Object.keys(companyProfiles||{}).filter(name=>{const pp=companyProfiles[name]||{};return name.toLowerCase().includes(qq)||(pp.policy||"").toLowerCase().includes(qq)||String(pp.code||"").toLowerCase().includes(qq);}).slice(0,5).map(name=>({__co:true,name}));const docHits=entries.filter(e=>(!(!isAdmin&&e.status==="hidden"))&&matchQuery(entryText(e),qq)).slice(0,10);_ddItems=[...coHits,...docHits];const dd=document.getElementById("searchDd");if(!_ddItems.length){dd.innerHTML=`<div class="sd-empty"><i class="ti ti-search-off" style="font-size:18px;display:block;margin-bottom:6px"></i>"${esc(q)}"에 해당하는 결과가 없어요</div>`;dd.style.display="block";return;}dd.innerHTML=_ddItems.map((e,i)=>{if(e.__co){return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.name,q)}</div><div class="sd-meta">B2B 기업 · 운영 특이사항</div></div><span class="sd-badge co">B2B 기업</span></div>`;}const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const prev=(e.customerQ||"").split("\n")[0].slice(0,50);return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.title,q)}</div><div class="sd-meta">${sub?esc(sub)+" · ":""}${highlight(prev,q)}</div></div><span class="sd-badge${e.company?" co":""}">${esc((e.company||e.part).slice(0,10))}</span></div>`;}).join("");dd.style.display="block";}
+function onSearchInput(val){clearTimeout(_ddTimer);_ddFocus=-1;if(!val.trim()){showSearchHome();return;}_ddTimer=setTimeout(()=>showDd(val),180);}
+function showDd(q){const isAdmin=currentUser&&currentUser.role==="admin";const qq=q.toLowerCase();const coHits=Object.keys(companyProfiles||{}).filter(name=>{const pp=companyProfiles[name]||{};return name.toLowerCase().includes(qq)||(pp.policy||"").toLowerCase().includes(qq)||String(pp.code||"").toLowerCase().includes(qq);}).slice(0,5).map(name=>({__co:true,name}));const docHits=entries.filter(e=>(!(!isAdmin&&e.status==="hidden"))&&matchQuery(entryText(e),qq)).slice(0,10);_ddItems=[...coHits,...docHits];const dd=document.getElementById("searchDd");if(!_ddItems.length){dd.innerHTML=`<div class="sd-empty"><i class="ti ti-search-off" style="font-size:18px;display:block;margin-bottom:6px"></i>"${esc(q)}"에 해당하는 결과가 없어요</div>`;dd.style.display="block";return;}dd.innerHTML=`<div class="sd-group-label">추천 검색 결과</div>`+_ddItems.map((e,i)=>{if(e.__co){return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.name,q)}</div><div class="sd-meta">B2B 기업 · 운영 특이사항</div></div><span class="sd-badge co">B2B 기업</span></div>`;}const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const prev=(e.customerQ||"").split("\n")[0].slice(0,50);return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.title,q)}</div><div class="sd-meta">${sub?esc(sub)+" · ":""}${highlight(prev,q)}</div></div><span class="sd-badge${e.company?" co":""}">${esc((e.company||e.part).slice(0,10))}</span></div>`;}).join("");dd.style.display="block";}
 function selectDdItem(i){const it=_ddItems[i];if(!it)return;if(it.__co)selectCompanySuggestion(it.name);else selectSuggestion(it.id);}
 function selectCompanySuggestion(name){hideDd();const si=document.getElementById("mainSearch");if(si)si.value="";curView="companies";showView("viewCompanies");setSbView("b2b");renderCompanyView(name);closeDetailPanel();}
 function hideDd(){const dd=document.getElementById("searchDd");if(dd){dd.style.display="none";dd.innerHTML="";}_ddFocus=-1;}
@@ -2434,7 +2617,7 @@ function openOpsInlineDetail(id,fromHistory=false){
   closeDetailPanel();
 }
 
-function openDetail(id){selId=id;const e=entries.find(x=>x.id===id);if(!e)return;if(e.part==="운영지원"){openOpsInlineDetail(id);return;}e.views=(e.views||0)+1;if(currentUser){if(!Array.isArray(e.viewers))e.viewers=[];e.viewers.unshift({uid:currentUser.id,name:currentUser.name||currentUser.id,at:new Date().toISOString().slice(0,16).replace("T"," ")});if(e.viewers.length>50)e.viewers=e.viewers.slice(0,50);}recentViewed=recentViewed.filter(x=>x!==id);recentViewed.unshift(id);if(recentViewed.length>30)recentViewed=recentViewed.slice(0,30);saveAll();document.querySelectorAll(".r-card").forEach(el=>el.classList.remove("sel"));const ri=document.getElementById("ri-"+id);if(ri){ri.classList.add("sel");ri.scrollIntoView({block:"nearest"});}const bm=bookmarks.includes(id);const isAdmin=currentUser&&currentUser.role==="admin";const isB2B=e.part==="B2B 상위기업";const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const editAction=e.part==="상품 안내"?`openProductEntryForm('${id}','${esc(e.productName||"")}','${esc(e.productSection||"")}')`:e.part==="오류 처리방법"?`openErrorForm('${id}')`:`openEdit('${id}')`;document.getElementById("drawerActs").innerHTML=`<span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.9);max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(e.title)}</span><div style="margin-left:auto;display:flex;gap:6px"><button class="d-star${bm?" on":""}" onclick="toggleBM(null,'${id}')" title="즐겨찾기">${bm?"★":"☆"}</button>${isAdmin?`<button class="d-act" onclick="${editAction}"><i class="ti ti-edit" style="font-size:12px"></i>수정</button>`:""}${isAdmin?`<button class="d-act del" onclick="doDelete('${id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:""}<button class="d-act" onclick="downloadEntry('${id}')" title="다운로드"><i class="ti ti-download" style="font-size:12px"></i></button></div>`;function sec(cls,icon,label,body,full=false){if(!body||!body.trim())return"";const empty=/^(해당\s?없음|없음|N\/?A|-|없습니다\.?|불필요)$/i.test(body.trim());return`<div class="dr ${cls}${empty?" empty":""}"><div class="dr-l"><i class="ti ${icon}"></i><span>${label}</span></div><div class="dr-v">${esc(body)}</div></div>`;}let html=`<div class="d-meta-row">${e.company?`<span class="d-tag co">${esc(e.company)}</span>`:""}<span class="d-tag part">${esc(e.part)}</span>${sub&&sub!==e.company?`<span class="d-tag sub">${esc(sub)}</span>`:""}<span class="d-date">${e.updatedAt||""}</span></div><div class="d-title">${esc(e.title)}</div><div class="dr-sheet">`;if(!isB2B)html+=sec("query","ti-message-circle","문의 유형",e.customerQ,true);if(!isB2B&&e.cause)html+=sec("check","ti-alert-circle","발생 원인",e.cause,true);html+=sec("check","ti-checklist","필수 확인 질문",e.checkQ,true);const answerLabel=isB2B?"답변 내용":(e.part==="상품 안내"?"답변":"처리 방법");html+=sec("answer","ti-arrow-right-circle",answerLabel,e.steps,true);if(!isB2B&&e.exceptions)html+=sec("escalate","ti-git-branch","예외 케이스",e.exceptions,true);if(e.escalation)html+=sec("escalate","ti-send",isB2B?"운영자 이관 기준":"이관 기준",e.escalation,true);if(!isB2B&&e.done)html+=sec("answer","ti-circle-check","처리 완료 기준",e.done,true);html+='</div>';if(!isB2B&&e.script&&e.script.trim()){html+=`<div class="ds script full"><div class="ds-hd"><i class="ti ti-message-quote" style="font-size:12px"></i> 상담사 전달 멘트<button class="copy-btn" onclick="copyScript('${id}')">복사</button></div><div class="ds-body" id="sb-${id}">${esc(e.script)}</div></div>`;}if(!isB2B&&e.relatedManuals&&e.relatedManuals.trim()){html+=`<div class="ds related full"><div class="ds-hd"><i class="ti ti-link" style="font-size:12px"></i> 관련 매뉴얼/FAQ</div><div class="ds-body">${e.relatedManuals.split("\n").filter(Boolean).map(m=>{const u=m.match(/https?:\/\/\S+/);return u?`<a class="related-link" href="${u[0]}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;color:#16181D;text-decoration:none"><i class="ti ti-download"></i>${esc(m.replace(u[0],"").trim()||"PDF 다운로드")}</a>`:`<div class="related-link"><i class="ti ti-file-text"></i>${esc(m)}</div>`;}).join("")}</div></div>`;}if(e.caution&&e.caution.trim())html+=`<div class="ds caution full"><div class="ds-hd"><i class="ti ti-alert-triangle" style="font-size:12px"></i> 주의사항</div><div class="ds-body">${esc(e.caution)}</div></div>`;if(e.images&&e.images.length){html+=`<div class="ds full"><div class="ds-hd"><i class="ti ti-photo" style="font-size:12px"></i> 첨부 이미지</div><div class="ds-body"><div class="ds-images">${e.images.map(img=>`<div class="ds-img" onclick="openLightbox('${img.src}')"><img src="${img.src}" alt="${esc(img.name||"")}"></div>`).join("")}</div></div></div>`;}if(isB2B&&e.company){html+=`<button class="d-company-btn full" onclick="renderCompanyView('${esc(e.company)}');closeDetailPanel()"><i class="ti ti-building" style="font-size:14px"></i>${esc(e.company)} 기업 정보 보기</button>`;}html+=`<div class="ds full" style="background:#F8FAFC"><div class="ds-hd" style="display:flex;align-items:center;gap:6px;justify-content:space-between"><span><i class="ti ti-eye" style="font-size:12px"></i> 조회수 <strong>${(e.views||0).toLocaleString()}회</strong></span>${isAdmin&&e.viewers?.length?`<span style="font-size:10.5px;color:var(--t3)">${e.viewers.length}명 열람</span>`:""}</div>${isAdmin&&e.viewers?.length?`<div class="ds-body" style="display:flex;flex-direction:column;gap:4px;max-height:120px;overflow-y:auto">${e.viewers.slice(0,20).map(v=>`<div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t2)"><i class="ti ti-user-circle" style="font-size:13px;color:var(--p)"></i><span style="font-weight:500">${esc(v.name||v.uid||"")}</span><span style="color:var(--t3);margin-left:auto">${v.at||""}</span></div>`).join("")}</div>`:""}</div>`;document.getElementById("drawerContent").innerHTML=html;openDetailPanel();if(curView==="home"||curView==="companies"||curView==="products"||curView==="errors"){}else{if(curView!=="list"){curView="list";showView("viewList");renderResults();}const ri2=document.getElementById("ri-"+id);if(ri2){ri2.classList.add("sel");ri2.scrollIntoView({block:"nearest"});}}}
+function openDetail(id){selId=id;const e=entries.find(x=>x.id===id);if(!e)return;if(e.part==="운영지원"){openOpsInlineDetail(id);return;}e.views=(e.views||0)+1;if(currentUser){if(!Array.isArray(e.viewers))e.viewers=[];e.viewers.unshift({uid:currentUser.id,name:currentUser.name||currentUser.id,at:new Date().toISOString().slice(0,16).replace("T"," ")});if(e.viewers.length>50)e.viewers=e.viewers.slice(0,50);}recentViewed=recentViewed.filter(x=>x!==id);recentViewed.unshift(id);if(recentViewed.length>30)recentViewed=recentViewed.slice(0,30);saveAll();document.querySelectorAll(".r-card").forEach(el=>el.classList.remove("sel"));const ri=document.getElementById("ri-"+id);if(ri){ri.classList.add("sel");ri.scrollIntoView({block:"nearest"});}const bm=bookmarks.includes(id);const isAdmin=currentUser&&currentUser.role==="admin";const isB2B=e.part==="B2B 상위기업";const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const editAction=e.part==="상품 안내"?`openProductEntryForm('${id}','${esc(e.productName||"")}','${esc(e.productSection||"")}')`:e.part==="오류 처리방법"?`openErrorForm('${id}')`:`openEdit('${id}')`;document.getElementById("drawerActs").innerHTML=`<span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.9);max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(e.title)}</span><div style="margin-left:auto;display:flex;gap:6px"><button class="d-star${bm?" on":""}" onclick="toggleBM(null,'${id}')" title="즐겨찾기">${bm?"★":"☆"}</button>${isAdmin?`<button class="d-act" onclick="${editAction}"><i class="ti ti-edit" style="font-size:12px"></i>수정</button>`:""}${isAdmin?`<button class="d-act del" onclick="doDelete('${id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:""}<button class="d-act" onclick="downloadEntry('${id}')" title="다운로드"><i class="ti ti-download" style="font-size:12px"></i></button></div>`;function sec(cls,icon,label,body,full=false){if(!body||!body.trim())return"";const empty=/^(해당\s?없음|없음|N\/?A|-|없습니다\.?|불필요)$/i.test(body.trim());return`<div class="dr ${cls}${empty?" empty":""}"><div class="dr-l"><i class="ti ${icon}"></i><span>${label}</span></div><div class="dr-v">${esc(body)}</div></div>`;}let html=`<div class="d-meta-row">${e.company?`<span class="d-tag co">${esc(e.company)}</span>`:""}<span class="d-tag part">${esc(e.part)}</span>${sub&&sub!==e.company?`<span class="d-tag sub">${esc(sub)}</span>`:""}<span class="d-date">${e.updatedAt||""}</span></div><div class="d-title">${esc(e.title)}</div><div class="dr-sheet">`;if(!isB2B)html+=sec("query","ti-message-circle","문의 유형",e.customerQ,true);if(!isB2B&&e.cause)html+=sec("check","ti-alert-circle","발생 원인",e.cause,true);html+=sec("check","ti-checklist","필수 확인 질문",e.checkQ,true);const answerLabel=isB2B?"답변 내용":(e.part==="상품 안내"?"답변":"처리 방법");html+=sec("answer","ti-arrow-right-circle",answerLabel,e.steps,true);if(!isB2B&&e.exceptions)html+=sec("escalate","ti-git-branch","예외 케이스",e.exceptions,true);if(e.escalation)html+=sec("escalate","ti-send",isB2B?"운영자 이관 기준":"이관 기준",e.escalation,true);if(!isB2B&&e.done)html+=sec("answer","ti-circle-check","처리 완료 기준",e.done,true);html+='</div>';if(!isB2B&&e.script&&e.script.trim()){html+=`<div class="ds script full"><div class="ds-hd"><i class="ti ti-message-quote" style="font-size:12px"></i> 상담사 전달 멘트<button class="copy-btn" onclick="copyScript('${id}')">복사</button></div><div class="ds-body" id="sb-${id}">${esc(e.script)}</div></div>`;}if(!isB2B&&e.relatedManuals&&e.relatedManuals.trim()){html+=`<div class="ds related full"><div class="ds-hd"><i class="ti ti-link" style="font-size:12px"></i> 관련 매뉴얼/FAQ</div><div class="ds-body">${e.relatedManuals.split("\n").filter(Boolean).map(m=>{const u=m.match(/https?:\/\/\S+/);return u?`<a class="related-link" href="${u[0]}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;color:#16181D;text-decoration:none"><i class="ti ti-download"></i>${esc(m.replace(u[0],"").trim()||"PDF 다운로드")}</a>`:`<div class="related-link"><i class="ti ti-file-text"></i>${esc(m)}</div>`;}).join("")}</div></div>`;}if(e.caution&&e.caution.trim())html+=`<div class="ds caution full"><div class="ds-hd"><i class="ti ti-alert-triangle" style="font-size:12px"></i> 주의사항</div><div class="ds-body">${esc(e.caution)}</div></div>`;if(e.images&&e.images.length){html+=`<div class="ds full"><div class="ds-hd"><i class="ti ti-photo" style="font-size:12px"></i> 첨부 이미지</div><div class="ds-body"><div class="ds-images">${e.images.map(img=>`<div class="ds-img" onclick="openLightbox('${img.src}')"><img src="${img.src}" alt="${esc(img.name||"")}"></div>`).join("")}</div></div></div>`;}if(isB2B&&e.company){html+=`<button class="d-company-btn full" onclick="renderCompanyView('${esc(e.company)}');closeDetailPanel()"><i class="ti ti-building" style="font-size:14px"></i>${esc(e.company)} 기업 정보 보기</button>`;}html+=relatedDocsHtml(e);html+=`<div class="ds full" style="background:#F8FAFC"><div class="ds-hd" style="display:flex;align-items:center;gap:6px;justify-content:space-between"><span><i class="ti ti-eye" style="font-size:12px"></i> 조회수 <strong>${(e.views||0).toLocaleString()}회</strong></span>${isAdmin&&e.viewers?.length?`<span style="font-size:10.5px;color:var(--t3)">${e.viewers.length}명 열람</span>`:""}</div>${isAdmin&&e.viewers?.length?`<div class="ds-body" style="display:flex;flex-direction:column;gap:4px;max-height:120px;overflow-y:auto">${e.viewers.slice(0,20).map(v=>`<div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t2)"><i class="ti ti-user-circle" style="font-size:13px;color:var(--p)"></i><span style="font-weight:500">${esc(v.name||v.uid||"")}</span><span style="color:var(--t3);margin-left:auto">${v.at||""}</span></div>`).join("")}</div>`:""}</div>`;document.getElementById("drawerContent").innerHTML=html;openDetailPanel();if(curView==="home"||curView==="companies"||curView==="products"||curView==="errors"){}else{if(curView!=="list"){curView="list";showView("viewList");renderResults();}const ri2=document.getElementById("ri-"+id);if(ri2){ri2.classList.add("sel");ri2.scrollIntoView({block:"nearest"});}}}
 function copyScript(id){const e=entries.find(x=>x.id===id);if(!e||!e.script)return;navigator.clipboard.writeText(e.script).catch(()=>{});const btn=event.target;btn.textContent="복사됨!";setTimeout(()=>btn.textContent="복사",1500);}
 function toggleBM(ev,id){if(ev)ev.stopPropagation();if(bookmarks.includes(id))bookmarks=bookmarks.filter(x=>x!==id);else bookmarks.unshift(id);saveAll();if(selId===id)openDetail(id);else{const el=document.getElementById("ri-"+id);if(el)el.querySelector(".r-star").classList.toggle("on",bookmarks.includes(id));const ds=document.querySelector(".d-star");if(ds)ds.classList.toggle("on",bookmarks.includes(id));}}
 function companyInitial(n){let s=String(n||'').replace(/^\((?:미사용|사용안함|사용 ?안 ?함|사|주|재|유|합|사단법인|재단법인|복수|중복|테스트)[^)]*\)\s*/g,'').replace(/^[\s_\-]+/,'');s=s||String(n||'?');return s.trim().charAt(0).toUpperCase();}
