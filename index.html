@@ -779,6 +779,137 @@ body{background:var(--bg)}
 .ops-detail-caution div{font-size:12.5px;line-height:1.6;color:#6B3030;white-space:pre-wrap}
 </style>
 
+
+<style id="v10-unified-masterdetail">
+/* 공통 목록+상세 레이아웃 */
+.unified-split{
+  display:grid;
+  grid-template-columns:minmax(360px,.78fr) minmax(620px,1.22fr);
+  gap:14px;
+  align-items:start;
+}
+.unified-pane{
+  background:#fff;
+  border:1px solid #E1E6ED;
+  border-radius:12px;
+  overflow:hidden;
+  min-width:0;
+}
+.unified-pane-head{
+  height:44px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #EDF1F5;
+  background:#FBFCFE;
+}
+.unified-pane-head strong{font-size:13px;color:#202733}
+.unified-pane-sub{font-size:10.5px;color:#8995A7}
+.unified-list{max-height:690px;overflow:auto}
+.unified-row{
+  min-height:45px;
+  padding:0 13px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 58px 86px 18px;
+  gap:8px;
+  align-items:center;
+  border-bottom:1px solid #EEF1F5;
+  cursor:pointer;
+  font-size:11.5px;
+}
+.unified-row:hover{background:#F8FBFF}
+.unified-row.on{background:#EFF6FF}
+.unified-title{
+  font-weight:650;
+  color:#273244;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.unified-count,.unified-date{font-size:10.5px;color:#7D899B}
+.unified-row i{font-size:13px;color:#9AA5B3}
+.unified-detail{padding:17px 18px 18px}
+.unified-breadcrumb{
+  display:flex;align-items:center;gap:5px;
+  font-size:10.5px;color:#8190A3;margin-bottom:10px
+}
+.unified-titlebar{
+  display:flex;align-items:center;gap:9px;margin-bottom:12px
+}
+.unified-titlebar h2{font-size:21px;margin:0;color:#111827}
+.unified-chip{
+  font-size:10.5px;color:#596779;
+  background:#F1F4F8;border:1px solid #E2E7ED;
+  border-radius:6px;padding:3px 7px
+}
+.unified-card{
+  border:1px solid #E3E8EE;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+.unified-field{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  min-height:48px;
+  border-bottom:1px solid #E8ECF1;
+}
+.unified-field:last-child{border-bottom:none}
+.unified-label{
+  background:#F8FAFC;
+  padding:12px;
+  font-size:11px;
+  font-weight:700;
+  color:#64748B;
+}
+.unified-value{
+  padding:12px 14px;
+  font-size:12.5px;
+  line-height:1.65;
+  color:#263244;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.unified-caution{
+  border:1px solid #FED7D7;
+  background:#FFF7F7;
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:10px;
+}
+.unified-caution strong{
+  display:block;font-size:11px;color:#C24141;margin-bottom:6px
+}
+.unified-empty{
+  min-height:250px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9AA5B3;font-size:12px;text-align:center;
+}
+.unified-section-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px
+}
+.unified-section-card{
+  display:flex;align-items:center;gap:10px;
+  min-height:52px;padding:0 13px;
+  border:1px solid #E3E8EE;border-radius:9px;
+  background:#fff;cursor:pointer
+}
+.unified-section-card:hover{background:#F8FBFF}
+.unified-section-name{flex:1;font-size:12.5px;font-weight:700;color:#273244}
+.unified-section-count{font-size:10.5px;color:#7D899A}
+.unified-actions{margin-left:auto;display:flex;gap:6px}
+.unified-detail-btn{
+  height:31px;padding:0 10px;border:1px solid #DDE3EA;
+  background:#fff;border-radius:8px;font-size:11px;
+  color:#455468;cursor:pointer
+}
+@media(max-width:1180px){
+  .unified-split{grid-template-columns:1fr}
+  .unified-pane.unified-left{display:none}
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1727,36 +1858,179 @@ function downloadAllEntries(type){
 }
 function downloadEntry(id){const e=entries.find(x=>x.id===id);if(!e)return;const lines=[`제목: ${e.title||""}`,`분류: ${e.part||""}`,e.company?`기업: ${e.company}`:"",e.productName?`상품: ${e.productName}`:"",`작성일: ${e.updatedAt||""}`,`작성자: ${e.updatedBy||""}`,"",e.customerQ?`[문의 유형]\n${e.customerQ}`:"",e.checkQ?`\n[필수 확인 질문]\n${e.checkQ}`:"",e.steps?`\n[답변/처리 방법]\n${e.steps}`:"",e.escalation?`\n[이관 기준]\n${e.escalation}`:"",e.caution?`\n[주의사항]\n${e.caution}`:"",e.script?`\n[상담사 멘트]\n${e.script}`:""].filter(Boolean).join("\n");const blob=new Blob([lines],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`${e.title||"항목"}.txt`;a.click();URL.revokeObjectURL(url);}
 function toggleMobMenu(){const menu=document.getElementById("mobMenu");const overlay=document.getElementById("mobOverlay");const isOpen=menu.classList.toggle("open");overlay.classList.toggle("show",isOpen);document.body.style.overflow=isOpen?"hidden":"";}
+
+function uField(label,val){
+  if(val===undefined||val===null||String(val).trim()==="")return"";
+  return `<div class="unified-field"><div class="unified-label">${label}</div><div class="unified-value">${esc(String(val))}</div></div>`;
+}
+function uDocDetail(e,backJs,editJs=""){
+  if(!e)return`<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>`;
+  const isAdmin=currentUser&&currentUser.role==="admin";
+  return `<div class="unified-pane">
+    <div class="unified-detail">
+      <div class="unified-breadcrumb">
+        <button class="ops-back-btn" onclick="${backJs}"><i class="ti ti-arrow-left"></i>목록</button>
+        <span>${esc(e.part||"")}</span>
+      </div>
+      <div class="unified-titlebar">
+        <h2>${esc(e.title)}</h2>
+        ${e.opsSub?`<span class="unified-chip">${esc(e.opsSub)}</span>`:""}
+        ${e.productSection?`<span class="unified-chip">${esc(e.productSection)}</span>`:""}
+        ${e.updatedAt?`<span class="unified-chip">${esc(e.updatedAt)}</span>`:""}
+        ${isAdmin&&editJs?`<div class="unified-actions"><button class="unified-detail-btn" onclick="${editJs}">수정</button></div>`:""}
+      </div>
+      <div class="unified-card">
+        ${uField("문의 유형",e.customerQ)}
+        ${uField("필수 확인",e.checkQ)}
+        ${uField(e.part==="상품 안내"?"답변":"처리 방법",e.steps)}
+        ${uField("이관 기준",e.escalation)}
+        ${uField("처리 완료",e.done)}
+        ${uField("상담 멘트",e.script)}
+        ${uField("관련 매뉴얼",e.relatedManuals)}
+      </div>
+      ${e.caution&&e.caution.trim()?`<div class="unified-caution"><strong>주의사항</strong><div>${esc(e.caution)}</div></div>`:""}
+    </div>
+  </div>`;
+}
+function uListPane(title,rowsHtml,count){
+  return `<div class="unified-pane unified-left">
+    <div class="unified-pane-head"><strong>${esc(title)}</strong><span class="unified-pane-sub">${count||""}</span></div>
+    <div class="unified-list">${rowsHtml}</div>
+  </div>`;
+}
+
 function toggleSidebar(){const sb=document.querySelector(".sb");const collapsed=sb.classList.toggle("collapsed");localStorage.setItem("sbCollapsed",collapsed?"1":"");const icon=sb.querySelector(".sb-toggle i");if(icon)icon.className=collapsed?"ti ti-layout-sidebar-left-expand":"ti ti-layout-sidebar-left-collapse";}
 function initSidebar(){if(localStorage.getItem("sbCollapsed")==="1"){document.querySelector(".sb")?.classList.add("collapsed");const icon=document.querySelector(".sb-toggle i");if(icon)icon.className="ti ti-layout-sidebar-left-expand";}}
 function goHome(){curView="home";filterMultiple=[];showView("viewHome");setSbView("home");renderHome();}
-function filterPart2(p){if(p==="운영지원")kmsPushState({type:"ops",sub:"",detailId:null});filterMultiple=[];filterPart=p;filterCo="전체";filterSub="전체";searchQ="";showChips=false;document.getElementById("mainSearch").value="";if(p==="B2B 상위기업"){curView="companies";showView("viewCompanies");setSbView("b2b");renderCompanyView("전체");return;}if(p==="상품 안내"){curView="products";showView("viewProducts");setSbView("product");renderProductView("전체");return;}curView="list";showView("viewList");const vmap={"B2C":"b2c","상품 안내":"product","LMS 기능":"error","ADMIN/뉴어드민":"error","운영지원":"ops"};setSbView(vmap[p]||"");renderResults();closeDetailPanel();}
+function filterPart2(p){filterMultiple=[];filterPart=p;filterCo="전체";filterSub="전체";searchQ="";showChips=false;const ms=document.getElementById("mainSearch");if(ms)ms.value="";
+if(p==="B2B 상위기업"){curView="companies";showView("viewCompanies");setSbView("b2b");renderCompanyView("전체");return;}
+if(p==="상품 안내"){curView="products";showView("viewProducts");setSbView("product");renderProductView("전체");return;}
+if(p==="오류 처리방법"){openErrorView();return;}
+if(p==="운영지원"){kmsPushState({type:"ops",sub:"",detailId:null});renderOpsUnified("");return;}
+if(p==="B2C"){renderB2CUnified();return;}
+curView="list";showView("viewList");setSbView("");renderResults();closeDetailPanel();}
 function toggleOpsMenu(){const sub=document.getElementById("opsSubMenu");const chev=document.getElementById("opsChevron");const willOpen=sub.style.display==="none"||sub.style.display==="";sub.style.display=willOpen?"block":"none";if(chev)chev.style.transform=willOpen?"rotate(0deg)":"rotate(-90deg)";if(willOpen)filterPart2("운영지원");}
+
+function renderOpsUnified(sub="",id=null){
+  filterPart="운영지원";filterSub=sub||"전체";curView="list";showView("viewList");setSbView("ops");
+  let list=entries.filter(e=>e.part==="운영지원"&&e.status!=="hidden");
+  if(sub)list=list.filter(e=>e.opsSub===sub);
+  list=list.sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
+  if(!id&&list.length)id=list[0].id;
+  document.getElementById("listTitle").textContent=sub||"운영지원";
+  document.getElementById("listCnt").textContent=`총 ${list.length}건`;
+  document.getElementById("filterChips").innerHTML="";
+  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderOpsUnified('${esc(sub)}','${e.id}')">
+    <span class="unified-title">${esc(e.title)}</span>
+    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
+    <span class="unified-date">${esc(e.updatedAt||"")}</span>
+    <i class="ti ti-chevron-right"></i>
+  </div>`).join("");
+  const selected=list.find(e=>e.id===id);
+  document.getElementById("resultsList").innerHTML=`<div class="unified-split">
+    ${uListPane(sub||"운영지원",rows,`${list.length}건`)}
+    ${uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,selected?`openEdit('${selected.id}')`:"")}
+  </div>`;
+  closeDetailPanel();
+}
+
 function filterOpsSub(sub){kmsPushState({type:"ops",sub,detailId:null});filterMultiple=[];filterPart="운영지원";filterCo="전체";filterSub=sub;searchQ="";showChips=false;const si=document.getElementById("mainSearch");if(si)si.value="";curView="list";showView("viewList");setSbView("ops");document.querySelectorAll(".sb-sub-item").forEach(el=>el.classList.toggle("on",el.dataset.sub===sub));const om=document.getElementById("opsSubMenu");if(om&&om.style.display==="none"){om.style.display="block";const c=document.getElementById("opsChevron");if(c)c.style.transform="rotate(0deg)";}renderResults();closeDetailPanel();}
+
+let _b2cSelected=null;
+function renderB2CUnified(id=null){
+  curView="list";filterPart="B2C";filterSub="전체";showView("viewList");setSbView("b2c");
+  const list=entries.filter(e=>e.part==="B2C"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
+  if(!id&&_b2cSelected&&list.some(e=>e.id===_b2cSelected))id=_b2cSelected;
+  if(!id&&list.length)id=list[0].id;
+  _b2cSelected=id;
+  document.getElementById("listTitle").textContent="B2C";
+  document.getElementById("listCnt").textContent=`총 ${list.length}건`;
+  document.getElementById("filterChips").innerHTML="";
+  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderB2CUnified('${e.id}')">
+    <span class="unified-title">${esc(e.title)}</span>
+    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
+    <span class="unified-date">${esc(e.updatedAt||"")}</span>
+    <i class="ti ti-chevron-right"></i>
+  </div>`).join("");
+  const selected=list.find(e=>e.id===id);
+  document.getElementById("resultsList").innerHTML=`<div class="unified-split">
+    ${uListPane("B2C 문서",rows,`${list.length}건`)}
+    ${uDocDetail(selected,"renderB2CUnified()",selected?`openEdit('${selected.id}')`:"")}
+  </div>`;
+  closeDetailPanel();
+}
+
 async function uploadFileToStorage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=e=>resolve(e.target.result);reader.onerror=()=>reject(new Error("파일 읽기 실패"));reader.readAsDataURL(file);});}
 function getProductList(){return Object.keys(productProfiles||{}).sort((a,b)=>a.localeCompare(b,"ko"));}
 function renderProductView(product="전체",section=null){kmsPushState({type:"product",product,section});window._curRender=()=>renderProductView(product,section);
   curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");
-  const isAdmin=currentUser&&currentUser.role==="admin";const all=entries.filter(e=>e.part==="상품 안내");const products=getProductList();
+  const isAdmin=currentUser&&currentUser.role==="admin";
+  const all=entries.filter(e=>e.part==="상품 안내");
+  const products=getProductList();
+  document.getElementById("prSummary").innerHTML="";
+  document.getElementById("prCnt").textContent=`등록 상품 ${products.length}개`;
+
+  const productRows=products.map(p=>{
+    const cnt=all.filter(e=>e.productName===p).length;
+    return `<div class="unified-row${p===product?" on":""}" onclick="renderProductView('${esc(p)}')">
+      <span class="unified-title">${esc(p)}</span>
+      <span class="unified-count">${cnt}건</span>
+      <span class="unified-date"></span>
+      <i class="ti ti-chevron-right"></i>
+    </div>`;
+  }).join("");
+
   if(product==="전체"){
-    document.getElementById("prCnt").textContent=`등록 상품 ${products.length}개`;
-    const addCard=isAdmin?`<div class="co-empty-add" onclick="openAddProductForm()"><i class="ti ti-plus"></i><span>상품 추가</span></div>`:"";
-    const cards=products.map(p=>{const cnt=all.filter(e=>e.productName===p).length;const faqCnt=all.filter(e=>e.productName===p&&e.productSection==="FAQ").length;const propCnt=all.filter(e=>e.productName===p&&e.productSection==="제안서").length;return`<div class="r-card" onclick="renderProductView('${esc(p)}')" style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer"><div style="width:36px;height:36px;background:#E9ECF1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-package" style="font-size:18px;color:#16181D"></i></div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700;color:var(--t1)">${esc(p)}</div><div style="font-size:11px;color:var(--t3);margin-top:2px">전체 ${cnt}건</div></div><div style="display:flex;gap:6px;flex-shrink:0"><button onclick="event.stopPropagation();renderProductView('${esc(p)}','FAQ')" style="height:30px;padding:0 12px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:7px;color:#065F46;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:4px"><i class="ti ti-help-circle" style="font-size:13px"></i>FAQ ${faqCnt}</button><button onclick="event.stopPropagation();renderProductView('${esc(p)}','제안서')" style="height:30px;padding:0 12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;color:#1D4ED8;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:4px"><i class="ti ti-file-description" style="font-size:13px"></i>제안서 ${propCnt}</button></div></div>`;}).join("");
-    document.getElementById("prSummary").innerHTML="";document.getElementById("prResultsList").innerHTML=`<div class="co-list">${cards}</div>${addCard}`+(products.length===0?`<div class="empty-state" style="margin-top:32px"><i class="ti ti-package-off"></i><p>등록된 상품이 없습니다</p></div>`:"");
-  } else if(!section){
-    const proposalCnt=all.filter(e=>e.productName===product&&e.productSection==="제안서").length;const faqCnt=all.filter(e=>e.productName===product&&e.productSection==="FAQ").length;
-    document.getElementById("prCnt").textContent=`${product}`;
-    document.getElementById("prSummary").innerHTML=`<button class="co-back-btn" onclick="renderProductView('전체')"><i class="ti ti-arrow-left" style="font-size:14px"></i>상품 목록</button><div class="co-summary-card"><div class="co-summary-hd"><div class="co-card-icon" style="width:40px;height:40px;font-size:18px;flex-shrink:0;background:#F4F6F8"><i class="ti ti-package" style="color:#16181D"></i></div><h3>${esc(product)}</h3>${isAdmin?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openAddProductForm('${esc(product)}')"><i class="ti ti-edit" style="font-size:12px"></i>수정</button>`:""}</div></div>`;
-    document.getElementById("prResultsList").innerHTML=`<div class="cat-card-grid"><div class="cat-card" onclick="renderProductView('${esc(product)}','제안서')"><div class="cat-card-icon" style="background:#EFF6FF"><i class="ti ti-file-description" style="color:#2563EB"></i></div><div class="cat-card-name">제안서</div><div class="cat-card-cnt"><i class="ti ti-files"></i>${proposalCnt}건</div></div><div class="cat-card" onclick="renderProductView('${esc(product)}','FAQ')"><div class="cat-card-icon" style="background:#ECFDF5"><i class="ti ti-help-circle" style="color:#059669"></i></div><div class="cat-card-name">FAQ</div><div class="cat-card-cnt"><i class="ti ti-files"></i>${faqCnt}건</div></div></div>`;
-    closeDetailPanel();
-  } else {
-    const target=all.filter(e=>e.productName===product&&e.productSection===section);
-    document.getElementById("prCnt").textContent=`${product} › ${section} · ${target.length}건`;
-    document.getElementById("prSummary").innerHTML=`<button class="co-back-btn" onclick="renderProductView('전체')"><i class="ti ti-arrow-left" style="font-size:14px"></i>상품 안내 홈으로</button><div class="breadcrumb"><span class="bc-link" onclick="renderProductView('전체')">상품 목록</span><i class="ti ti-chevron-right"></i><span class="bc-link" onclick="renderProductView('${esc(product)}')">${esc(product)}</span><i class="ti ti-chevron-right"></i><span style="color:var(--t1);font-weight:600">${esc(section)}</span></div><div class="co-summary-card" style="margin-bottom:12px"><div class="co-summary-hd"><div class="co-card-icon" style="width:36px;height:36px;font-size:17px;flex-shrink:0;background:${section==="제안서"?"#EFF6FF":"#ECFDF5"}"><i class="ti ${section==="제안서"?"ti-file-description":"ti-help-circle"}" style="color:${section==="제안서"?"#2563EB":"#059669"}"></i></div><span style="font-size:15px;font-weight:700;color:var(--t1)">${esc(section)}</span><span class="co-code" style="margin-left:4px">${target.length}건</span>${isAdmin?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openProductEntryForm('','${esc(product)}','${esc(section)}')"><i class="ti ti-plus" style="font-size:12px"></i>추가</button>`:""}</div></div>`;
-    if(section==="제안서"){document.getElementById("prResultsList").innerHTML=(isAdmin&&target.length?bulkBarHtml():"")+(target.length?`<div style="display:flex;flex-direction:column;gap:8px">`+target.map(e=>`<div class="r-card" onclick="${isAdmin?`openProductEntryForm('${e.id}','${esc(product)}','제안서')`:`openProductFile('${esc(e.fileUrl||"")}')`}"><div class="r-card-top">${isAdmin?`<input type="checkbox" class="entry-chk" value="${e.id}" onclick="event.stopPropagation()" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;margin-right:8px">`:""}<span class="r-card-title"><i class="ti ti-file-text" style="font-size:14px;margin-right:4px;color:var(--p)"></i>${esc(e.title)}</span>${e.fileUrl?`<a href="${esc(e.fileUrl)}" target="_blank" onclick="event.stopPropagation()" class="tb-btn" style="height:28px;padding:0 10px;font-size:11.5px;white-space:nowrap"><i class="ti ti-download" style="font-size:12px"></i>다운로드</a>`:""}</div>${e.customerQ?`<div class="r-card-prev">${esc(e.customerQ)}</div>`:""}<div class="r-card-foot"><span><i class="ti ti-calendar"></i>${e.updatedAt||""}</span><span><i class="ti ti-user"></i>${esc(e.updatedBy||"")}</span></div></div>`).join("")+`</div>`:`<div class="empty-state"><i class="ti ti-file-off"></i><p>등록된 제안서가 없습니다</p></div>`);}
-    else{document.getElementById("prResultsList").innerHTML=(isAdmin&&target.length?bulkBarHtml():"")+(target.length?`<div style="display:flex;flex-direction:column;gap:8px">`+target.map(e=>`<div class="r-card${selId===e.id?" sel":""}" id="ri-${e.id}" onclick="openDetail('${e.id}')"><div class="r-card-top"><span class="r-card-title">${esc(e.title)}</span></div><div class="r-card-prev">${esc((e.steps||"").split("\n")[0])}</div>${e.caution?`<div class="r-card-tags"><span class="r-tag caution"><i class="ti ti-alert-triangle" style="font-size:10px"></i>주의</span></div>`:""}<div class="r-card-foot"><span><i class="ti ti-calendar"></i>${e.updatedAt||""}</span></div></div>`).join("")+`</div>`:`<div class="empty-state"><i class="ti ti-help-off"></i><p>등록된 FAQ가 없습니다</p></div>`);}
-    closeDetailPanel();
+    document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
+      ${uListPane("상품 목록",productRows,`${products.length}개`)}
+      <div class="unified-pane"><div class="unified-empty">왼쪽에서 상품을 선택해 주세요.</div></div>
+    </div>`;
+    return;
   }
+
+  const faq=all.filter(e=>e.productName===product&&e.productSection==="FAQ");
+  const proposal=all.filter(e=>e.productName===product&&e.productSection==="제안서");
+  if(!section){
+    document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
+      ${uListPane("상품 목록",productRows,`${products.length}개`)}
+      <div class="unified-pane">
+        <div class="unified-detail">
+          <div class="unified-breadcrumb"><button class="ops-back-btn" onclick="renderProductView('전체')"><i class="ti ti-arrow-left"></i>상품 목록</button></div>
+          <div class="unified-titlebar"><h2>${esc(product)}</h2>${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openAddProductForm('${esc(product)}')">상품 수정</button></div>`:""}</div>
+          <div class="unified-section-grid">
+            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','FAQ')"><span class="unified-section-name">FAQ</span><span class="unified-section-count">${faq.length}건</span><i class="ti ti-chevron-right"></i></div>
+            <div class="unified-section-card" onclick="renderProductView('${esc(product)}','제안서')"><span class="unified-section-name">제안서</span><span class="unified-section-count">${proposal.length}건</span><i class="ti ti-chevron-right"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const target=section==="FAQ"?faq:proposal;
+  const first=target[0]||null;
+  const rows=target.map(e=>`<div class="unified-row" onclick="${section==="FAQ"?`renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')`:`openProductFile('${esc(e.fileUrl||"")}')`}">
+    <span class="unified-title">${esc(e.title)}</span>
+    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
+    <span class="unified-date">${esc(e.updatedAt||"")}</span>
+    <i class="ti ti-chevron-right"></i>
+  </div>`).join("");
+  document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
+    ${uListPane(`${product} · ${section}`,rows,`${target.length}건`)}
+    ${section==="FAQ" ? uDocDetail(first,`renderProductView('${esc(product)}')`, first?`openProductEntryForm('${first.id}','${esc(product)}','FAQ')`:"") :
+      `<div class="unified-pane"><div class="unified-detail"><div class="unified-breadcrumb"><button class="ops-back-btn" onclick="renderProductView('${esc(product)}')"><i class="ti ti-arrow-left"></i>${esc(product)}</button></div><div class="unified-titlebar"><h2>제안서</h2>${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openProductEntryForm('','${esc(product)}','제안서')">추가</button></div>`:""}</div><div class="unified-empty">${target.length?"왼쪽 제안서를 클릭하면 파일이 열립니다.":"등록된 제안서가 없습니다."}</div></div></div>`}
+  </div>`;
+}
+function renderProductEntryUnified(product,section,id){
+  const all=entries.filter(e=>e.part==="상품 안내"&&e.productName===product&&e.productSection===section);
+  const rows=all.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')">
+    <span class="unified-title">${esc(e.title)}</span><span class="unified-count">${(e.views||0).toLocaleString()}회</span><span class="unified-date">${esc(e.updatedAt||"")}</span><i class="ti ti-chevron-right"></i>
+  </div>`).join("");
+  const selected=all.find(e=>e.id===id);
+  document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
+    ${uListPane(`${product} · ${section}`,rows,`${all.length}건`)}
+    ${uDocDetail(selected,`renderProductView('${esc(product)}')`,selected?`openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')`:"")}
+  </div>`;
 }
 function openAddProductForm(product=""){if(!requireAdmin())return;const p=productProfiles[product]||{};const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:420px"><div class="modal-hd"><h2>${product?"상품 수정":"상품 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">상품명 *</label><input id="prName" value="${esc(product)}" placeholder="예: 패키지과정, MBA, FLEX"></div><div class="mrow"><label class="mlbl">설명</label><input id="prDesc" value="${esc(p.desc||"")}" placeholder="간단한 상품 설명"></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveProduct('${esc(product)}')">저장</button></div></div></div>`;ov.style.display="flex";}
 function saveProduct(oldName){const name=document.getElementById("prName").value.trim();if(!name){alert("상품명을 입력해주세요.");return;}if(name!==oldName&&oldName){const prev=productProfiles[oldName]||{};delete productProfiles[oldName];entries=entries.map(e=>e.productName===oldName?{...e,productName:name}:e);productProfiles[name]=prev;}productProfiles[name]={...(productProfiles[name]||{}),desc:document.getElementById("prDesc").value.trim()};saveAll();closeModal();renderProductView("전체");}
@@ -1766,9 +2040,28 @@ function onProductFileSelect(input){_prFile=input.files[0];if(_prFile)document.g
 async function saveProductEntry(eid,product,section){const btn=document.getElementById("pe_saveBtn");btn.textContent="저장 중...";btn.disabled=true;const isProposal=section==="제안서";const title=(document.getElementById("pe_title")||{value:""}).value.trim();if(!title){alert("제목을 입력해주세요.");btn.textContent="저장";btn.disabled=false;return;}const ex=eid?entries.find(e=>e.id===eid):null;let fileUrl=ex?.fileUrl||"",fileName=ex?.fileName||"";if(_prFile){try{fileUrl=await uploadFileToStorage(_prFile);fileName=_prFile.name;_prFile=null;}catch(err){alert("파일 업로드 실패: "+err.message);btn.textContent="저장";btn.disabled=false;return;}}const g=id=>(document.getElementById(id)||{value:""}).value.trim();const entry={...(ex||{}),id:ex?ex.id:uid(),part:"상품 안내",productName:product,productSection:section,title,customerQ:isProposal?g("pe_desc"):"",steps:isProposal?"":g("pe_steps"),caution:isProposal?"":g("pe_caution"),fileUrl,fileName,status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:ex?.createdAt||today(),views:ex?.views||0,history:ex?.history||[]};if(ex)entries=entries.map(e=>e.id===entry.id?entry:e);else entries=[entry,...entries];saveAll();closeModal();renderProductView(product,section);}
 function deleteProductEntry(id,product,section){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();renderProductView(product,section);}
 function openProductFile(url){if(url)window.open(url,"_blank");}
-function openErrorView(){curView="errors";showView("viewErrors");setSbView("error");renderErrorList();}
-function renderErrorList(){const isAdmin=currentUser&&currentUser.role==="admin";window._curRender=()=>renderErrorList();const list=entries.filter(e=>e.part==="오류 처리방법").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));document.getElementById("errCnt").textContent=`총 ${list.length}건`;document.getElementById("errList").innerHTML=(isAdmin&&list.length?bulkBarHtml():"")+(list.length?list.map(e=>`<div class="r-card${selId===e.id?" sel":""}" id="ri-${e.id}" onclick="openErrorDetail('${e.id}')"><div class="r-card-top">${isAdmin?`<input type="checkbox" class="entry-chk" value="${e.id}" onclick="event.stopPropagation()" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;margin-right:8px">`:""}<span class="r-card-title">${esc(e.title)}</span></div><div class="r-card-prev">${esc((e.steps||"").split("\n")[0])}</div>${e.caution?`<div class="r-card-tags"><span class="r-tag caution"><i class="ti ti-alert-triangle" style="font-size:10px"></i>주의</span></div>`:""}<div class="r-card-foot"><span><i class="ti ti-calendar"></i>${e.updatedAt||""}</span></div></div>`).join(""):`<div class="empty-state"><i class="ti ti-bug-off"></i><p>등록된 오류 처리방법이 없습니다</p></div>`);}
-function openErrorDetail(id){selId=id;const e=entries.find(x=>x.id===id);if(!e)return;e.views=(e.views||0)+1;saveAll();const isAdmin=currentUser&&currentUser.role==="admin";document.getElementById("drawerActs").innerHTML=`<div style="margin-left:auto;display:flex;gap:6px">${isAdmin?`<button class="d-act" onclick="openErrorForm('${id}')"><i class="ti ti-edit" style="font-size:12px"></i>수정</button>`:""} ${isAdmin?`<button class="d-act del" onclick="deleteError('${id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:""}</div>`;document.getElementById("drawerContent").innerHTML=`<div class="d-meta-row"><span class="d-tag part">오류 처리방법</span><span class="d-date">${e.updatedAt||""}</span></div><div class="d-title">${esc(e.title)}</div><div class="ds query full"><div class="ds-hd"><i class="ti ti-bug" style="font-size:12px"></i> 오류 내용</div><div class="ds-body">${esc(e.customerQ||"")}</div></div><div class="ds answer full"><div class="ds-hd"><i class="ti ti-arrow-right-circle" style="font-size:12px"></i> 처리 방법</div><div class="ds-body">${esc(e.steps||"")}</div></div>${e.caution?`<div class="ds caution full"><div class="ds-hd"><i class="ti ti-alert-triangle" style="font-size:12px"></i> 주의사항</div><div class="ds-body">${esc(e.caution)}</div></div>`:""}`;openDetailPanel();}
+let _errorSelected=null;
+function openErrorView(id=null){curView="errors";showView("viewErrors");setSbView("error");renderErrorList(id);}
+function renderErrorList(id=null){
+  const list=entries.filter(e=>e.part==="오류 처리방법"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
+  if(!id&&_errorSelected&&list.some(e=>e.id===_errorSelected))id=_errorSelected;
+  if(!id&&list.length)id=list[0].id;
+  _errorSelected=id;
+  document.getElementById("errCnt").textContent=`총 ${list.length}건`;
+  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderErrorList('${e.id}')">
+    <span class="unified-title">${esc(e.title)}</span>
+    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
+    <span class="unified-date">${esc(e.updatedAt||"")}</span>
+    <i class="ti ti-chevron-right"></i>
+  </div>`).join("");
+  const selected=list.find(e=>e.id===id);
+  document.getElementById("errList").innerHTML=`<div class="unified-split">
+    ${uListPane("오류 처리방법",rows,`${list.length}건`)}
+    ${uDocDetail(selected,"renderErrorList()",selected?`openErrorForm('${selected.id}')`:"")}
+  </div>`;
+  closeDetailPanel();
+}
+function openErrorDetail(id){renderErrorList(id);}
 function openErrorForm(id){if(!requireAdmin())return;const e=id?entries.find(x=>x.id===id):null;const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:560px"><div class="modal-hd"><h2>${e?"오류 항목 수정":"오류 항목 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">오류 제목 *</label><input id="er_title" value="${esc(e?.title||"")}" placeholder="예: 결제창이 뜨지 않아요"></div><div class="mrow"><label class="mlbl">오류 내용 *</label><textarea id="er_q" style="min-height:70px" placeholder="예: 결제 버튼을 눌러도 아무 반응이 없어요">${esc(e?.customerQ||"")}</textarea></div><div class="mrow"><label class="mlbl">처리 방법 *</label><textarea id="er_steps" style="min-height:100px" placeholder="예:&#10;1. 브라우저 팝업 차단 해제&#10;2. 다른 브라우저 시도">${esc(e?.steps||"")}</textarea></div><div class="mrow warn"><label class="mlbl">주의사항</label><textarea id="er_caution">${esc(e?.caution||"")}</textarea></div></div><div class="modal-foot"><div>${e?`<button class="btn-cancel" style="color:var(--red);border-color:#FECACA" onclick="deleteError('${e.id}')"><i class="ti ti-trash" style="font-size:11px"></i>삭제</button>`:""}</div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveError('${id||""}')">저장</button></div></div></div>`;ov.style.display="flex";}
 function saveError(eid){const g=id=>(document.getElementById(id)||{value:""}).value.trim();const title=g("er_title"),q=g("er_q"),steps=g("er_steps");if(!title||!q||!steps){alert("제목, 오류 내용, 처리 방법은 필수입니다.");return;}const ex=eid?entries.find(e=>e.id===eid):null;const entry={...(ex||{}),id:ex?ex.id:uid(),part:"오류 처리방법",title,customerQ:q,steps,caution:g("er_caution"),status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:ex?.createdAt||today(),views:ex?.views||0,history:ex?.history||[]};if(ex)entries=entries.map(e=>e.id===entry.id?entry:e);else entries=[entry,...entries];saveAll();closeModal();renderErrorList();closeDetailPanel();}
 function deleteError(id){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();closeDetailPanel();renderErrorList();}
@@ -2084,9 +2377,7 @@ window.addEventListener('popstate',function(ev){
     if(st.type==='company') renderCompanyView(st.company||'전체',st.cat??null);
     else if(st.type==='product') renderProductView(st.product||'전체',st.section??null);
     else if(st.type==='ops'){
-      if(st.detailId) openOpsInlineDetail(st.detailId,true);
-      else if(st.sub) filterOpsSub(st.sub);
-      else filterPart2('운영지원');
+      if(st.sub) renderOpsUnified(st.sub,st.detailId||null); else renderOpsUnified('',st.detailId||null);
     } else if(st.type==='home') goHome();
   } finally {
     setTimeout(()=>window._kmsRestoringHistory=false,0);
