@@ -910,6 +910,32 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v11-b2b-style-split">
+.unified-split{
+  display:grid!important;
+  grid-template-columns:minmax(430px,34%) minmax(0,66%)!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+.unified-pane.unified-left{
+  display:block!important;
+  min-height:560px!important;
+}
+.unified-pane:not(.unified-left){
+  min-height:560px!important;
+}
+.unified-list{
+  max-height:650px!important;
+  overflow:auto!important;
+}
+@media(max-width:980px){
+  .unified-split{grid-template-columns:1fr!important}
+  .unified-pane.unified-left{display:block!important;min-height:auto!important}
+  .unified-pane:not(.unified-left){min-height:auto!important}
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -2022,14 +2048,46 @@ function renderProductView(product="전체",section=null){kmsPushState({type:"pr
   </div>`;
 }
 function renderProductEntryUnified(product,section,id){
-  const all=entries.filter(e=>e.part==="상품 안내"&&e.productName===product&&e.productSection===section);
-  const rows=all.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')">
-    <span class="unified-title">${esc(e.title)}</span><span class="unified-count">${(e.views||0).toLocaleString()}회</span><span class="unified-date">${esc(e.updatedAt||"")}</span><i class="ti ti-chevron-right"></i>
-  </div>`).join("");
-  const selected=all.find(e=>e.id===id);
+  const allProducts=entries.filter(e=>e.part==="상품 안내");
+  const products=getProductList();
+  const docs=allProducts.filter(e=>e.productName===product&&e.productSection===section);
+  const selected=docs.find(e=>e.id===id);
+
+  const productRows=products.map(p=>{
+    const cnt=allProducts.filter(e=>e.productName===p).length;
+    return `<div class="unified-row${p===product?" on":""}" onclick="renderProductView('${esc(p)}')">
+      <span class="unified-title">${esc(p)}</span>
+      <span class="unified-count">${cnt}건</span>
+      <span class="unified-date"></span>
+      <i class="ti ti-chevron-right"></i>
+    </div>`;
+  }).join("");
+
   document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-    ${uListPane(`${product} · ${section}`,rows,`${all.length}건`)}
-    ${uDocDetail(selected,`renderProductView('${esc(product)}')`,selected?`openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')`:"")}
+    ${uListPane("상품 목록",productRows,`${products.length}개`)}
+    <div class="unified-pane">
+      <div class="unified-detail">
+        <div class="unified-breadcrumb">
+          <button class="ops-back-btn" onclick="renderProductView('${esc(product)}','${esc(section)}')"><i class="ti ti-arrow-left"></i>${esc(section)} 목록</button>
+          <span>${esc(product)}</span>
+        </div>
+        ${selected?`
+          <div class="unified-titlebar">
+            <h2>${esc(selected.title)}</h2>
+            <span class="unified-chip">${esc(section)}</span>
+            ${selected.updatedAt?`<span class="unified-chip">${esc(selected.updatedAt)}</span>`:""}
+            ${currentUser&&currentUser.role==="admin"?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')">수정</button></div>`:""}
+          </div>
+          <div class="unified-card">
+            ${uField("문의 유형",selected.customerQ)}
+            ${uField("필수 확인",selected.checkQ)}
+            ${uField("답변",selected.steps)}
+            ${uField("관련 매뉴얼",selected.relatedManuals)}
+          </div>
+          ${selected.caution&&selected.caution.trim()?`<div class="unified-caution"><strong>주의사항</strong><div>${esc(selected.caution)}</div></div>`:""}
+        `:`<div class="unified-empty">문서를 선택해 주세요.</div>`}
+      </div>
+    </div>
   </div>`;
 }
 function openAddProductForm(product=""){if(!requireAdmin())return;const p=productProfiles[product]||{};const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:420px"><div class="modal-hd"><h2>${product?"상품 수정":"상품 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">상품명 *</label><input id="prName" value="${esc(product)}" placeholder="예: 패키지과정, MBA, FLEX"></div><div class="mrow"><label class="mlbl">설명</label><input id="prDesc" value="${esc(p.desc||"")}" placeholder="간단한 상품 설명"></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveProduct('${esc(product)}')">저장</button></div></div></div>`;ov.style.display="flex";}
