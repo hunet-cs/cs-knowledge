@@ -1009,6 +1009,104 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v15-blue-selection">
+:root{
+  --sel-blue:#2563EB;
+  --sel-blue-soft:#EAF2FF;
+  --sel-blue-border:#BFD4FF;
+}
+
+/* 사이드바 선택 */
+.sb-item.on{
+  background:linear-gradient(90deg,#2458B8,#2D63C8)!important;
+  color:#fff!important;
+}
+.sb-item.on span,
+.sb-item.on .sb-chev{
+  color:#fff!important;
+}
+.sb-sub-item.on{
+  background:#244F9E!important;
+  color:#fff!important;
+  border-radius:8px!important;
+}
+.sb-sub-item.on span{
+  color:#fff!important;
+}
+
+/* B2B 기업 선택 */
+.b2b-company-row.selected,
+.b2b-mini-row.on,
+.b2b-mini-company.on{
+  background:var(--sel-blue-soft)!important;
+  position:relative;
+  color:#174EA6!important;
+}
+.b2b-company-row.selected::before,
+.b2b-mini-row.on::before,
+.b2b-mini-company.on::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--sel-blue);
+}
+.b2b-company-row.selected .b2b-company-name,
+.b2b-mini-row.on .b2b-mini-name,
+.b2b-mini-company.on .b2b-mini-name{
+  color:#174EA6!important;
+  font-weight:750!important;
+}
+
+/* 공통 목록 선택 */
+.unified-row.on{
+  background:var(--sel-blue-soft)!important;
+  position:relative;
+  color:#174EA6!important;
+}
+.unified-row.on::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--sel-blue);
+}
+.unified-row.on .unified-title,
+.unified-row.on .unified-count,
+.unified-row.on .unified-date{
+  color:#174EA6!important;
+}
+.unified-row.on .unified-title{
+  font-weight:750!important;
+}
+
+/* 일반 테이블/리스트 선택도 동일 */
+.bd-row.sel,
+.r-card.sel,
+.home-cat.on,
+.product-row.on,
+.error-row.on{
+  background:var(--sel-blue-soft)!important;
+  box-shadow:inset 3px 0 0 var(--sel-blue)!important;
+}
+
+/* 페이지네이션 활성 */
+.b2b-page.on,
+.b2b-page-btn.on{
+  background:var(--sel-blue)!important;
+  border-color:var(--sel-blue)!important;
+  color:#fff!important;
+}
+
+/* 카테고리 카드 클릭 상태를 줄 수 있게 */
+.b2b-cat-card.on,
+.unified-section-card.on{
+  background:var(--sel-blue-soft)!important;
+  border-color:var(--sel-blue-border)!important;
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -2002,8 +2100,8 @@ function toggleSidebar(){const sb=document.querySelector(".sb");const collapsed=
 function initSidebar(){if(localStorage.getItem("sbCollapsed")==="1"){document.querySelector(".sb")?.classList.add("collapsed");const icon=document.querySelector(".sb-toggle i");if(icon)icon.className="ti ti-layout-sidebar-left-expand";}}
 function goHome(){curView="home";filterMultiple=[];showView("viewHome");setSbView("home");renderHome();}
 function filterPart2(p){filterMultiple=[];filterPart=p;filterCo="전체";filterSub="전체";searchQ="";showChips=false;const ms=document.getElementById("mainSearch");if(ms)ms.value="";
-if(p==="B2B 상위기업"){curView="companies";showView("viewCompanies");setSbView("b2b");renderCompanyView("전체");return;}
-if(p==="상품 안내"){curView="products";showView("viewProducts");setSbView("product");renderProductView("전체");return;}
+if(p==="B2B 상위기업"){curView="companies";showView("viewCompanies");setSbView("b2b");syncSidebarSelection("b2b");renderCompanyView("전체");return;}
+if(p==="상품 안내"){curView="products";showView("viewProducts");setSbView("product");syncSidebarSelection("product");renderProductView("전체");return;}
 if(p==="오류 처리방법"){openErrorView();return;}
 if(p==="운영지원"){kmsPushState({type:"ops",sub:"",detailId:null});renderOpsUnified("");return;}
 if(p==="B2C"){renderB2CUnified();return;}
@@ -2016,6 +2114,7 @@ function renderOpsUnified(sub="",id=null){
   curView="list";
   showView("viewList");
   setSbView("ops");
+  syncSidebarSelection("ops",sub);
 
   let list=entries.filter(e=>e.part==="운영지원"&&e.status!=="hidden");
   if(sub) list=list.filter(e=>e.opsSub===sub);
@@ -2059,7 +2158,7 @@ function filterOpsSub(sub){kmsPushState({type:"ops",sub,detailId:null});filterMu
 
 let _b2cSelected=null;
 function renderB2CUnified(id=null){
-  curView="list";filterPart="B2C";filterSub="전체";showView("viewList");setSbView("b2c");
+  curView="list";filterPart="B2C";filterSub="전체";showView("viewList");setSbView("b2c");syncSidebarSelection("b2c");
   const list=entries.filter(e=>e.part==="B2C"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
   document.getElementById("listTitle").textContent="B2C";
   document.getElementById("listCnt").textContent=`총 ${list.length}건`;
@@ -2132,10 +2231,10 @@ function renderProductView(product="전체",section=null){
           ${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openAddProductForm('${esc(product)}')">수정</button></div>`:""}
         </div>
         <div class="unified-section-grid">
-          <div class="unified-section-card" onclick="renderProductView('${esc(product)}','FAQ')">
+          <div class="unified-section-card${section==="FAQ"?" on":""}" onclick="renderProductView('${esc(product)}','FAQ')">
             <span class="unified-section-name">FAQ</span><span class="unified-section-count">${faq.length}건</span><i class="ti ti-chevron-right"></i>
           </div>
-          <div class="unified-section-card" onclick="renderProductView('${esc(product)}','제안서')">
+          <div class="unified-section-card${section==="제안서"?" on":""}" onclick="renderProductView('${esc(product)}','제안서')">
             <span class="unified-section-name">제안서</span><span class="unified-section-count">${proposal.length}건</span><i class="ti ti-chevron-right"></i>
           </div>
         </div>
@@ -2194,7 +2293,7 @@ async function saveProductEntry(eid,product,section){const btn=document.getEleme
 function deleteProductEntry(id,product,section){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();renderProductView(product,section);}
 function openProductFile(url){if(url)window.open(url,"_blank");}
 let _errorSelected=null;
-function openErrorView(id=null){curView="errors";showView("viewErrors");setSbView("error");renderErrorList(id);}
+function openErrorView(id=null){curView="errors";showView("viewErrors");setSbView("error");syncSidebarSelection("error");renderErrorList(id);}
 function renderErrorList(id=null){
   const list=entries.filter(e=>e.part==="오류 처리방법"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
   document.getElementById("errCnt").textContent=`총 ${list.length}건`;
@@ -2350,7 +2449,7 @@ function companyListSorted(){return getCompanyList().filter(c=>!/미사용|사�
 function goCompanyPage(p){const list=companyListSorted();const pages=Math.max(1,Math.ceil(list.length/COMPANY_PAGE_SIZE));_companyPage=Math.min(Math.max(1,p),pages);renderCompanyView("전체");}
 function companyPager(total){const pages=Math.max(1,Math.ceil(total/COMPANY_PAGE_SIZE));if(pages<=1)return"";const cur=Math.min(_companyPage,pages);let arr=[];for(let n=Math.max(1,cur-2);n<=Math.min(pages,cur+2);n++)arr.push(n);return`<div class="b2b-pager"><button class="b2b-page" onclick="goCompanyPage(${Math.max(1,cur-1)})">‹</button>${arr.map(n=>`<button class="b2b-page${n===cur?" on":""}" onclick="goCompanyPage(${n})">${n}</button>`).join("")}${pages>arr[arr.length-1]?`<span style="font-size:10.5px;color:#9AA3AF">… ${pages}</span>`:""}<button class="b2b-page" onclick="goCompanyPage(${Math.min(pages,cur+1)})">›</button></div>`;}
 function companyMiniPane(companies,selected){return`<div class="b2b-pane company-left"><div class="b2b-pane-head"><strong>기업 목록</strong><span style="font-size:10.5px;color:#8A94A6">${companies.length.toLocaleString()}개</span></div><div class="b2b-company-mini-list">${companies.map(c=>{const p=companyProfiles[c]||{};return`<div class="b2b-mini-row${selected===c?" on":""}" onclick="renderCompanyView('${esc(c)}')"><span class="b2b-mini-name">${esc(c)}</span><span class="b2b-mini-meta">${esc(p.code||"-")}</span><span class="b2b-mini-count">${companyDocCount(c)}건</span><i class="ti ti-chevron-right"></i></div>`;}).join("")}</div></div>`;}
-function companyDetailPane(company,cat=null){const all=entries.filter(e=>e.part==="B2B 상위기업");const isAdmin=currentUser&&currentUser.role==="admin";const target=all.filter(e=>e.company===company);const p=companyProfiles[company]||{};const polG=policyGroups(p.policy||"").groups;const qaG={};target.forEach(e=>{const k=policyCatOf(e.companyCat||"");(qaG[k]=qaG[k]||[]).push(e);});if(cat!==null){const catLabel=cat==="__uncat__"?"미분류":cat;const docs=target.filter(e=>policyCatOf(e.companyCat||"")===cat);const polItems=polG[cat]||[];return`<div class="b2b-pane"><div class="b2b-cat-title"><div class="b2b-crumb"><button class="ops-back-btn" onclick="renderCompanyView('${esc(company)}')"><i class="ti ti-arrow-left"></i>기업 상세</button><span>${esc(catLabel)}</span></div><div style="display:flex;align-items:center;gap:8px"><h3>${esc(catLabel)}</h3><span class="b2b-badge">${docs.length}건</span>${isAdmin&&cat!=="__uncat__"?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openOpsModalCat('${esc(company)}','${esc(cat)}')"><i class="ti ti-plus"></i>문의 추가</button>`:""}</div></div>${polItems.length?`<div class="b2b-policy" style="margin:12px 18px"><div class="b2b-policy-hd"><strong>운영 특이사항</strong></div><div class="b2b-policy-body">${policyItemsHtml(polItems)}</div></div>`:""}<div class="b2b-docs">${docs.length?`<div class="b2b-doc-head"><span>문서명</span><span>내용 요약</span><span>조회</span><span>수정일</span><span></span></div>${docs.map(e=>`<div class="b2b-doc-row" onclick="openDetail('${e.id}')"><span class="b2b-doc-title">${esc(e.title)}</span><span class="b2b-doc-prev">${esc((e.steps||e.customerQ||"").split("\n")[0])}</span><span class="b2b-doc-meta">${(e.views||0).toLocaleString()}회</span><span class="b2b-doc-meta">${esc(e.updatedAt||"")}</span><i class="ti ti-chevron-right"></i></div>`).join("")}`:`<div style="padding:28px;text-align:center;color:#8A94A6;font-size:12px">등록된 문서가 없습니다.</div>`}</div></div>`;}const cats=POLICY_CATS.map(x=>x.name).filter(n=>(qaG[n]&&qaG[n].length)||(polG[n]&&polG[n].length));const fresh=p.policy?policyFreshness(p.policyUpdated):null;return`<div class="b2b-pane"><div class="b2b-detail-top"><div class="b2b-crumb"><button class="ops-back-btn" onclick="renderCompanyView('전체')"><i class="ti ti-arrow-left"></i>기업 목록</button><span>기업별 정책</span><i class="ti ti-chevron-right"></i><span>${esc(company)}</span></div><div class="b2b-titlebar"><h2>${esc(company)}</h2>${p.code?`<span class="b2b-badge">코드 ${esc(p.code)}</span>`:""}${p.manager?`<span class="b2b-badge">${esc(p.manager)}</span>`:""}${isAdmin?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openCompanyProfileForm('${esc(company)}')"><i class="ti ti-edit"></i>정보 수정</button>`:""}</div>${p.pcUrl||p.moUrl?`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">${p.pcUrl?`<a href="${esc(p.pcUrl)}" target="_blank" style="font-size:11px;color:#315B9D;text-decoration:none"><i class="ti ti-device-desktop"></i> PC 연수원</a>`:""}${p.moUrl?`<a href="${esc(p.moUrl)}" target="_blank" style="font-size:11px;color:#315B9D;text-decoration:none"><i class="ti ti-device-mobile"></i> 모바일 연수원</a>`:""}</div>`:""}${p.policy?`<div class="b2b-policy"><div class="b2b-policy-hd"><strong><i class="ti ti-clipboard-text"></i> 운영 특이사항</strong><span style="font-size:10.5px;padding:3px 7px;border-radius:6px;background:${fresh.bg};color:${fresh.fg};font-weight:700">${fresh.icon} ${fresh.label}</span><span class="b2b-policy-date">최종수정 ${esc(p.policyUpdated||"미상")}</span></div><div class="b2b-policy-body">${policyHeaderHtml(p.policy)}</div></div>`:(isAdmin?`<div class="b2b-policy"><div style="font-size:12px;color:#8A94A6">등록된 운영 특이사항이 없습니다.</div></div>`:"")}</div><div class="b2b-cat-grid">${cats.map(c=>{const cnt=(qaG[c]||[]).length+(polG[c]||[]).length;return`<div class="b2b-cat-card" onclick="renderCompanyView('${esc(company)}','${esc(c)}')"><i class="ti ${policyCatIcon(c)||"ti-folder"}"></i><span class="b2b-cat-name">${esc(c)}</span><span class="b2b-cat-count">${cnt}건</span><i class="ti ti-chevron-right"></i></div>`;}).join("")||`<div style="grid-column:1/-1;padding:24px;text-align:center;color:#8A94A6;font-size:12px">등록된 카테고리가 없습니다.</div>`}</div>${isAdmin?`<div class="b2b-manage"><button class="ops-add-btn" onclick="openCatManager('${esc(company)}')"><i class="ti ti-settings"></i>카테고리 관리</button></div>`:""}</div>`;}
+function companyDetailPane(company,cat=null){const all=entries.filter(e=>e.part==="B2B 상위기업");const isAdmin=currentUser&&currentUser.role==="admin";const target=all.filter(e=>e.company===company);const p=companyProfiles[company]||{};const polG=policyGroups(p.policy||"").groups;const qaG={};target.forEach(e=>{const k=policyCatOf(e.companyCat||"");(qaG[k]=qaG[k]||[]).push(e);});if(cat!==null){const catLabel=cat==="__uncat__"?"미분류":cat;const docs=target.filter(e=>policyCatOf(e.companyCat||"")===cat);const polItems=polG[cat]||[];return`<div class="b2b-pane"><div class="b2b-cat-title"><div class="b2b-crumb"><button class="ops-back-btn" onclick="renderCompanyView('${esc(company)}')"><i class="ti ti-arrow-left"></i>기업 상세</button><span>${esc(catLabel)}</span></div><div style="display:flex;align-items:center;gap:8px"><h3>${esc(catLabel)}</h3><span class="b2b-badge">${docs.length}건</span>${isAdmin&&cat!=="__uncat__"?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openOpsModalCat('${esc(company)}','${esc(cat)}')"><i class="ti ti-plus"></i>문의 추가</button>`:""}</div></div>${polItems.length?`<div class="b2b-policy" style="margin:12px 18px"><div class="b2b-policy-hd"><strong>운영 특이사항</strong></div><div class="b2b-policy-body">${policyItemsHtml(polItems)}</div></div>`:""}<div class="b2b-docs">${docs.length?`<div class="b2b-doc-head"><span>문서명</span><span>내용 요약</span><span>조회</span><span>수정일</span><span></span></div>${docs.map(e=>`<div class="b2b-doc-row" onclick="openDetail('${e.id}')"><span class="b2b-doc-title">${esc(e.title)}</span><span class="b2b-doc-prev">${esc((e.steps||e.customerQ||"").split("\n")[0])}</span><span class="b2b-doc-meta">${(e.views||0).toLocaleString()}회</span><span class="b2b-doc-meta">${esc(e.updatedAt||"")}</span><i class="ti ti-chevron-right"></i></div>`).join("")}`:`<div style="padding:28px;text-align:center;color:#8A94A6;font-size:12px">등록된 문서가 없습니다.</div>`}</div></div>`;}const cats=POLICY_CATS.map(x=>x.name).filter(n=>(qaG[n]&&qaG[n].length)||(polG[n]&&polG[n].length));const fresh=p.policy?policyFreshness(p.policyUpdated):null;return`<div class="b2b-pane"><div class="b2b-detail-top"><div class="b2b-crumb"><button class="ops-back-btn" onclick="renderCompanyView('전체')"><i class="ti ti-arrow-left"></i>기업 목록</button><span>기업별 정책</span><i class="ti ti-chevron-right"></i><span>${esc(company)}</span></div><div class="b2b-titlebar"><h2>${esc(company)}</h2>${p.code?`<span class="b2b-badge">코드 ${esc(p.code)}</span>`:""}${p.manager?`<span class="b2b-badge">${esc(p.manager)}</span>`:""}${isAdmin?`<button class="co-edit-btn admin-only inline" style="margin-left:auto" onclick="openCompanyProfileForm('${esc(company)}')"><i class="ti ti-edit"></i>정보 수정</button>`:""}</div>${p.pcUrl||p.moUrl?`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">${p.pcUrl?`<a href="${esc(p.pcUrl)}" target="_blank" style="font-size:11px;color:#315B9D;text-decoration:none"><i class="ti ti-device-desktop"></i> PC 연수원</a>`:""}${p.moUrl?`<a href="${esc(p.moUrl)}" target="_blank" style="font-size:11px;color:#315B9D;text-decoration:none"><i class="ti ti-device-mobile"></i> 모바일 연수원</a>`:""}</div>`:""}${p.policy?`<div class="b2b-policy"><div class="b2b-policy-hd"><strong><i class="ti ti-clipboard-text"></i> 운영 특이사항</strong><span style="font-size:10.5px;padding:3px 7px;border-radius:6px;background:${fresh.bg};color:${fresh.fg};font-weight:700">${fresh.icon} ${fresh.label}</span><span class="b2b-policy-date">최종수정 ${esc(p.policyUpdated||"미상")}</span></div><div class="b2b-policy-body">${policyHeaderHtml(p.policy)}</div></div>`:(isAdmin?`<div class="b2b-policy"><div style="font-size:12px;color:#8A94A6">등록된 운영 특이사항이 없습니다.</div></div>`:"")}</div><div class="b2b-cat-grid">${cats.map(c=>{const cnt=(qaG[c]||[]).length+(polG[c]||[]).length;return`<div class="b2b-cat-card${cat===c?" on":""}" onclick="renderCompanyView('${esc(company)}','${esc(c)}')"><i class="ti ${policyCatIcon(c)||"ti-folder"}"></i><span class="b2b-cat-name">${esc(c)}</span><span class="b2b-cat-count">${cnt}건</span><i class="ti ti-chevron-right"></i></div>`;}).join("")||`<div style="grid-column:1/-1;padding:24px;text-align:center;color:#8A94A6;font-size:12px">등록된 카테고리가 없습니다.</div>`}</div>${isAdmin?`<div class="b2b-manage"><button class="ops-add-btn" onclick="openCatManager('${esc(company)}')"><i class="ti ti-settings"></i>카테고리 관리</button></div>`:""}</div>`;}
 function renderCompanyView(company="전체",cat=null){kmsPushState({type:"company",company,cat});window._curRender=()=>renderCompanyView(company,cat);curView="companies";selectedCompany=company;selectedCompanyCat=cat;showView("viewCompanies");setSbView("b2b");document.getElementById("coChipsBar").innerHTML="";const companies=companyListSorted();if(company==="전체"){document.getElementById("coCnt").textContent=`등록 기업 ${companies.length.toLocaleString()}개`;const pages=Math.max(1,Math.ceil(companies.length/COMPANY_PAGE_SIZE));if(_companyPage>pages)_companyPage=pages;const pageItems=companies.slice((_companyPage-1)*COMPANY_PAGE_SIZE,_companyPage*COMPANY_PAGE_SIZE);document.getElementById("coSummary").innerHTML="";document.getElementById("coResultsList").innerHTML=`<div class="b2b-company-table"><div class="b2b-company-head"><span>기업명</span><span>코드</span><span>문서 수</span><span>최근 수정일</span><span></span></div>${pageItems.map(c=>{const p=companyProfiles[c]||{};return`<div class="b2b-company-row" onclick="renderCompanyView('${esc(c)}')"><span class="b2b-company-name">${esc(c)}</span><span class="b2b-company-code">${esc(p.code||"-")}</span><span class="b2b-company-count">${companyDocCount(c)}건</span><span class="b2b-company-date">${esc(companyLatest(c)||"-")}</span><i class="ti ti-chevron-right"></i></div>`;}).join("")}</div>${companyPager(companies.length)}`;}else{document.getElementById("coCnt").textContent=company;document.getElementById("coSummary").innerHTML="";document.getElementById("coResultsList").innerHTML=`<div class="b2b-split">${companyMiniPane(companies,company)}${companyDetailPane(company,cat)}</div>`;}closeDetailPanel();}
 function openCatManager(company){if(!requireAdmin())return;const p=companyProfiles[company]||{};const cats=p.cats||[];function renderCatList(){return cats.map((c,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F3F5F9"><i class="ti ti-folder" style="font-size:15px;color:var(--p)"></i><span style="flex:1;font-size:13px">${esc(c)}</span><button class="table-btn del" onclick="deleteCatItem('${esc(company)}',${i})"><i class="ti ti-trash" style="font-size:11px"></i></button></div>`).join("")||`<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">카테고리가 없습니다</div>`;}const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:440px"><div class="modal-hd"><h2><i class="ti ti-folder" style="font-size:14px;margin-right:4px"></i>${esc(company)} 카테고리 관리</h2><button class="modal-close" onclick="closeModal();renderCompanyView('${esc(company)}')"><i class="ti ti-x"></i></button></div><div class="modal-body"><div style="display:flex;gap:8px;margin-bottom:12px"><input id="newCatName" placeholder="새 카테고리명 (예: 회원가입, 수강관리)" style="flex:1;border:1.5px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:var(--font);outline:none" onkeydown="if(event.key==='Enter')addCatItem('${esc(company)}')"><button class="btn-save" onclick="addCatItem('${esc(company)}')">추가</button></div><div id="catItemList">${renderCatList()}</div></div><div class="modal-foot"><div></div><button class="btn-cancel" onclick="closeModal();renderCompanyView('${esc(company)}')">닫기</button></div></div>`;ov.style.display="flex";}
 function addCatItem(company){const name=(document.getElementById("newCatName").value||"").trim();if(!name)return;if(!companyProfiles[company])companyProfiles[company]={};if(!companyProfiles[company].cats)companyProfiles[company].cats=[];if(companyProfiles[company].cats.includes(name)){alert("이미 존재하는 카테고리입니다.");return;}companyProfiles[company].cats.push(name);saveAll();document.getElementById("newCatName").value="";document.getElementById("catItemList").innerHTML=companyProfiles[company].cats.map((c,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F3F5F9"><i class="ti ti-folder" style="font-size:15px;color:var(--p)"></i><span style="flex:1;font-size:13px">${esc(c)}</span><button class="table-btn del" onclick="deleteCatItem('${esc(company)}',${i})"><i class="ti ti-trash" style="font-size:11px"></i></button></div>`).join("");}
@@ -2563,6 +2662,7 @@ window.addEventListener('load',function(){
     curView="list";
     showView("viewList");
     setSbView("ops");
+    syncSidebarSelection("ops",sub);
 
     document.querySelectorAll(".sb-sub-item").forEach(function(el){
       el.classList.toggle("on", el.dataset.sub===sub);
@@ -2591,6 +2691,30 @@ window.addEventListener('load',function(){
     openOpsSubUnified(sub);
   }, true);
 })();
+</script>
+
+
+<script id="v15-selection-sync">
+function syncSidebarSelection(view,sub){
+  document.querySelectorAll(".sb-item").forEach(function(el){el.classList.remove("on");});
+  document.querySelectorAll(".sb-sub-item").forEach(function(el){el.classList.remove("on");});
+
+  if(view==="b2b"){
+    var el=document.querySelector('.sb-item[data-view="b2b"]'); if(el)el.classList.add("on");
+  }else if(view==="b2c"){
+    var el=document.querySelector('.sb-item[data-view="b2c"]'); if(el)el.classList.add("on");
+  }else if(view==="product"){
+    var el=document.querySelector('.sb-item[data-view="product"]'); if(el)el.classList.add("on");
+  }else if(view==="error"){
+    var el=document.querySelector('.sb-item[data-view="error"]'); if(el)el.classList.add("on");
+  }else if(view==="ops"){
+    var el=document.querySelector('.sb-item[data-view="ops"]'); if(el)el.classList.add("on");
+    if(sub){
+      var subEl=document.querySelector('.sb-sub-item[data-sub="'+CSS.escape(sub)+'"]');
+      if(subEl)subEl.classList.add("on");
+    }
+  }
+}
 </script>
 
 </body>
