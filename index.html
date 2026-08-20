@@ -1209,7 +1209,7 @@ body{background:var(--bg)}
 .board-list-card{min-height:610px}
 .board-detail-card{min-height:610px}
 .board-list-head,.board-row{
-  display:grid;grid-template-columns:minmax(0,1fr) 105px 82px;gap:10px;align-items:center
+  display:grid;grid-template-columns:minmax(0,1fr) 120px 105px 82px;gap:10px;align-items:center
 }
 .board-list-head{
   min-height:39px;padding:0 14px;background:#F8FAFC;border-bottom:1px solid #E4E8EE;
@@ -1515,7 +1515,7 @@ body{background:var(--bg)}
         <div class="board-head">
           <div>
             <span class="board-title">게시판 답변</span>
-            <span class="board-count" id="boardAnswerCount"></span>
+            <span class="board-count" id="boardAnswerCount"></span><span style="font-size:10px;color:#98A2B1;margin-left:8px">엑셀 시트명 = 기업명</span>
           </div>
           <div class="board-head-actions">
             <select id="boardTypeFilter" class="board-select" onchange="renderBoardAnswers()">
@@ -1533,7 +1533,8 @@ body{background:var(--bg)}
           <section class="board-list-card">
             <div class="board-list-head">
               <span>답변 제목</span>
-              <span>문의 유형</span>
+              <span>기업</span>
+              <span>분류카테고리</span>
               <span>수정일</span>
             </div>
             <div id="boardAnswerList" class="board-list-body"></div>
@@ -3144,7 +3145,7 @@ function syncSidebarSelection(view,sub){
     const activeType=document.getElementById("boardTypeFilter")?.value||"전체";
     const list=boardAnswers.filter(x=>{
       const typeOk=activeType==="전체"||x.type===activeType;
-      const hay=(x.title+" "+x.answer+" "+(x.note||"")).toLowerCase();
+      const hay=((x.company||"")+" "+x.title+" "+x.answer+" "+(x.note||"")).toLowerCase();
       return typeOk&&(!q||hay.includes(q));
     });
 
@@ -3163,6 +3164,7 @@ function syncSidebarSelection(view,sub){
             <div class="board-row-title">${bEsc(x.title)}</div>
             <div class="board-row-preview">${bEsc((x.answer||"").replace(/\n/g," "))}</div>
           </div>
+          <span class="board-row-date" style="color:#5F6E82">${bEsc(x.company||"공통")}</span>
           <span class="board-type-badge">${bEsc(x.type)}</span>
           <span class="board-row-date">${bEsc(x.updatedAt||"")}</span>
         </div>`).join("")
@@ -3180,12 +3182,14 @@ function syncSidebarSelection(view,sub){
         const related=boardRelatedDocs(selected);
         detail.innerHTML=`
           <div class="board-detail">
-            <div class="board-breadcrumb">게시판 답변 › ${bEsc(selected.type)}</div>
+            <div class="board-breadcrumb">게시판 답변 › ${bEsc(selected.company||"공통")} › ${bEsc(selected.type)}</div>
 
             <div class="board-detail-top">
               <div>
                 <div class="board-detail-title">${bEsc(selected.title)}</div>
                 <div class="board-detail-meta">
+                  <span>${bEsc(selected.company||"공통")}</span>
+                  <span>·</span>
                   <span>${bEsc(selected.type)}</span>
                   <span>·</span>
                   <span>최근 수정 ${bEsc(selected.updatedAt||"")}</span>
@@ -3259,16 +3263,58 @@ function syncSidebarSelection(view,sub){
       alert("엑셀 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.");
       return;
     }
+
     const wb=XLSX.utils.book_new();
-    const rows=[
-      ["문의 유형","답변 제목","게시판용 답변","참고사항"],
-      ["수료/증명서","수료증 발급 방법 안내","안녕하세요, 휴넷 고객행복팀입니다.\n\n수료증은 나의 강의실 > 교육이력에서 발급하실 수 있습니다.\n\n감사합니다.","과정별 수료 여부 및 발급 가능 시점 확인"],
-      ["사이트/로그인","로그인 오류 안내","안녕하세요, 휴넷 고객행복팀입니다.\n\n로그인 정보를 다시 확인해 주세요.\n\n감사합니다.","개인정보 요청 금지"]
-    ];
-    const ws=XLSX.utils.aoa_to_sheet(rows);
-    ws["!cols"]=[{wch:18},{wch:34},{wch:70},{wch:45}];
-    XLSX.utils.book_append_sheet(wb,ws,"게시판답변_업로드양식");
-    XLSX.writeFile(wb,"게시판답변_일괄등록_양식.xlsx");
+
+    // 기본 기업 시트 목록
+    const companySheets=["지방공기업평가원","인천배움캠퍼스","휴넷HRD FLEX"];
+
+    companySheets.forEach((company,idx)=>{
+      const rows=[
+        ["문의내용","답변","분류카테고리"]
+      ];
+
+      // 예시 데이터는 첫 번째 시트에만 1줄 표시
+      if(idx===0){
+        rows.push([
+          "예시) 수료증 출력경로",
+          "예시) 문의주신 과정은 수료 완료 후 나의 강의실 > 교육이력에서 수료증 발급이 가능합니다.",
+          "수료증"
+        ]);
+      }
+
+      const ws=XLSX.utils.aoa_to_sheet(rows);
+
+      // 열 너비
+      ws["!cols"]=[
+        {wch:34},
+        {wch:90},
+        {wch:22}
+      ];
+
+      // 첫 행 높이
+      ws["!rows"]=[{hpt:24}];
+
+      // 헤더 스타일
+      ["A1","B1","C1"].forEach(addr=>{
+        if(!ws[addr])return;
+        ws[addr].s={
+          fill:{fgColor:{rgb:"FFE39A"}},
+          font:{bold:true,color:{rgb:"111111"}},
+          alignment:{horizontal:"center",vertical:"center"},
+          border:{
+            top:{style:"thin",color:{rgb:"B7B7B7"}},
+            bottom:{style:"thin",color:{rgb:"B7B7B7"}},
+            left:{style:"thin",color:{rgb:"B7B7B7"}},
+            right:{style:"thin",color:{rgb:"B7B7B7"}}
+          }
+        };
+      });
+
+      XLSX.utils.book_append_sheet(wb,ws,company);
+    });
+
+    XLSX.writeFile(wb,"게시판답변_기업별_일괄등록_양식.xlsx",{cellStyles:true});
   };
 
   window.importBoardAnswerExcel=function(input){
@@ -3284,59 +3330,69 @@ function syncSidebarSelection(view,sub){
     reader.onload=function(evt){
       try{
         const wb=XLSX.read(evt.target.result,{type:"binary"});
-        const ws=wb.Sheets[wb.SheetNames[0]];
-        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
-        if(rows.length<2){
-          alert("등록할 데이터가 없습니다.");
-          return;
-        }
-
-        const headers=rows[0].map(v=>String(v||"").trim());
-        const required=["문의 유형","답변 제목","게시판용 답변"];
-        const missing=required.filter(h=>!headers.includes(h));
-        if(missing.length){
-          alert("필수 열이 없습니다: "+missing.join(", ")+"\\n양식 다운로드 파일을 사용해 주세요.");
-          return;
-        }
-
-        const idx={
-          type:headers.indexOf("문의 유형"),
-          title:headers.indexOf("답변 제목"),
-          answer:headers.indexOf("게시판용 답변"),
-          note:headers.indexOf("참고사항")
-        };
-
         const valid=[];
         const invalid=[];
-        rows.slice(1).forEach((r,i)=>{
-          const type=String(r[idx.type]||"").trim();
-          const title=String(r[idx.title]||"").trim();
-          const answer=String(r[idx.answer]||"").trim();
-          const note=idx.note>=0?String(r[idx.note]||"").trim():"";
 
-          if(!type&&!title&&!answer)return;
-          if(!type||!title||!answer){
-            invalid.push(i+2);
+        wb.SheetNames.forEach((sheetName,sheetIdx)=>{
+          const ws=wb.Sheets[sheetName];
+          const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+          if(!rows.length)return;
+
+          const headers=rows[0].map(v=>String(v||"").trim());
+          const required=["문의내용","답변","분류카테고리"];
+          const missing=required.filter(h=>!headers.includes(h));
+
+          if(missing.length){
+            invalid.push(`${sheetName}: 필수 열 누락 (${missing.join(", ")})`);
             return;
           }
 
-          valid.push({
-            id:"board_"+Date.now()+"_"+i,
-            type,
-            title,
-            answer,
-            note,
-            updatedAt:new Date().toISOString().slice(0,10)
+          const idx={
+            question:headers.indexOf("문의내용"),
+            answer:headers.indexOf("답변"),
+            category:headers.indexOf("분류카테고리")
+          };
+
+          rows.slice(1).forEach((r,rowIdx)=>{
+            const question=String(r[idx.question]||"").trim();
+            const answer=String(r[idx.answer]||"").trim();
+            const category=String(r[idx.category]||"").trim();
+
+            // 완전 빈 행은 무시
+            if(!question&&!answer&&!category)return;
+
+            // 예시행 자동 제외
+            if(question.startsWith("예시)")||answer.startsWith("예시)"))return;
+
+            if(!question||!answer||!category){
+              invalid.push(`${sheetName} ${rowIdx+2}행`);
+              return;
+            }
+
+            valid.push({
+              id:"board_"+Date.now()+"_"+sheetIdx+"_"+rowIdx,
+              company:sheetName,
+              type:category,
+              title:question,
+              answer:answer,
+              note:"",
+              updatedAt:new Date().toISOString().slice(0,10)
+            });
           });
         });
 
         if(!valid.length){
-          alert("등록 가능한 답변이 없습니다."+ (invalid.length? "\\n필수값 누락 행: "+invalid.join(", "):""));
+          alert("등록 가능한 답변이 없습니다."+
+            (invalid.length?`\n\n확인 필요:\n${invalid.slice(0,15).join("\n")}`:""));
           return;
         }
 
-        let msg=`${valid.length}건의 게시판 답변을 등록할까요?`;
-        if(invalid.length)msg+=`\\n\\n필수값이 누락된 ${invalid.length}개 행은 제외됩니다. (${invalid.join(", ")}행)`;
+        let msg=`총 ${valid.length}건의 게시판 답변을 등록할까요?`;
+        msg+=`\n기업(시트) 수: ${new Set(valid.map(x=>x.company)).size}개`;
+        if(invalid.length){
+          msg+=`\n\n입력값이 부족하거나 형식이 다른 ${invalid.length}건은 제외됩니다.`;
+        }
+
         if(!confirm(msg))return;
 
         boardAnswers=[...valid,...boardAnswers];
@@ -3344,10 +3400,11 @@ function syncSidebarSelection(view,sub){
         saveBoardAnswers();
         renderBoardAnswers();
 
-        alert(`✅ ${valid.length}건 등록 완료`+(invalid.length?`\\n⚠ ${invalid.length}건 제외`:""));
+        alert(`✅ ${valid.length}건 등록 완료`+
+          (invalid.length?`\n⚠ ${invalid.length}건 제외`:""));
       }catch(err){
         console.error(err);
-        alert("엑셀 파일을 읽는 중 오류가 발생했습니다.\\n양식을 확인해 주세요.");
+        alert("엑셀 파일을 읽는 중 오류가 발생했습니다.\n양식 다운로드 파일의 시트/열 구성을 확인해 주세요.");
       }finally{
         input.value="";
       }
@@ -3367,6 +3424,10 @@ function syncSidebarSelection(view,sub){
         </div>
         <div class="modal-body">
           <div class="board-form-grid">
+            <div>
+              <label>기업명</label>
+              <input id="bfCompany" value="${bEsc(old.company||"")}" placeholder="예: 지방공기업평가원">
+            </div>
             <div>
               <label>답변 제목</label>
               <input id="bfTitle" value="${bEsc(old.title)}" placeholder="예: 수료증 발급 방법 안내">
@@ -3398,10 +3459,12 @@ function syncSidebarSelection(view,sub){
   };
 
   window.saveBoardAnswerForm=function(id,btn){
+    const company=document.getElementById("bfCompany")?.value.trim()||"";
     const title=document.getElementById("bfTitle")?.value.trim()||"";
     const type=document.getElementById("bfType")?.value.trim()||"";
     const answer=document.getElementById("bfAnswer")?.value.trim()||"";
     const note=document.getElementById("bfNote")?.value.trim()||"";
+    if(!company){alert("기업명을 입력해 주세요.");return;}
     if(!title){alert("답변 제목을 입력해 주세요.");return;}
     if(!type){alert("문의 유형을 입력해 주세요.");return;}
     if(!answer){alert("게시판용 답변을 입력해 주세요.");return;}
@@ -3409,10 +3472,10 @@ function syncSidebarSelection(view,sub){
     const today=new Date().toISOString().slice(0,10);
     if(id){
       const item=boardAnswers.find(x=>x.id===id);
-      if(item)Object.assign(item,{title,type,answer,note,updatedAt:today});
+      if(item)Object.assign(item,{company,title,type,answer,note,updatedAt:today});
       boardSelectedId=id;
     }else{
-      const item={id:"board_"+Date.now(),title,type,answer,note,updatedAt:today};
+      const item={id:"board_"+Date.now(),company,title,type,answer,note,updatedAt:today};
       boardAnswers.unshift(item);
       boardSelectedId=item.id;
     }
