@@ -1184,6 +1184,125 @@ body{background:var(--bg)}
 .related-reco-arrow{font-size:13px;color:#A1ACB9}
 </style>
 
+
+<style id="v18-board-answer-style">
+.board-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px
+}
+.board-title{font-size:16px;font-weight:800;color:var(--t1)}
+.board-count{font-size:11px;color:var(--t3);margin-left:6px}
+.board-head-actions{display:flex;align-items:center;gap:8px}
+.board-select,.board-search{
+  height:32px;border:1.5px solid var(--border2);border-radius:8px;background:#fff;
+  padding:0 10px;font-family:var(--font);font-size:12px;color:var(--t1);outline:none
+}
+.board-select{width:150px}
+.board-search{width:240px}
+.board-select:focus,.board-search:focus{border-color:var(--p)}
+
+.board-split{
+  display:grid;grid-template-columns:minmax(390px,35%) minmax(0,65%);gap:14px;align-items:start
+}
+.board-list-card,.board-detail-card{
+  background:#fff;border:1px solid #E1E6ED;border-radius:12px;overflow:hidden;min-width:0
+}
+.board-list-card{min-height:610px}
+.board-detail-card{min-height:610px}
+.board-list-head,.board-row{
+  display:grid;grid-template-columns:minmax(0,1fr) 105px 82px;gap:10px;align-items:center
+}
+.board-list-head{
+  min-height:39px;padding:0 14px;background:#F8FAFC;border-bottom:1px solid #E4E8EE;
+  color:#758196;font-size:10.5px;font-weight:750
+}
+.board-list-body{max-height:680px;overflow-y:auto}
+.board-row{
+  min-height:60px;padding:8px 14px;border-bottom:1px solid #EEF1F5;
+  cursor:pointer;position:relative;transition:.12s
+}
+.board-row:last-child{border-bottom:none}
+.board-row:hover{background:#F8FBFF}
+.board-row.on{background:#EAF2FF}
+.board-row.on:before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#2563EB
+}
+.board-row-title{
+  font-size:12.5px;font-weight:700;color:#273244;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.board-row.on .board-row-title{color:#174EA6}
+.board-row-preview{
+  margin-top:3px;font-size:10.5px;color:#8A95A5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.board-type-badge{
+  display:inline-flex;align-items:center;width:max-content;max-width:100%;padding:3px 7px;
+  border-radius:6px;background:#EEF4FF;color:#315FA8;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.board-row-date{font-size:10.5px;color:#8793A4}
+.board-detail-empty{
+  min-height:610px;display:flex;align-items:center;justify-content:center;color:#9AA4B2;font-size:12px
+}
+.board-detail{padding:18px 20px 22px}
+.board-breadcrumb{font-size:10.5px;color:#8290A3;margin-bottom:11px}
+.board-detail-top{
+  display:flex;align-items:flex-start;gap:10px;padding-bottom:14px;border-bottom:1px solid #E7EBF0
+}
+.board-detail-title{font-size:20px;font-weight:800;line-height:1.4;color:#151E2D}
+.board-detail-meta{display:flex;gap:7px;align-items:center;margin-top:7px;font-size:10.5px;color:#8994A4}
+.board-actions{margin-left:auto;display:flex;gap:6px}
+.board-btn{
+  height:31px;padding:0 10px;border:1px solid #DCE3EA;background:#fff;border-radius:8px;
+  font-size:10.5px;color:#536174;cursor:pointer;font-family:var(--font)
+}
+.board-btn:hover{background:#F8FAFC}
+.board-btn.primary{border-color:#CFE0FF;background:#F2F7FF;color:#2563EB;font-weight:700}
+
+.board-section{margin-top:17px}
+.board-section-hd{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;
+  font-size:11.5px;font-weight:800;color:#315B9D
+}
+.board-answer-box{
+  padding:15px 16px;border:1px solid #E1E7EE;background:#FBFCFE;border-radius:9px;
+  font-size:13px;line-height:1.8;color:#283548;white-space:pre-wrap;word-break:break-word
+}
+.board-note-box{background:#FFFDF8;border-color:#F0E3C7}
+.board-related{border:1px solid #E1E7EE;border-radius:9px;overflow:hidden}
+.board-related-row{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #EDF1F5;cursor:pointer
+}
+.board-related-row:last-child{border-bottom:none}
+.board-related-row:hover{background:#F6F9FE}
+.board-related-title{
+  flex:1;font-size:11.5px;font-weight:650;color:#2C394C;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.board-related-meta{font-size:10px;color:#8994A5;white-space:nowrap}
+.board-list-empty{padding:45px 20px;text-align:center;color:#929CAA;font-size:12px}
+.board-toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:1000;
+  padding:9px 14px;border-radius:8px;background:#172033;color:#fff;font-size:11px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18)
+}
+
+/* 게시판 답변 등록/수정 모달 */
+.board-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.board-form-grid .full{grid-column:1/-1}
+.board-form-grid label{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:5px}
+.board-form-grid input,.board-form-grid textarea{
+  width:100%;border:1.5px solid var(--border2);border-radius:8px;padding:9px 10px;
+  font-family:var(--font);font-size:12.5px;outline:none;color:var(--t1)
+}
+.board-form-grid textarea{min-height:150px;resize:vertical;line-height:1.6}
+.board-form-grid textarea.note{min-height:90px}
+.board-form-grid input:focus,.board-form-grid textarea:focus{border-color:#2563EB}
+
+@media(max-width:1050px){
+  .board-split{grid-template-columns:1fr}
+  .board-head{align-items:flex-start;flex-direction:column}
+  .board-head-actions{width:100%;flex-wrap:wrap}
+  .board-detail-card{min-height:380px}
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1226,6 +1345,7 @@ body{background:var(--bg)}
         <div class="sb-divider"></div>
         <div class="sb-item" data-view="notices" onclick="setView('notices')"><span class="sb-emoji">📢</span><span>공지사항</span><span class="sb-badge-new" id="noticeBadge" style="display:none">N</span></div>
         <div class="sb-item" data-view="myspace" onclick="openMySpace()"><span class="sb-emoji">👤</span><span>마이스페이스</span></div>
+        <div class="sb-item" data-view="boardanswers" onclick="openBoardAnswers()"><span>게시판 답변</span></div>
         <div class="sb-item" data-view="helper" onclick="openHelper()"><span style="font-size:18px;line-height:1">⚡</span><span style="font-weight:700;color:#fff">빠른 답변</span></div>
       </div>
     </div>
@@ -1379,6 +1499,41 @@ body{background:var(--bg)}
         </div>
         <div id="prSummary"></div>
         <div id="prResultsList"></div>
+      </div>
+
+
+      <div id="viewBoardAnswers" class="list-view" style="display:none">
+        <div class="board-head">
+          <div>
+            <span class="board-title">게시판 답변</span>
+            <span class="board-count" id="boardAnswerCount"></span>
+          </div>
+          <div class="board-head-actions">
+            <select id="boardTypeFilter" class="board-select" onchange="renderBoardAnswers()">
+              <option value="전체">전체 문의 유형</option>
+            </select>
+            <input id="boardAnswerSearch" class="board-search" type="text" placeholder="답변 제목 검색..." oninput="renderBoardAnswers()">
+            <button class="hd-btn-add admin-only inline" onclick="openBoardAnswerForm()"><i class="ti ti-plus"></i>답변 등록</button>
+            <button class="hd-btn-home" onclick="goHome()"><i class="ti ti-home-2"></i>홈</button>
+          </div>
+        </div>
+
+        <div class="board-split">
+          <section class="board-list-card">
+            <div class="board-list-head">
+              <span>답변 제목</span>
+              <span>문의 유형</span>
+              <span>수정일</span>
+            </div>
+            <div id="boardAnswerList" class="board-list-body"></div>
+          </section>
+
+          <section class="board-detail-card">
+            <div id="boardAnswerDetail" class="board-detail-empty">
+              왼쪽에서 답변을 선택해 주세요.
+            </div>
+          </section>
+        </div>
       </div>
 
       <div id="viewHelper" style="display:none;padding:20px 24px">
@@ -2898,6 +3053,317 @@ function syncSidebarSelection(view,sub){
     }
   }
 }
+</script>
+
+
+<script id="v18-board-answer-script">
+(function(){
+  const BOARD_STORAGE_KEY="kms_board_answers_v18";
+
+  const DEFAULT_BOARD_ANSWERS=[
+    {
+      id:"board_1",
+      type:"수료/증명서",
+      title:"수료증 발급 방법 안내",
+      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n수료증은 나의 강의실 > 교육이력에서 직접 발급하실 수 있습니다.\n해당 과정 옆 [수료증] 버튼을 클릭하여 발급해 주세요.\n\n감사합니다.",
+      note:"과정별 수료 여부와 발급 가능 시점이 다를 수 있으므로 필요 시 과정 수료 기준을 함께 확인합니다.",
+      updatedAt:"2026-08-20"
+    },
+    {
+      id:"board_2",
+      type:"수료/증명서",
+      title:"영문 수료증 발급 안내",
+      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n영문 수료증은 나의 강의실 > 교육이력 > 해당 과정 옆 [수료증] > [영문수료증]에서 발급 가능합니다.\n영문 성함 등록 후 발급해 주세요.\n\n감사합니다.",
+      note:"영문 성함이 정확한지 발급 전 확인하도록 안내합니다.",
+      updatedAt:"2026-08-20"
+    },
+    {
+      id:"board_3",
+      type:"학습기간",
+      title:"학습기간 연장 관련 안내",
+      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n학습기간 연장 가능 여부는 과정 및 운영 기준에 따라 달라질 수 있습니다.\n확인을 위해 수강 중인 과정명과 현재 학습기간을 확인해 주세요.\n\n감사합니다.",
+      note:"B2B 과정은 기업별 정책이 우선 적용될 수 있습니다.",
+      updatedAt:"2026-08-20"
+    },
+    {
+      id:"board_4",
+      type:"사이트/로그인",
+      title:"로그인 오류 확인 안내",
+      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n로그인에 어려움이 있으신 경우 아이디와 접속 사이트를 먼저 확인해 주세요.\n동일한 현상이 지속될 경우 오류 화면과 함께 문의해 주시면 확인을 도와드리겠습니다.\n\n감사합니다.",
+      note:"비밀번호 등 개인정보는 게시판 답변으로 요청하지 않습니다.",
+      updatedAt:"2026-08-20"
+    }
+  ];
+
+  function loadBoardAnswers(){
+    try{
+      const v=JSON.parse(localStorage.getItem(BOARD_STORAGE_KEY)||"null");
+      if(Array.isArray(v)&&v.length)return v;
+    }catch(e){}
+    return DEFAULT_BOARD_ANSWERS.slice();
+  }
+
+  window.boardAnswers=loadBoardAnswers();
+  window.boardSelectedId=null;
+
+  function saveBoardAnswers(){
+    try{localStorage.setItem(BOARD_STORAGE_KEY,JSON.stringify(boardAnswers));}catch(e){}
+  }
+
+  function bEsc(v){return typeof esc==="function"?esc(String(v||"")):String(v||"");}
+
+  function boardTypes(){
+    return [...new Set(boardAnswers.map(x=>x.type).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"));
+  }
+
+  function boardRelatedDocs(item){
+    if(typeof entries==="undefined")return[];
+    const tokens=(item.title.match(/[가-힣A-Za-z0-9]{2,}/g)||[])
+      .filter(t=>!["안내","방법","관련","발급"].includes(t));
+    return entries
+      .filter(e=>e.status!=="hidden")
+      .map(e=>{
+        const hay=((e.title||"")+" "+(e.customerQ||"")+" "+(e.steps||"")+" "+(e.company||"")+" "+(e.opsSub||"")).toLowerCase();
+        let score=0;
+        tokens.forEach(t=>{if(hay.includes(t.toLowerCase()))score++;});
+        return {e,score};
+      })
+      .filter(x=>x.score>0)
+      .sort((a,b)=>b.score-a.score||(b.e.views||0)-(a.e.views||0))
+      .slice(0,4)
+      .map(x=>x.e);
+  }
+
+  window.openBoardAnswers=function(id=null){
+    if(typeof closeDetailPanel==="function")closeDetailPanel();
+    document.querySelectorAll("#viewHome,#viewList,#viewCompanies,#viewErrors,#viewProducts,#viewHelper,#viewMySpace")
+      .forEach(el=>el.style.display="none");
+    const v=document.getElementById("viewBoardAnswers");
+    if(v)v.style.display="block";
+
+    document.querySelectorAll(".sb-item").forEach(el=>el.classList.remove("on"));
+    const nav=document.querySelector('.sb-item[data-view="boardanswers"]');
+    if(nav)nav.classList.add("on");
+
+    if(id)boardSelectedId=id;
+    renderBoardAnswers();
+  };
+
+  window.renderBoardAnswers=function(){
+    const typeEl=document.getElementById("boardTypeFilter");
+    const searchEl=document.getElementById("boardAnswerSearch");
+    const currentType=typeEl?typeEl.value:"전체";
+    const q=(searchEl?searchEl.value:"").trim().toLowerCase();
+
+    const typeFilter=document.getElementById("boardTypeFilter");
+    if(typeFilter){
+      const old=typeFilter.value||currentType;
+      typeFilter.innerHTML=`<option value="전체">전체 문의 유형</option>`+
+        boardTypes().map(t=>`<option value="${bEsc(t)}">${bEsc(t)}</option>`).join("");
+      typeFilter.value=boardTypes().includes(old)||old==="전체"?old:"전체";
+    }
+
+    const activeType=document.getElementById("boardTypeFilter")?.value||"전체";
+    const list=boardAnswers.filter(x=>{
+      const typeOk=activeType==="전체"||x.type===activeType;
+      const hay=(x.title+" "+x.answer+" "+(x.note||"")).toLowerCase();
+      return typeOk&&(!q||hay.includes(q));
+    });
+
+    if(!boardSelectedId||!list.some(x=>x.id===boardSelectedId)){
+      boardSelectedId=list[0]?.id||null;
+    }
+
+    const count=document.getElementById("boardAnswerCount");
+    if(count)count.textContent=`총 ${boardAnswers.length}건`;
+
+    const listEl=document.getElementById("boardAnswerList");
+    if(listEl){
+      listEl.innerHTML=list.length?list.map(x=>`
+        <div class="board-row${x.id===boardSelectedId?" on":""}" onclick="boardSelectedId='${x.id}';renderBoardAnswers()">
+          <div>
+            <div class="board-row-title">${bEsc(x.title)}</div>
+            <div class="board-row-preview">${bEsc((x.answer||"").replace(/\n/g," "))}</div>
+          </div>
+          <span class="board-type-badge">${bEsc(x.type)}</span>
+          <span class="board-row-date">${bEsc(x.updatedAt||"")}</span>
+        </div>`).join("")
+        :`<div class="board-list-empty">검색 결과가 없습니다.</div>`;
+    }
+
+    const selected=boardAnswers.find(x=>x.id===boardSelectedId);
+    const detail=document.getElementById("boardAnswerDetail");
+    if(detail){
+      if(!selected){
+        detail.className="board-detail-empty";
+        detail.innerHTML="왼쪽에서 답변을 선택해 주세요.";
+      }else{
+        detail.className="";
+        const related=boardRelatedDocs(selected);
+        detail.innerHTML=`
+          <div class="board-detail">
+            <div class="board-breadcrumb">게시판 답변 › ${bEsc(selected.type)}</div>
+
+            <div class="board-detail-top">
+              <div>
+                <div class="board-detail-title">${bEsc(selected.title)}</div>
+                <div class="board-detail-meta">
+                  <span>${bEsc(selected.type)}</span>
+                  <span>·</span>
+                  <span>최근 수정 ${bEsc(selected.updatedAt||"")}</span>
+                </div>
+              </div>
+              <div class="board-actions">
+                <button class="board-btn admin-only inline" onclick="openBoardAnswerForm('${selected.id}')"><i class="ti ti-edit"></i> 수정</button>
+                <button class="board-btn primary" onclick="copyBoardAnswer('${selected.id}')"><i class="ti ti-copy"></i> 복사</button>
+              </div>
+            </div>
+
+            <div class="board-section">
+              <div class="board-section-hd">
+                <span>게시판용 답변</span>
+                <button class="board-btn primary" onclick="copyBoardAnswer('${selected.id}')"><i class="ti ti-copy"></i> 복사</button>
+              </div>
+              <div class="board-answer-box">${bEsc(selected.answer)}</div>
+            </div>
+
+            ${selected.note?`
+            <div class="board-section">
+              <div class="board-section-hd">
+                <span>참고사항 <small style="font-weight:500;color:#8B96A6">(내부 확인용)</small></span>
+              </div>
+              <div class="board-answer-box board-note-box">${bEsc(selected.note)}</div>
+            </div>`:""}
+
+            ${related.length?`
+            <div class="board-section">
+              <div class="board-section-hd"><span>관련 문서</span></div>
+              <div class="board-related">
+                ${related.map(e=>`
+                  <div class="board-related-row" onclick="openDetail('${e.id}')">
+                    <i class="ti ti-file-text" style="color:#2563EB"></i>
+                    <span class="board-related-title">${bEsc(e.title)}</span>
+                    <span class="board-related-meta">${bEsc(e.part||"")}</span>
+                    <i class="ti ti-chevron-right" style="font-size:12px;color:#A0AAB7"></i>
+                  </div>`).join("")}
+              </div>
+            </div>`:""}
+          </div>`;
+      }
+    }
+  };
+
+  window.copyBoardAnswer=function(id){
+    const item=boardAnswers.find(x=>x.id===id);
+    if(!item)return;
+    const done=()=>{
+      const t=document.createElement("div");
+      t.className="board-toast";
+      t.textContent="게시판용 답변을 복사했습니다.";
+      document.body.appendChild(t);
+      setTimeout(()=>t.remove(),1300);
+    };
+    if(navigator.clipboard?.writeText){
+      navigator.clipboard.writeText(item.answer).then(done).catch(()=>fallbackCopyBoard(item.answer,done));
+    }else fallbackCopyBoard(item.answer,done);
+  };
+
+  function fallbackCopyBoard(value,done){
+    const ta=document.createElement("textarea");
+    ta.value=value;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");}catch(e){}
+    ta.remove();done();
+  }
+
+  window.openBoardAnswerForm=function(id=""){
+    const old=boardAnswers.find(x=>x.id===id)||{title:"",type:"",answer:"",note:""};
+    const ov=document.createElement("div");
+    ov.className="modal-ov";
+    ov.innerHTML=`
+      <div class="modal" style="max-width:720px">
+        <div class="modal-hd">
+          <h2>${id?"게시판 답변 수정":"게시판 답변 등록"}</h2>
+          <button class="modal-close" onclick="this.closest('.modal-ov').remove()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="board-form-grid">
+            <div>
+              <label>답변 제목</label>
+              <input id="bfTitle" value="${bEsc(old.title)}" placeholder="예: 수료증 발급 방법 안내">
+            </div>
+            <div>
+              <label>문의 유형</label>
+              <input id="bfType" value="${bEsc(old.type)}" placeholder="예: 수료/증명서">
+            </div>
+            <div class="full">
+              <label>게시판용 답변</label>
+              <textarea id="bfAnswer" placeholder="게시판에 바로 복사해서 사용할 답변을 입력하세요.">${bEsc(old.answer)}</textarea>
+            </div>
+            <div class="full">
+              <label>참고사항 <span style="font-weight:400;color:var(--t3)">(내부 확인용)</span></label>
+              <textarea id="bfNote" class="note" placeholder="상담원만 확인할 주의사항 또는 기준을 입력하세요.">${bEsc(old.note||"")}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <span></span>
+          <div style="display:flex;gap:7px">
+            ${id?`<button class="btn-cancel" style="color:#DC2626" onclick="deleteBoardAnswer('${id}')">삭제</button>`:""}
+            <button class="btn-cancel" onclick="this.closest('.modal-ov').remove()">취소</button>
+            <button class="btn-save" onclick="saveBoardAnswerForm('${id}',this)">저장</button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(ov);
+  };
+
+  window.saveBoardAnswerForm=function(id,btn){
+    const title=document.getElementById("bfTitle")?.value.trim()||"";
+    const type=document.getElementById("bfType")?.value.trim()||"";
+    const answer=document.getElementById("bfAnswer")?.value.trim()||"";
+    const note=document.getElementById("bfNote")?.value.trim()||"";
+    if(!title){alert("답변 제목을 입력해 주세요.");return;}
+    if(!type){alert("문의 유형을 입력해 주세요.");return;}
+    if(!answer){alert("게시판용 답변을 입력해 주세요.");return;}
+
+    const today=new Date().toISOString().slice(0,10);
+    if(id){
+      const item=boardAnswers.find(x=>x.id===id);
+      if(item)Object.assign(item,{title,type,answer,note,updatedAt:today});
+      boardSelectedId=id;
+    }else{
+      const item={id:"board_"+Date.now(),title,type,answer,note,updatedAt:today};
+      boardAnswers.unshift(item);
+      boardSelectedId=item.id;
+    }
+    saveBoardAnswers();
+    btn.closest(".modal-ov").remove();
+    renderBoardAnswers();
+  };
+
+  window.deleteBoardAnswer=function(id){
+    if(!confirm("이 게시판 답변을 삭제할까요?"))return;
+    boardAnswers=boardAnswers.filter(x=>x.id!==id);
+    boardSelectedId=boardAnswers[0]?.id||null;
+    saveBoardAnswers();
+    document.querySelector(".modal-ov")?.remove();
+    renderBoardAnswers();
+  };
+})();
+</script>
+
+
+<script id="v18-board-view-guard">
+(function(){
+  const oldShowView=window.showView;
+  if(typeof oldShowView==="function"){
+    window.showView=function(id){
+      const b=document.getElementById("viewBoardAnswers");
+      if(b)b.style.display="none";
+      return oldShowView(id);
+    };
+  }
+})();
 </script>
 
 </body>
