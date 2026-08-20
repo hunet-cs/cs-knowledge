@@ -1303,6 +1303,15 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="v19-board-bulk">
+.board-head-actions{flex-wrap:wrap}
+@media(max-width:1250px){
+  .board-search{width:190px}
+  .board-select{width:135px}
+}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1513,6 +1522,8 @@ body{background:var(--bg)}
               <option value="전체">전체 문의 유형</option>
             </select>
             <input id="boardAnswerSearch" class="board-search" type="text" placeholder="답변 제목 검색..." oninput="renderBoardAnswers()">
+            <button class="hd-btn-bulk admin-only inline" onclick="downloadBoardAnswerTemplate()"><i class="ti ti-download"></i>양식 다운로드</button>
+            <label class="hd-btn-bulk admin-only inline" style="cursor:pointer"><i class="ti ti-table-import"></i>일괄 답변 등록<input type="file" accept=".xlsx,.xls" style="display:none" onchange="importBoardAnswerExcel(this)"></label>
             <button class="hd-btn-add admin-only inline" onclick="openBoardAnswerForm()"><i class="ti ti-plus"></i>답변 등록</button>
             <button class="hd-btn-home" onclick="goHome()"><i class="ti ti-home-2"></i>홈</button>
           </div>
@@ -3058,42 +3069,9 @@ function syncSidebarSelection(view,sub){
 
 <script id="v18-board-answer-script">
 (function(){
-  const BOARD_STORAGE_KEY="kms_board_answers_v18";
+  const BOARD_STORAGE_KEY="kms_board_answers_v19";
 
-  const DEFAULT_BOARD_ANSWERS=[
-    {
-      id:"board_1",
-      type:"수료/증명서",
-      title:"수료증 발급 방법 안내",
-      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n수료증은 나의 강의실 > 교육이력에서 직접 발급하실 수 있습니다.\n해당 과정 옆 [수료증] 버튼을 클릭하여 발급해 주세요.\n\n감사합니다.",
-      note:"과정별 수료 여부와 발급 가능 시점이 다를 수 있으므로 필요 시 과정 수료 기준을 함께 확인합니다.",
-      updatedAt:"2026-08-20"
-    },
-    {
-      id:"board_2",
-      type:"수료/증명서",
-      title:"영문 수료증 발급 안내",
-      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n영문 수료증은 나의 강의실 > 교육이력 > 해당 과정 옆 [수료증] > [영문수료증]에서 발급 가능합니다.\n영문 성함 등록 후 발급해 주세요.\n\n감사합니다.",
-      note:"영문 성함이 정확한지 발급 전 확인하도록 안내합니다.",
-      updatedAt:"2026-08-20"
-    },
-    {
-      id:"board_3",
-      type:"학습기간",
-      title:"학습기간 연장 관련 안내",
-      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n학습기간 연장 가능 여부는 과정 및 운영 기준에 따라 달라질 수 있습니다.\n확인을 위해 수강 중인 과정명과 현재 학습기간을 확인해 주세요.\n\n감사합니다.",
-      note:"B2B 과정은 기업별 정책이 우선 적용될 수 있습니다.",
-      updatedAt:"2026-08-20"
-    },
-    {
-      id:"board_4",
-      type:"사이트/로그인",
-      title:"로그인 오류 확인 안내",
-      answer:"안녕하세요, 휴넷 고객행복팀입니다.\n\n로그인에 어려움이 있으신 경우 아이디와 접속 사이트를 먼저 확인해 주세요.\n동일한 현상이 지속될 경우 오류 화면과 함께 문의해 주시면 확인을 도와드리겠습니다.\n\n감사합니다.",
-      note:"비밀번호 등 개인정보는 게시판 답변으로 요청하지 않습니다.",
-      updatedAt:"2026-08-20"
-    }
-  ];
+  const DEFAULT_BOARD_ANSWERS=[];
 
   function loadBoardAnswers(){
     try{
@@ -3188,7 +3166,7 @@ function syncSidebarSelection(view,sub){
           <span class="board-type-badge">${bEsc(x.type)}</span>
           <span class="board-row-date">${bEsc(x.updatedAt||"")}</span>
         </div>`).join("")
-        :`<div class="board-list-empty">검색 결과가 없습니다.</div>`;
+        :`<div class="board-list-empty">${boardAnswers.length===0?"등록된 게시판 답변이 없습니다.<br><span style=\"font-size:10.5px;color:#A0A8B3\">답변 등록 또는 일괄 답변 등록으로 추가해 주세요.</span>":"검색 결과가 없습니다."}</div>`;
     }
 
     const selected=boardAnswers.find(x=>x.id===boardSelectedId);
@@ -3274,6 +3252,108 @@ function syncSidebarSelection(view,sub){
     try{document.execCommand("copy");}catch(e){}
     ta.remove();done();
   }
+
+
+  window.downloadBoardAnswerTemplate=function(){
+    if(!window.XLSX){
+      alert("엑셀 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.");
+      return;
+    }
+    const wb=XLSX.utils.book_new();
+    const rows=[
+      ["문의 유형","답변 제목","게시판용 답변","참고사항"],
+      ["수료/증명서","수료증 발급 방법 안내","안녕하세요, 휴넷 고객행복팀입니다.\n\n수료증은 나의 강의실 > 교육이력에서 발급하실 수 있습니다.\n\n감사합니다.","과정별 수료 여부 및 발급 가능 시점 확인"],
+      ["사이트/로그인","로그인 오류 안내","안녕하세요, 휴넷 고객행복팀입니다.\n\n로그인 정보를 다시 확인해 주세요.\n\n감사합니다.","개인정보 요청 금지"]
+    ];
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"]=[{wch:18},{wch:34},{wch:70},{wch:45}];
+    XLSX.utils.book_append_sheet(wb,ws,"게시판답변_업로드양식");
+    XLSX.writeFile(wb,"게시판답변_일괄등록_양식.xlsx");
+  };
+
+  window.importBoardAnswerExcel=function(input){
+    const file=input.files&&input.files[0];
+    if(!file)return;
+    if(!window.XLSX){
+      alert("엑셀 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.");
+      input.value="";
+      return;
+    }
+
+    const reader=new FileReader();
+    reader.onload=function(evt){
+      try{
+        const wb=XLSX.read(evt.target.result,{type:"binary"});
+        const ws=wb.Sheets[wb.SheetNames[0]];
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+        if(rows.length<2){
+          alert("등록할 데이터가 없습니다.");
+          return;
+        }
+
+        const headers=rows[0].map(v=>String(v||"").trim());
+        const required=["문의 유형","답변 제목","게시판용 답변"];
+        const missing=required.filter(h=>!headers.includes(h));
+        if(missing.length){
+          alert("필수 열이 없습니다: "+missing.join(", ")+"\\n양식 다운로드 파일을 사용해 주세요.");
+          return;
+        }
+
+        const idx={
+          type:headers.indexOf("문의 유형"),
+          title:headers.indexOf("답변 제목"),
+          answer:headers.indexOf("게시판용 답변"),
+          note:headers.indexOf("참고사항")
+        };
+
+        const valid=[];
+        const invalid=[];
+        rows.slice(1).forEach((r,i)=>{
+          const type=String(r[idx.type]||"").trim();
+          const title=String(r[idx.title]||"").trim();
+          const answer=String(r[idx.answer]||"").trim();
+          const note=idx.note>=0?String(r[idx.note]||"").trim():"";
+
+          if(!type&&!title&&!answer)return;
+          if(!type||!title||!answer){
+            invalid.push(i+2);
+            return;
+          }
+
+          valid.push({
+            id:"board_"+Date.now()+"_"+i,
+            type,
+            title,
+            answer,
+            note,
+            updatedAt:new Date().toISOString().slice(0,10)
+          });
+        });
+
+        if(!valid.length){
+          alert("등록 가능한 답변이 없습니다."+ (invalid.length? "\\n필수값 누락 행: "+invalid.join(", "):""));
+          return;
+        }
+
+        let msg=`${valid.length}건의 게시판 답변을 등록할까요?`;
+        if(invalid.length)msg+=`\\n\\n필수값이 누락된 ${invalid.length}개 행은 제외됩니다. (${invalid.join(", ")}행)`;
+        if(!confirm(msg))return;
+
+        boardAnswers=[...valid,...boardAnswers];
+        boardSelectedId=valid[0].id;
+        saveBoardAnswers();
+        renderBoardAnswers();
+
+        alert(`✅ ${valid.length}건 등록 완료`+(invalid.length?`\\n⚠ ${invalid.length}건 제외`:""));
+      }catch(err){
+        console.error(err);
+        alert("엑셀 파일을 읽는 중 오류가 발생했습니다.\\n양식을 확인해 주세요.");
+      }finally{
+        input.value="";
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
 
   window.openBoardAnswerForm=function(id=""){
     const old=boardAnswers.find(x=>x.id===id)||{title:"",type:"",answer:"",note:""};
