@@ -1017,17 +1017,18 @@ body{background:var(--bg)}
   --sel-blue-border:#BFD4FF;
 }
 
-/* 사이드바 선택 */
+/* 사이드바 선택 - 퍼플 테마로 통일 */
 .sb-item.on{
-  background:linear-gradient(90deg,#2458B8,#2D63C8)!important;
+  background:linear-gradient(135deg,#6D28D9,#8B5CF6)!important;
   color:#fff!important;
+  box-shadow:0 6px 16px rgba(124,58,237,.28)!important;
 }
 .sb-item.on span,
 .sb-item.on .sb-chev{
   color:#fff!important;
 }
 .sb-sub-item.on{
-  background:#244F9E!important;
+  background:rgba(139,92,246,.22)!important;
   color:#fff!important;
   border-radius:8px!important;
 }
@@ -1382,6 +1383,53 @@ body,.app-main,.app-body{background:#F8F7FC}
   background:rgba(255,255,255,.025) !important;
 }
 </style>
+
+<style id="sidebar-menu-reorg-v1">
+/* Sidebar IA refresh: visual grouping only; existing navigation handlers are preserved. */
+.sb-group-label{
+  padding:14px 30px 6px;
+  color:#9187AD;
+  font-size:10.5px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:none;
+  user-select:none;
+}
+.sb-divider-soft{margin-top:10px!important;margin-bottom:2px!important}
+.sb-helper-item{
+  color:#fff!important;
+  font-weight:750!important;
+}
+.sb-helper-item i{
+  width:26px!important;height:26px!important;
+  margin-right:10px;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.13)!important;
+  color:#fff!important;
+  font-size:17px!important;
+}
+.sb-helper-item.on{
+  background:linear-gradient(135deg,#6D28D9 0%,#9333EA 100%)!important;
+  box-shadow:0 7px 18px rgba(124,58,237,.30)!important;
+}
+.sb-helper-item:hover{background:rgba(139,92,246,.16)!important}
+.sb-helper-item.on:hover{background:linear-gradient(135deg,#6D28D9 0%,#9333EA 100%)!important}
+.sb.collapsed .sb-group-label{display:none}
+</style>
+
+<style id="sidebar-purple-active-final">
+/* Final sidebar active-state override: no blue active menu remains. */
+.sb .sb-item.on, .sidebar .sb-item.on{
+  background:linear-gradient(135deg,#6D28D9 0%,#8B5CF6 100%)!important;
+  color:#fff!important;
+  box-shadow:0 6px 16px rgba(124,58,237,.28)!important;
+}
+.sb .sb-sub-item.on, .sidebar .sb-sub-item.on{
+  background:rgba(139,92,246,.22)!important;
+  color:#fff!important;
+}
+.sb .sb-item.on .sb-emoji:before, .sb .sb-item.on i{color:#fff!important;}
+</style>
 </head>
 <body class="locked">
 
@@ -1405,6 +1453,7 @@ body,.app-main,.app-body{background:#F8F7FC}
       <div id="sbNav">
         <div class="sb-item on" data-view="home" onclick="goHome()"><span class="sb-emoji">🏠</span><span>홈</span></div>
         <div class="sb-divider"></div>
+        <div class="sb-group-label">지식·가이드</div>
         <div class="sb-item" data-view="b2c" onclick="filterPart2('B2C')"><span class="sb-emoji">📚</span><span>공통 업무지식</span></div>
         <div class="sb-item" data-view="product" onclick="filterPart2('상품 안내')"><span class="sb-emoji">🎁</span><span>상품 안내</span></div>
         <div class="sb-item" data-view="error" onclick="openErrorView()"><span class="sb-emoji">🛠️</span><span>오류 처리방법</span></div>
@@ -1421,10 +1470,12 @@ body,.app-main,.app-body{background:#F8F7FC}
           <div class="sb-sub-item" data-sub="업무 요청·이관" onclick="filterOpsSub('업무 요청·이관')"><span class="sb-emoji sm">📨</span><span>업무 요청·이관</span></div>
         </div>
         <div class="sb-divider"></div>
-        <div class="sb-item" data-view="notices" onclick="setView('notices')"><span class="sb-emoji">📢</span><span>공지사항</span><span class="sb-badge-new" id="noticeBadge" style="display:none">N</span></div>
+        <div class="sb-group-label">업무 편의</div>
+        <div class="sb-item sb-helper-item" data-view="helper" onclick="openHelper()"><i class="ti ti-message-bolt"></i><span>빠른 답변</span></div>
         <div class="sb-item" data-view="myspace" onclick="openMySpace()"><span class="sb-emoji">👤</span><span>마이스페이스</span></div>
-        <div class="sb-item" data-view="boardanswers" onclick="openBoardAnswers()"><span>게시판 답변</span></div>
-        <div class="sb-item" data-view="helper" onclick="openHelper()"><span style="font-size:18px;line-height:1">⚡</span><span style="font-weight:700;color:#fff">빠른 답변</span></div>
+        <div class="sb-divider sb-divider-soft"></div>
+        <div class="sb-group-label">소식</div>
+        <div class="sb-item" data-view="notices" onclick="setView('notices')"><span class="sb-emoji">📢</span><span>공지사항</span><span class="sb-badge-new" id="noticeBadge" style="display:none">N</span></div>
       </div>
     </div>
     <div class="admin-nav-sec">
@@ -2473,7 +2524,7 @@ let _b2cSelected=null;
 function renderB2CUnified(id=null){
   curView="list";filterPart="B2C";filterSub="전체";showView("viewList");setSbView("b2c");syncSidebarSelection("b2c");
   const list=entries.filter(e=>e.part==="B2C"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
-  document.getElementById("listTitle").textContent="B2C";
+  document.getElementById("listTitle").textContent="공통 업무지식";
   document.getElementById("listCnt").textContent=`총 ${list.length}건`;
   document.getElementById("filterChips").innerHTML="";
 
@@ -2486,13 +2537,13 @@ function renderB2CUnified(id=null){
 
   if(!id){
     document.getElementById("resultsList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>B2C 문서</strong><span class="unified-pane-sub">${list.length}건</span></div>
+      <div class="unified-pane-head"><strong>공통 업무지식</strong><span class="unified-pane-sub">${list.length}건</span></div>
       <div class="unified-list">${rows}</div>
     </div>`;
   }else{
     const selected=list.find(e=>e.id===id);
     document.getElementById("resultsList").innerHTML=`<div class="unified-split">
-      ${uListPane("B2C 문서",rows,`${list.length}건`)}
+      ${uListPane("공통 업무지식",rows,`${list.length}건`)}
       ${selected?uDocDetail(selected,"renderB2CUnified()",`openEdit('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">문서를 선택해 주세요.</div></div>`}
     </div>`;
   }
@@ -2999,11 +3050,10 @@ function renderHome(){
   ];
   const qm=document.getElementById("quickMenu"); if(qm)qm.innerHTML=quickItems.map(q=>`<button class="quick-menu-btn" onclick="${q.action}"><i class="ti ${q.icon}"></i><span>${q.label}</span></button>`).join("");
   const cats=[
-    {label:"B2B 기업 맞춤 정책",icon:"ti-building",cnt:entries.filter(e=>e.part==="B2B 상위기업").length,action:"filterPart2('B2B 상위기업')"},
     {label:"상품·서비스 안내",icon:"ti-package",cnt:entries.filter(e=>e.part==="상품 안내").length,action:"filterPart2('상품 안내')"},
     {label:"오류코드 처리방법",icon:"ti-alert-triangle",cnt:entries.filter(e=>e.part==="오류 처리방법").length,action:"openErrorView()"},
     {label:"운영지원",icon:"ti-headset",cnt:entries.filter(e=>e.part==="운영지원").length,action:"filterPart2('운영지원')"},
-    {label:"B2C",icon:"ti-school",cnt:entries.filter(e=>e.part==="B2C").length,action:"filterPart2('B2C')"}
+    {label:"공통 업무지식",icon:"ti-book-2",cnt:entries.filter(e=>e.part==="B2C").length,action:"filterPart2('B2C')"}
   ];
   const hc=document.getElementById("homeCats"); if(hc)hc.innerHTML=cats.map(c=>`<div class="home-cat-row" onclick="${c.action}"><i class="ti ${c.icon}"></i><span class="home-cat-name">${c.label}</span><span class="home-cat-count">${c.cnt.toLocaleString()}</span><i class="ti ti-chevron-right home-cat-arrow"></i></div>`).join("");
   renderLocalNotices(); const nb=document.getElementById("noticeBadge"); if(nb)nb.style.display=notices.some(n=>n.isNew)?"":"none";
