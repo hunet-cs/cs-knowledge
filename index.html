@@ -1012,9 +1012,9 @@ body{background:var(--bg)}
 
 <style id="v15-blue-selection">
 :root{
-  --sel-blue:#2563EB;
-  --sel-blue-soft:#EAF2FF;
-  --sel-blue-border:#BFD4FF;
+  --sel-blue:#7C3AED;
+  --sel-blue-soft:#F3EEFF;
+  --sel-blue-border:#D9C7FF;
 }
 
 /* 사이드바 선택 - 퍼플 테마로 통일 */
@@ -1042,7 +1042,7 @@ body{background:var(--bg)}
 .b2b-mini-company.on{
   background:var(--sel-blue-soft)!important;
   position:relative;
-  color:#174EA6!important;
+  color:#6D28D9!important;
 }
 .b2b-company-row.selected::before,
 .b2b-mini-row.on::before,
@@ -1056,7 +1056,7 @@ body{background:var(--bg)}
 .b2b-company-row.selected .b2b-company-name,
 .b2b-mini-row.on .b2b-mini-name,
 .b2b-mini-company.on .b2b-mini-name{
-  color:#174EA6!important;
+  color:#6D28D9!important;
   font-weight:750!important;
 }
 
@@ -1064,7 +1064,7 @@ body{background:var(--bg)}
 .unified-row.on{
   background:var(--sel-blue-soft)!important;
   position:relative;
-  color:#174EA6!important;
+  color:#6D28D9!important;
 }
 .unified-row.on::before{
   content:"";
@@ -1076,7 +1076,7 @@ body{background:var(--bg)}
 .unified-row.on .unified-title,
 .unified-row.on .unified-count,
 .unified-row.on .unified-date{
-  color:#174EA6!important;
+  color:#6D28D9!important;
 }
 .unified-row.on .unified-title{
   font-weight:750!important;
@@ -3774,6 +3774,43 @@ loadTodaySchedule = async function(){
 };
 /* 이미 홈이 떠 있는 경우 새 렌더러로 한 번 갱신 */
 setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget'))loadTodaySchedule();}catch(e){}},0);
+</script>
+<style id="product-ui-v1">
+/* 상품 안내 상세 UI 1차 — 데이터/로그인/홈 로직은 변경하지 않음 */
+.product-card-page{padding:4px 0 0}.product-page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.product-page-title h2{font-size:20px;margin:0 0 5px;color:#19152a}.product-page-title p{font-size:12px;color:#8b849b;margin:0}.product-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.product-main-card{position:relative;background:#fff;border:1px solid #e7e2ef;border-radius:14px;padding:17px;min-height:118px;cursor:pointer;transition:.18s ease;overflow:hidden}.product-main-card:hover{transform:translateY(-2px);border-color:#cdb8ff;box-shadow:0 9px 24px rgba(90,54,150,.10)}.product-main-card.on{border:1.5px solid #8b5cf6;background:linear-gradient(145deg,#fff 35%,#f7f1ff)}.product-main-icon{width:38px;height:38px;border-radius:11px;background:#f1eaff;color:#7c3aed;display:grid;place-items:center;font-size:19px;margin-bottom:13px}.product-main-card:nth-child(3n+2) .product-main-icon{background:#eef6ff;color:#3b82f6}.product-main-card:nth-child(3n) .product-main-icon{background:#fff2e7;color:#f59e0b}.product-main-name{font-size:14px;font-weight:800;color:#211a32;margin-bottom:5px}.product-main-meta{font-size:11px;color:#9189a1}.product-main-arrow{position:absolute;right:15px;bottom:15px;color:#8b5cf6}.product-split-v1{display:grid;grid-template-columns:360px minmax(0,1fr);gap:14px;min-height:520px}.product-side-v1,.product-detail-v1{background:#fff;border:1px solid #e5e1eb;border-radius:14px;overflow:hidden}.product-side-head{padding:14px 16px;border-bottom:1px solid #eeeaf3;display:flex;justify-content:space-between;align-items:center}.product-side-head strong{font-size:13px}.product-side-list{padding:5px}.product-side-row{display:grid;grid-template-columns:1fr auto 18px;gap:8px;align-items:center;padding:12px 11px;border-radius:9px;cursor:pointer;font-size:12px;color:#2b2538}.product-side-row:hover{background:#faf8ff}.product-side-row.on{background:#f1ebff;color:#6d28d9;font-weight:800;box-shadow:inset 3px 0 0 #8b5cf6}.product-side-count{font-size:10px;color:#928aa0}.product-detail-v1{padding:18px}.product-breadcrumb-v1{display:flex;align-items:center;gap:7px;color:#91899f;font-size:11px;margin-bottom:15px}.product-breadcrumb-v1 button{border:0;background:none;color:#756d82;cursor:pointer;padding:0;font:inherit}.product-hero-v1{display:flex;align-items:center;gap:13px;margin-bottom:16px}.product-hero-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 8px 18px rgba(124,58,237,.18)}.product-hero-v1 h2{font-size:21px;margin:0 0 4px;color:#1d1729}.product-hero-v1 p{margin:0;color:#8c8498;font-size:11px}.product-section-grid-v1{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}.product-section-v1{border:1px solid #e6e0ef;border-radius:13px;padding:16px;cursor:pointer;transition:.15s;background:#fff}.product-section-v1:hover{border-color:#cdb8ff;background:#fbf9ff}.product-section-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.product-section-icon{width:36px;height:36px;border-radius:10px;background:#f1eaff;color:#7c3aed;display:grid;place-items:center;font-size:18px}.product-section-v1:nth-child(2) .product-section-icon{background:#fff0f7;color:#db2777}.product-section-name{font-size:14px;font-weight:800}.product-section-count{display:inline-block;margin-top:4px;background:#f2edff;color:#7c3aed;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800}.product-section-desc{font-size:11px;color:#8d8599}.product-desc-v1{border:1px solid #eee9f4;border-radius:12px;padding:15px;background:#fcfbfe}.product-desc-v1 strong{display:block;font-size:12px;margin-bottom:7px}.product-desc-v1 p{font-size:11px;line-height:1.65;color:#716a7c;margin:0;white-space:pre-wrap}.faq-head-v1{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}.faq-head-v1 h2{font-size:20px;margin:0}.faq-head-v1 p{font-size:11px;color:#92899f;margin:4px 0 0}.faq-search-v1{width:270px;height:36px;border:1px solid #e2dcea;border-radius:9px;padding:0 11px;font-size:11px;outline:none}.faq-search-v1:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #f3eeff}.faq-table-v1{border:1px solid #e9e4ef;border-radius:12px;overflow:hidden}.faq-table-head,.faq-row-v1{display:grid;grid-template-columns:minmax(260px,1.4fr) minmax(220px,1fr) 70px 95px 20px;gap:12px;align-items:center}.faq-table-head{padding:9px 13px;background:#faf9fc;color:#8f879b;font-size:10px;font-weight:700}.faq-row-v1{padding:12px 13px;border-top:1px solid #f0edf3;cursor:pointer;font-size:11px}.faq-row-v1:hover{background:#faf8ff}.faq-q{font-weight:750;color:#2b2535;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.faq-preview{color:#80788c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.faq-meta{color:#9890a2;text-align:center}.faq-empty-v1{padding:45px;text-align:center;color:#9990a4;font-size:12px}.faq-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:14px}.faq-detail-head h2{font-size:21px;margin:0 0 8px;color:#1e1829}.faq-chips{display:flex;gap:6px;flex-wrap:wrap}.faq-chip{font-size:10px;padding:4px 8px;border-radius:999px;background:#f3effa;color:#766d83}.faq-edit-btn{border:1px solid #ded6e8;background:#fff;border-radius:8px;height:32px;padding:0 11px;font-size:11px;cursor:pointer}.faq-block{border-radius:12px;padding:14px 15px;margin-bottom:10px;border:1px solid transparent}.faq-block-title{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:850;margin-bottom:7px}.faq-block-body{font-size:12px;line-height:1.72;white-space:pre-wrap;color:#393244}.faq-block.question{background:#f5f7ff;border-color:#e5e9ff}.faq-block.question .faq-block-title{color:#4f67d8}.faq-block.answer{background:#effcf8;border-color:#d7f4e9}.faq-block.answer .faq-block-title{color:#079669}.faq-block.caution{background:#fff8ed;border-color:#ffebc9}.faq-block.caution .faq-block-title{color:#d97706}.faq-related-v1{margin-top:14px;border:1px solid #e9e3f0;border-radius:12px;overflow:hidden}.faq-related-head{padding:11px 13px;background:#faf8fd;font-size:11px;font-weight:800;display:flex;justify-content:space-between}.faq-related-row{padding:11px 13px;border-top:1px solid #f0edf3;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:11px}.faq-related-row:hover{background:#faf8ff}.faq-related-row i{color:#8b5cf6}.faq-related-row span{flex:1}.faq-related-row small{color:#9990a4}
+@media(max-width:1150px){.product-card-grid{grid-template-columns:repeat(2,1fr)}.product-split-v1{grid-template-columns:300px 1fr}.faq-table-head,.faq-row-v1{grid-template-columns:minmax(220px,1.3fr) minmax(160px,1fr) 55px 85px 18px}}
+</style>
+<script id="product-ui-v1-js">
+(function(){
+  const sideRows=(all,products,selected)=>products.map(p=>{const cnt=all.filter(e=>e.productName===p).length;return `<div class="product-side-row${p===selected?' on':''}" onclick="renderProductView('${esc(p)}')"><span>${esc(p)}</span><span class="product-side-count">${cnt}건</span><i class="ti ti-chevron-right"></i></div>`}).join('');
+  window.renderProductView=function(product="전체",section=null){
+    kmsPushState({type:"product",product,section}); window._curRender=()=>renderProductView(product,section); curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");syncSidebarSelection("product");
+    const isAdmin=currentUser&&currentUser.role==="admin", all=entries.filter(e=>e.part==="상품 안내"), products=getProductList();
+    document.getElementById("prSummary").innerHTML=""; document.getElementById("prCnt").textContent=`등록 상품 ${products.length}개`;
+    if(product==="전체"){
+      const cards=products.map((p,i)=>{const cnt=all.filter(e=>e.productName===p).length;return `<div class="product-main-card" onclick="renderProductView('${esc(p)}')"><div class="product-main-icon"><i class="ti ${i%3===0?'ti-notebook':i%3===1?'ti-books':'ti-school'}"></i></div><div class="product-main-name">${esc(p)}</div><div class="product-main-meta">${cnt}개의 문서</div><i class="ti ti-chevron-right product-main-arrow"></i></div>`}).join('');
+      document.getElementById("prResultsList").innerHTML=`<div class="product-card-page"><div class="product-page-head"><div class="product-page-title"><h2>상품 안내</h2><p>상품별 FAQ와 자료를 빠르게 확인하세요.</p></div></div><div class="product-card-grid">${cards||'<div class="faq-empty-v1">등록된 상품이 없습니다.</div>'}</div></div>`;return;
+    }
+    const faq=all.filter(e=>e.productName===product&&e.productSection==="FAQ"), proposal=all.filter(e=>e.productName===product&&e.productSection==="제안서"), desc=(productProfiles[product]||{}).desc||"";
+    let right='';
+    if(!section){right=`<div class="product-detail-v1"><div class="product-breadcrumb-v1"><button onclick="renderProductView('전체')">상품 안내</button><i class="ti ti-chevron-right"></i><span>${esc(product)}</span></div><div class="product-hero-v1"><div class="product-hero-icon"><i class="ti ti-notebook"></i></div><div><h2>${esc(product)}</h2><p>${desc?esc(desc):'FAQ와 상품 자료를 한눈에 확인하세요.'}</p></div>${isAdmin?`<button class="faq-edit-btn" style="margin-left:auto" onclick="openAddProductForm('${esc(product)}')">수정</button>`:''}</div><div class="product-section-grid-v1"><div class="product-section-v1" onclick="renderProductView('${esc(product)}','FAQ')"><div class="product-section-top"><div class="product-section-icon"><i class="ti ti-message-circle-question"></i></div><i class="ti ti-chevron-right"></i></div><div class="product-section-name">FAQ</div><span class="product-section-count">${faq.length}건</span><div class="product-section-desc">자주 묻는 질문과 답변을 확인하세요.</div></div><div class="product-section-v1" onclick="renderProductView('${esc(product)}','제안서')"><div class="product-section-top"><div class="product-section-icon"><i class="ti ti-file-description"></i></div><i class="ti ti-chevron-right"></i></div><div class="product-section-name">제안서</div><span class="product-section-count">${proposal.length}건</span><div class="product-section-desc">상품 제안 자료를 확인하세요.</div></div></div>${desc?`<div class="product-desc-v1"><strong>상품 소개</strong><p>${esc(desc)}</p></div>`:''}</div>`;
+    } else {
+      const docs=section==="FAQ"?faq:proposal;
+      if(section==="FAQ") right=`<div class="product-detail-v1"><div class="product-breadcrumb-v1"><button onclick="renderProductView('${esc(product)}')">${esc(product)}</button><i class="ti ti-chevron-right"></i><span>FAQ</span></div><div class="faq-head-v1"><div><h2>FAQ <span class="faq-chip">${docs.length}건</span></h2><p>${esc(product)} 관련 자주 묻는 질문입니다.</p></div><input class="faq-search-v1" id="faqSearchV1" placeholder="FAQ 검색 (질문, 답변 내용...)" oninput="filterProductFaqV1(this.value)"></div><div class="faq-table-v1"><div class="faq-table-head"><span>질문</span><span>답변 미리보기</span><span>조회수</span><span>수정일</span><span></span></div><div id="faqRowsV1">${docs.map(e=>faqRowV1(product,section,e)).join('')||'<div class="faq-empty-v1">등록된 FAQ가 없습니다.</div>'}</div></div></div>`;
+      else right=`<div class="product-detail-v1"><div class="product-breadcrumb-v1"><button onclick="renderProductView('${esc(product)}')">${esc(product)}</button><i class="ti ti-chevron-right"></i><span>제안서</span></div><div class="faq-head-v1"><div><h2>제안서 <span class="faq-chip">${docs.length}건</span></h2><p>등록된 상품 제안 자료입니다.</p></div></div><div class="faq-table-v1">${docs.map(e=>`<div class="faq-row-v1" style="grid-template-columns:1fr 110px 20px" onclick="openProductFile('${esc(e.fileUrl||'')}')"><span class="faq-q">${esc(e.title)}</span><span class="faq-meta">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`).join('')||'<div class="faq-empty-v1">등록된 제안서가 없습니다.</div>'}</div></div>`;
+    }
+    document.getElementById("prResultsList").innerHTML=`<div class="product-split-v1"><div class="product-side-v1"><div class="product-side-head"><strong>상품 목록</strong><span class="product-side-count">${products.length}개</span></div><div class="product-side-list">${sideRows(all,products,product)}</div></div>${right}</div>`;
+  };
+  window.faqRowV1=function(product,section,e){const preview=(e.steps||e.customerQ||'').split('\n')[0];return `<div class="faq-row-v1" data-search="${esc((e.title+' '+preview).toLowerCase())}" onclick="renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')"><span class="faq-q">${esc(e.title)}</span><span class="faq-preview">${esc(preview)}</span><span class="faq-meta">${(e.views||0).toLocaleString()}회</span><span class="faq-meta">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`};
+  window.filterProductFaqV1=function(q){q=(q||'').trim().toLowerCase();document.querySelectorAll('#faqRowsV1 .faq-row-v1').forEach(r=>r.style.display=!q||r.dataset.search.includes(q)?'grid':'none')};
+  window.renderProductEntryUnified=function(product,section,id){
+    const all=entries.filter(e=>e.part==="상품 안내"),products=getProductList(),docs=all.filter(e=>e.productName===product&&e.productSection===section),e=docs.find(x=>x.id===id),isAdmin=currentUser&&currentUser.role==="admin";
+    if(!e){renderProductView(product,section);return;} e.views=(e.views||0)+1; saveAll();
+    const related=docs.filter(x=>x.id!==id).sort((a,b)=>(b.views||0)-(a.views||0)).slice(0,5);
+    const right=`<div class="product-detail-v1"><div class="product-breadcrumb-v1"><button onclick="renderProductView('${esc(product)}','${esc(section)}')">${esc(product)} · ${esc(section)}</button><i class="ti ti-chevron-right"></i><span>상세</span></div><div class="faq-detail-head"><div><h2>${esc(e.title)}</h2><div class="faq-chips"><span class="faq-chip">${esc(section)}</span><span class="faq-chip">조회 ${(e.views||0).toLocaleString()}회</span>${e.updatedAt?`<span class="faq-chip">${esc(e.updatedAt)}</span>`:''}</div></div>${isAdmin?`<button class="faq-edit-btn" onclick="openProductEntryForm('${e.id}','${esc(product)}','${esc(section)}')">수정</button>`:''}</div><div class="faq-block question"><div class="faq-block-title"><i class="ti ti-help-circle"></i>문의 내용</div><div class="faq-block-body">${esc(e.customerQ||e.title)}</div></div><div class="faq-block answer"><div class="faq-block-title"><i class="ti ti-circle-check"></i>답변 · 처리 방법</div><div class="faq-block-body">${esc(e.steps||'등록된 답변이 없습니다.')}</div></div>${e.caution&&e.caution.trim()?`<div class="faq-block caution"><div class="faq-block-title"><i class="ti ti-alert-triangle"></i>확인해주세요</div><div class="faq-block-body">${esc(e.caution)}</div></div>`:''}${related.length?`<div class="faq-related-v1"><div class="faq-related-head"><span>관련 문서</span><span>${related.length}개</span></div>${related.map(r=>`<div class="faq-related-row" onclick="renderProductEntryUnified('${esc(product)}','${esc(section)}','${r.id}')"><i class="ti ti-file-text"></i><span>${esc(r.title)}</span><small>${esc(r.updatedAt||'')}</small><i class="ti ti-chevron-right"></i></div>`).join('')}</div>`:''}</div>`;
+    document.getElementById("prResultsList").innerHTML=`<div class="product-split-v1"><div class="product-side-v1"><div class="product-side-head"><strong>상품 목록</strong><span class="product-side-count">${products.length}개</span></div><div class="product-side-list">${sideRows(all,products,product)}</div></div>${right}</div>`;
+  };
+})();
 </script>
 </body>
 </html>
