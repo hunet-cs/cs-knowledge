@@ -2072,16 +2072,13 @@ async function loadFirebaseNotices(){
   }catch(e){renderLocalNotices();}
 }
 async function loadFirebaseNoticesView(){
-  const box=document.getElementById("noticeListFromFb"); if(!box)return;
-  if(!_fbDb){box.innerHTML=`<div class="notice-empty">내부망에서는 팀 공지가 표시되지 않습니다.</div>`;const c=document.getElementById('fbNoticeCount');if(c)c.textContent='0';return;}
+  if(!_fbDb){ window._fbNotices=[]; renderUnifiedNoticeRows(); return; }
   await fbAutoLogin();
   try{
     const snap=await _fbDb.collection("notices").orderBy("createdAt","desc").get();
-    if(snap.empty){box.innerHTML=`<div class="notice-empty">등록된 긴급 공지가 없습니다.</div>`;const c=document.getElementById('fbNoticeCount');if(c)c.textContent='0';return;}
     window._fbNotices=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
-    const c=document.getElementById('fbNoticeCount');if(c)c.textContent=window._fbNotices.length;
-    box.innerHTML=window._fbNotices.map((n,i)=>{const date=n.createdAt?.toDate?n.createdAt.toDate().toISOString().slice(0,10):n.createdAt?.slice?.(0,10)||"";const body=(n.content||n.body||n.text||"").replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();return`<div class="notice-modern-row urgent" onclick="openFbNotice(${i})"><span class="notice-badge urgent">긴급</span><span class="notice-modern-title">${esc(n.title||"")}</span><span class="notice-preview">${esc(body)}</span><span class="notice-modern-date">${date}</span><i class="ti ti-chevron-right notice-arrow"></i></div>`;}).join("");
-  }catch(e){box.innerHTML=`<div class="notice-empty" style="color:#EF4444">긴급 공지를 불러오지 못했습니다.</div>`;}
+  }catch(e){ window._fbNotices=[]; }
+  renderUnifiedNoticeRows();
 }
 function openFbNotice(idx){
   const n=(window._fbNotices||[])[idx];if(!n)return;
@@ -2878,26 +2875,33 @@ function resetFiltersAndRender(){filterPart="전체";filterCo="전체";filterSub
 function setChipFilter(multi,part="전체"){filterMultiple=multi;filterPart=part;filterCo="전체";filterSub="전체";renderResults();}
 function renderList(f,title,cnt){document.getElementById("listTitle").textContent=title||"검색 결과";document.getElementById("listCnt").textContent=cnt||`총 ${f.length}건`;const isAdmin=currentUser&&currentUser.role==="admin";const showAdminChecks=isAdmin&&filterPart!=="운영지원";if(!f.length){document.getElementById("resultsList").innerHTML=`<div class="empty-state"><i class="ti ti-search-off"></i><p>결과가 없습니다<br><span style="font-size:11px">다른 키워드로 검색해 보세요</span></p></div>`;return;}const bulkBar=showAdminChecks?bulkBarHtml():"";const filterChipsEl=document.getElementById("filterChips");if(filterChipsEl){let bar=document.getElementById("bulkDeleteBar");if(showAdminChecks){if(!bar){bar=document.createElement("div");bar.id="bulkDeleteBar";filterChipsEl.parentNode.insertBefore(bar,filterChipsEl.nextSibling);}bar.innerHTML=bulkBar;}else if(bar){bar.remove();}}document.getElementById("resultsList").innerHTML=(f.length?`<div class="bd-list"><div class="bd-head"><span class="bd-title">제목</span><span class="bd-cat">분류</span><span class="bd-status">상태</span><span class="bd-views">조회</span><span class="bd-date">작성일</span><span style="width:58px;flex-shrink:0"></span></div>`:"")+f.map(e=>{const bm=bookmarks.includes(e.id);const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const hasCaution=e.caution&&e.caution.trim();const hq=showChips?searchQ:"";return`<div class="bd-row${selId===e.id?" sel":""}" id="ri-${e.id}" onclick="openDetail('${e.id}')">${showAdminChecks?`<input type="checkbox" class="entry-chk" value="${e.id}" style="width:15px;height:15px;flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()">`:""}<span class="bd-title">${highlight(e.title,hq)}</span><span class="bd-cat">${esc(sub||e.part||"")}</span><span class="bd-status">${e.caution&&e.caution.trim()?`<span class="bd-caut">주의</span>`:""}${e.status==="hidden"?`<span class="bd-off">비공개</span>`:""}</span><span class="bd-views">${(e.views||0).toLocaleString()}</span><span class="bd-date">${e.updatedAt||""}</span><div class="bd-acts"><button class="bd-act" onclick="event.stopPropagation();downloadEntry('${e.id}')"><i class="ti ti-download"></i></button><button class="bd-act" onclick="toggleBM(event,'${e.id}')">${bm?"★":"☆"}</button></div></div>`;}).join("")+(f.length?`</div>`:"");const PDFBASE="https://hunet-cs.github.io/cs-knowledge";let pdfBar="";const mkBtn=(label,url)=>`<a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;background:#F4F6F8;border:1.5px solid #FFD0A8;border-radius:9px;color:#16181D;font-size:12.5px;font-weight:600;text-decoration:none;font-family:var(--font)"><i class="ti ti-file-type-pdf" style="font-size:15px"></i>${label}</a>`;if(filterSub==="CTI")pdfBar=mkBtn("CTI 매뉴얼 원본",`${PDFBASE}/cti_manual.pdf`)+mkBtn("CTI 상담유형 카테고리",`${PDFBASE}/cti_category.pdf`);else if(filterSub==="LMS")pdfBar=mkBtn("LMS 매뉴얼 원본",`${PDFBASE}/lms_manual.pdf`);if(pdfBar){const wrap=`<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:11px"><span style="font-size:12px;font-weight:600;color:var(--t2);margin-right:4px"><i class="ti ti-download" style="font-size:13px"></i> 원본 매뉴얼 다운로드</span>${pdfBar}</div>`;const rl=document.getElementById("resultsList");rl.innerHTML=wrap+rl.innerHTML;}}
 function filterByIds(ids,title,cnt){const f=getSorted(entries.filter(e=>ids.includes(e.id)));renderList(f,title,cnt||`총 ${f.length}건`);renderFilterChips();}
-function renderNoticeList(){
-  setSbView("notices");
-  const isAdmin=currentUser&&currentUser.role==="admin";
-  document.getElementById("listTitle").textContent="공지사항";
-  document.getElementById("listCnt").textContent="";
-  document.getElementById("filterChips").innerHTML="";
-  const search=document.getElementById("listSearch"); if(search) search.placeholder="공지 제목, 내용을 검색하세요...";
-  const sorted=[...notices].sort((a,b)=>(b.isPinned?1:0)-(a.isPinned?1:0)||String(b.date||'').localeCompare(String(a.date||'')));
-  const generalHtml=sorted.map(n=>`<div class="notice-modern-row" onclick="openNotice('${n.id}')">
-      <span class="notice-badge">${n.isPinned?'필독':'공지'}</span>
+function renderUnifiedNoticeRows(){
+  const box=document.getElementById("noticeUnifiedRows"); if(!box)return;
+  const localRows=(notices||[]).map(n=>({source:"local",id:n.id,title:n.title||"",body:n.body||"",date:n.date||"",isNew:!!n.isNew,isPinned:!!n.isPinned}));
+  const fbRows=(window._fbNotices||[]).map((n,i)=>({source:"fb",idx:i,title:n.title||"",body:(n.content||n.body||n.text||"").replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(),date:n.createdAt?.toDate?n.createdAt.toDate().toISOString().slice(0,10):n.createdAt?.slice?.(0,10)||"",isNew:true,isPinned:false}));
+  const all=[...localRows,...fbRows].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  const count=document.getElementById("noticeUnifiedCount"); if(count)count.textContent=all.length+"건";
+  box.innerHTML=all.length?all.map(n=>`<div class="notice-modern-row" onclick="${n.source==='fb'?`openFbNotice(${n.idx})`:`openNotice('${n.id}')`}">
+      <span class="notice-badge ${n.isNew?'urgent':''}">${n.isNew?'긴급':(n.isPinned?'필독':'공지')}</span>
       <span class="notice-modern-title">${esc(n.title)}</span>
       <span class="notice-preview">${esc((n.body||'').replace(/\n/g,' '))}</span>
       <span class="notice-modern-date">${n.date||''}</span>
       <i class="ti ti-chevron-right notice-arrow"></i>
-    </div>`).join("")||`<div class="notice-empty">등록된 일반 공지가 없습니다.</div>`;
+    </div>`).join(""):`<div class="notice-empty">등록된 공지사항이 없습니다.</div>`;
+}
+function renderNoticeList(){
+  setSbView("notices");
+  document.getElementById("listTitle").textContent="공지사항";
+  document.getElementById("listCnt").textContent="";
+  document.getElementById("filterChips").innerHTML="";
+  const search=document.getElementById("listSearch"); if(search) search.placeholder="공지 제목, 내용을 검색하세요...";
   document.getElementById("resultsList").innerHTML=`
-    <div class="notice-page-head"><div><div class="notice-page-title"><i class="ti ti-bell"></i><span>공지사항</span></div><div class="notice-page-desc">업무에 필요한 주요 소식과 변경사항을 확인하세요.</div></div></div>
-    <div class="notice-tabs"><button class="notice-tab on">전체</button><button class="notice-tab">긴급공지</button><button class="notice-tab">일반공지</button></div>
-    <section class="notice-section urgent"><div class="notice-section-hd"><i class="ti ti-speakerphone"></i> 긴급 공지 <span class="notice-count" id="fbNoticeCount">-</span></div><div id="noticeListFromFb"><div class="notice-empty">불러오는 중...</div></div></section>
-    <section class="notice-section"><div class="notice-section-hd"><i class="ti ti-bell"></i> 일반 공지 <span class="notice-count">${sorted.length}</span></div>${generalHtml}</section>`;
+    <div class="notice-page-head"><div><div class="notice-page-title"><i class="ti ti-bell"></i><span>공지사항</span></div><div class="notice-page-desc">업무에 필요한 주요 소식과 변경사항을 최신순으로 확인하세요.</div></div></div>
+    <section class="notice-section">
+      <div class="notice-section-hd"><i class="ti ti-bell"></i> 전체 공지 <span class="notice-count" id="noticeUnifiedCount">${(notices||[]).length}건</span><span style="margin-left:auto;font-size:10.5px;font-weight:600;color:var(--t3)">최신순</span></div>
+      <div id="noticeUnifiedRows"></div>
+    </section>`;
+  renderUnifiedNoticeRows();
   if(window.loadFirebaseNoticesView)loadFirebaseNoticesView();
 }
 function deleteSingleNotice(id){if(!requireAdmin())return;if(!confirm("이 공지를 삭제할까요?"))return;notices=notices.filter(n=>n.id!==id);saveAll();renderNoticeList();}
@@ -2973,7 +2977,7 @@ function openOpsEntryModal(id,company,defaultCat=""){const e=id?entries.find(x=>
 function saveOpsEntry(eid,company){const g=id=>(document.getElementById(id)||{value:""}).value.trim();const q=g("oe_q"),steps=g("oe_st");if(!q||!steps){alert("문의내용과 답변 내용은 필수입니다.");return;}const ex=eid?entries.find(e=>e.id===eid):null;const entry={...(ex||{}),id:ex?ex.id:uid(),part:"B2B 상위기업",title:q.split("\n")[0].slice(0,60),customerQ:q,checkQ:g("oe_ck"),steps,escalation:g("oe_es"),caution:g("oe_wn"),companyCat:g("oe_cat")||"",company,status:ex?.status||"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:ex?.createdAt||today(),views:ex?.views||0,history:ex?.history||[]};if(ex)entries=entries.map(e=>e.id===entry.id?entry:e);else entries=[entry,...entries];saveAll();renderCompanyView(company,selectedCompanyCat);openOpsModal(company);}
 function deleteOpsEntry(id,company){if(!requireAdmin())return;if(!confirm("이 항목을 삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();renderCompanyView(company);openOpsModal(company);}
 function doDelete(id){if(!requireAdmin())return;if(!confirm("이 항목을 삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();selId=null;closeDetailPanel();renderResults();}
-function filterListSearch(q){document.querySelectorAll("#resultsList .r-card").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
+function filterListSearch(q){document.querySelectorAll("#resultsList .r-card, #resultsList .notice-modern-row").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
 function filterErrSearch(q){document.querySelectorAll("#errList .r-card").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
 function filterPrSearch(q){document.querySelectorAll("#prResultsList .r-card").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
 function filterCoSearch(q){const s=(q||"").trim().toLowerCase();document.querySelectorAll("#coResultsList .b2b-company-row,#coResultsList .b2b-mini-row").forEach(el=>{el.style.display=(!s||el.textContent.toLowerCase().includes(s))?"":"none";});}
