@@ -1,3 +1,74 @@
+붙여넣은 텍스트 (1)(20260916-063129).txt
+문서
+'
+편집
+편집
+편집
+편집
+편집
+
+이렇게 구성은 완전히 똑같이 두고 컬러 톤만 3가지로 잡아봤어 ㅎㅎ
+
+나는 지금 지식관리시스템에는 1번 모던 블루가 제일 자연스러워 보여. 너무 장난스럽지 않으면서 퀵메뉴 아이콘들만 컬러풀해서 기존보다 훨씬 덜 심심해.
+
+근데 2번 민트도 꽤 괜찮음ㅋㅋ
+골라주면 이번엔 그 시안 그대로 실제 HTML 코드에 적용해서 파일로 줄게.
+
+편집
+뭔가 이게 안어울리지 않아 ? 
+편집
+
+이렇게 3개로 뽑아봤어 💜
+
+내가 보기엔 1안이 지금 홈 화면에는 제일 잘 붙어. 기존보다 훨씬 정돈되면서도 공간을 많이 안 먹어.
+2안은 근무율이 핵심 지표처럼 보여서 존재감이 크고, 3안은 예쁘긴 한데 홈 전체가 조금 더 캐주얼해져.
+
+그리고 실제 적용할 때는 사진 프로필은 안 넣고 기존 데이터/아이콘을 그대로 활용하면 돼. 디자인만 저 형태로 바꾸는 거야.
+
+마음에 드는 번호 골라줘. 그러면 그 부분만 실제 HTML 코드 수정해서 줄게.
+
+편집
+
+응, 2안을 기준으로 얼굴을 완전히 빼면 이쪽이 훨씬 낫다. 👍
+
+그리고 네가 별로라고 한 출근 3명 / 전체 5명 표현도 없애고, 왼쪽에는 근무율 63% + 전체 5명 / 근무 중 3명 정도만 보조정보로 작게 두는 방향으로 바꿔봤어.
+
+특히 직원 이름을 굳이 늘어놓는 것보다 지금처럼 상태별 인원을 채널톡 1명 / 에듀·mg 1명 / 마이페이지 1명 / 8시 출근 1명 / 연차 1명처럼 보여주는 게 홈 화면에서 훨씬 빨리 읽혀.
+
+나는 이 디자인이면 코드에 적용해도 괜찮을 것 같아. 마음에 들면 지금 퍼플 HTML에서 오늘 근무현황 부분만 이 형태로 교체하고 다른 홈 구성은 그대로 둘게.
+
+밑에 좋은하루보내세요 멘트는 빼줘라 이상해
+
+응ㅋㅋ 그 멘트는 빼자. 😂
+모두 좋은 하루 보내세요 😊 / 오늘도 화이팅 💜 영역은 통째로 삭제하는 게 훨씬 깔끔해.
+
+그러면 근무현황은 딱 근무율 63% + 전체/근무 중 인원 + 상태별 카드까지만 보여주는 걸로 가자. 지금 홈에는 그게 제일 잘 어울려.
+
+ㅇ ㅇ
+
+좋아 ㅋㅋ 그럼 멘트 영역은 완전히 빼는 걸로 확정!
+근무현황은 2안 기반 + 얼굴 없음 + 근무율 원형 그래프 + 상태별 컬러 카드까지만 깔끔하게 가자. 💜
+
+오늘 오전 10:06
+코드줭~ 
+
+응응 이번엔 실제 코드 수정 완료! 💜
+
+오늘 근무현황만 아까 정한 방향으로 바꿨어.
+
+2안 기반
+사람 얼굴 ❌
+출근 3명 / 전체 5명 같은 큰 문구 ❌
+근무율 원형 그래프
+채널톡 / 에듀·mg / 마이데이 / 8시 출근 / 연차를 컬러 카드로 표시
+밑에 좋은 하루 보내세요 / 화이팅 멘트 ❌
+나머지 홈 화면과 퍼플 사이드바는 그대로
+
+👉 
+수정된 HTML 파일 받기
+
+이번엔 오늘 근무현황 디자인만 집중해서 봐봐!
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -1312,6 +1383,104 @@ body{background:var(--bg)}
 }
 </style>
 
+
+<style id="purple-colorful-home-v1">
+/* Purple theme + colorful home icons. Layout/order/sizing intentionally unchanged. */
+:root{--p:#7C3AED;--p50:#F5F3FF;--p100:#EDE9FE;--p600:#6D28D9;--p700:#5B21B6;--sb:#201B3A;--sb2:#292347;--sb-h:#352D59;--sb-a:#7C3AED;--bg:#F8F7FC;--border:#E9E5F2;--border2:#DDD6EA;--t1:#1F1B2D;--t2:#655E75;--t3:#9A93A8;--purple:#7C3AED;--sh:0 3px 14px rgba(76,54,120,.07);--sh2:0 12px 30px rgba(76,54,120,.12)}
+body,.app-main,.app-body{background:#F8F7FC}
+.sb{background:linear-gradient(180deg,#211C3C 0%,#292347 55%,#24203F 100%);box-shadow:5px 0 22px rgba(40,31,73,.10)}
+.sb-badge{background:linear-gradient(135deg,#8B5CF6,#A855F7);box-shadow:0 6px 15px rgba(124,58,237,.28)}
+.sb-item.on{background:linear-gradient(135deg,#6D28D9,#8B5CF6);box-shadow:0 5px 14px rgba(124,58,237,.24)}
+.sb-item:hover{background:rgba(255,255,255,.08)}
+.sb-sub-item.on{background:rgba(167,139,250,.17);color:#fff}
+.topbar{background:rgba(255,255,255,.96);border-bottom-color:#ECE8F3}
+.topbar-search input:focus{border-color:#A78BFA;box-shadow:0 0 0 4px rgba(124,58,237,.09)}
+.tb-btn.primary,.hd-btn-add,.list-add-btn,.co-add-btn,.btn-save,.admin-primary,.login-btn{background:linear-gradient(135deg,#7C3AED,#8B5CF6);border-color:transparent;box-shadow:0 4px 11px rgba(124,58,237,.17)}
+.home-card{border-color:#E9E5F1;box-shadow:0 3px 13px rgba(62,47,95,.055)}
+.home-card-title-lg{color:#272039}.hcard-more{color:#7C3AED}
+/* work status: keep exact layout, color only */
+.work-card{background:linear-gradient(145deg,#FFFFFF 60%,#FAF7FF 100%)}
+.work-card .home-card-title-lg:before{content:'●';color:#8B5CF6;font-size:13px;margin-right:8px;vertical-align:2px}
+.work-summary-item:nth-child(1) i{color:#3B82F6}.work-summary-item:nth-child(2) i{color:#8B5CF6}.work-summary-item:nth-child(3) i{color:#10B981}.work-summary-item:nth-child(4) i{color:#F97316}
+.work-summary-item:nth-child(1) strong{color:#2563EB}.work-summary-item:nth-child(2) strong{color:#7C3AED}.work-summary-item:nth-child(3) strong{color:#059669}.work-summary-item:nth-child(4) strong{color:#EA580C}
+/* quick menu: same grid and dimensions, colorful icon tiles */
+.quick-card{background:linear-gradient(145deg,#FFFFFF 62%,#FBF8FF 100%)}
+.quick-card .home-card-title-lg:before{content:'✦';color:#EC4899;font-size:17px;margin-right:8px}
+.quick-menu-btn{background:#fff;border-color:#ECE7F3;box-shadow:0 2px 8px rgba(52,40,84,.045)}
+.quick-menu-btn:hover{background:#FCFAFF;border-color:#D8CCF1;box-shadow:0 7px 18px rgba(100,72,150,.10)}
+.quick-menu-btn i{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:23px!important}
+.quick-menu-btn:nth-child(1) i{color:#2563EB;background:#DBEAFE}
+.quick-menu-btn:nth-child(2) i{color:#059669;background:#D1FAE5}
+.quick-menu-btn:nth-child(3) i{color:#7C3AED;background:#EDE9FE}
+.quick-menu-btn:nth-child(4) i{color:#E11D48;background:#FFE4E6}
+.quick-menu-btn:nth-child(5) i{color:#EA580C;background:#FFEDD5}
+.quick-menu-btn:nth-child(6) i{color:#0891B2;background:#CFFAFE}
+.quick-menu-btn:nth-child(1):hover{border-color:#BFDBFE}.quick-menu-btn:nth-child(2):hover{border-color:#A7F3D0}.quick-menu-btn:nth-child(3):hover{border-color:#DDD6FE}.quick-menu-btn:nth-child(4):hover{border-color:#FECDD3}.quick-menu-btn:nth-child(5):hover{border-color:#FED7AA}.quick-menu-btn:nth-child(6):hover{border-color:#A5F3FC}
+/* lower home cards: white base + restrained colorful accents */
+.home-midgrid>.home-card:nth-child(1){border-top:3px solid #8B5CF6}.home-midgrid>.home-card:nth-child(2){border-top:3px solid #FB7185}.home-midgrid>.home-card:nth-child(3){border-top:3px solid #F59E0B}
+.home-bottomgrid>.home-card:nth-child(1){border-top:3px solid #3B82F6}.home-bottomgrid>.home-card:nth-child(2){border-top:3px solid #10B981}
+#homeCatsCard .hcard-title:before{content:'◈';color:#8B5CF6;margin-right:7px}#homeNoticeCard .hcard-title:before{content:'●';color:#FB7185;margin-right:7px}#homeTop5Card .hcard-title:before{content:'★';color:#F59E0B;margin-right:7px}#homeRecentAddedCard .hcard-title:before{content:'＋';color:#3B82F6;margin-right:7px;font-weight:900}#homeRecentCard .hcard-title:before{content:'↻';color:#10B981;margin-right:7px;font-weight:900}
+.home-cat-icon{box-shadow:none}.cat-blue .home-cat-icon{background:#DBEAFE;color:#2563EB}.cat-green .home-cat-icon{background:#D1FAE5;color:#059669}.cat-purple .home-cat-icon{background:#EDE9FE;color:#7C3AED}.cat-amber .home-cat-icon{background:#FEF3C7;color:#D97706}.cat-pink .home-cat-icon{background:#FCE7F3;color:#DB2777}.cat-red .home-cat-icon{background:#FEE2E2;color:#DC2626}
+.recent-icon:nth-child(6n+1){background:#DBEAFE!important;color:#2563EB!important}.recent-icon:nth-child(6n+2){background:#D1FAE5!important;color:#059669!important}.recent-icon:nth-child(6n+3){background:#EDE9FE!important;color:#7C3AED!important}.recent-icon:nth-child(6n+4){background:#FFEDD5!important;color:#EA580C!important}.recent-icon:nth-child(6n+5){background:#FCE7F3!important;color:#DB2777!important}.recent-icon:nth-child(6n){background:#CFFAFE!important;color:#0891B2!important}
+.notice-dot.new{background:#FB7185}.top5-rank2.r1{background:#FEF3C7;color:#B45309}.top5-rank2.r2{background:#EDE9FE;color:#7C3AED}.top5-rank2.r3{background:#DBEAFE;color:#2563EB}
+.login-screen{background:linear-gradient(135deg,#F5F3FF,#FAF5FF 55%,#FFF7ED)}.login-logo{background:linear-gradient(135deg,#7C3AED,#A855F7,#EC4899)}
+</style>
+
+
+<style id="purple-sidebar-theme-override">
+/* 3번 퍼플 시안: 사이드바 색상만 변경 (구성/기능 유지) */
+.sidebar{
+  background:linear-gradient(180deg,#211b3f 0%,#29234f 48%,#211c40 100%) !important;
+  border-right:1px solid rgba(167,139,250,.16) !important;
+  box-shadow:8px 0 28px rgba(50,36,92,.10) !important;
+}
+.sidebar .brand,.sidebar .logo,.sidebar .sidebar-brand{color:#fff !important;}
+.sidebar a,.sidebar button,.sidebar .nav-item,.sidebar .menu-item,.sidebar .submenu-item{color:#eeeaff !important;}
+.sidebar .nav-item:hover,.sidebar .menu-item:hover,.sidebar a:hover,.sidebar button:hover{
+  background:rgba(139,92,246,.14) !important;
+  color:#fff !important;
+}
+.sidebar .active,.sidebar .nav-item.active,.sidebar .menu-item.active,.sidebar a.active{
+  background:linear-gradient(135deg,#7047e8 0%,#9a5cff 100%) !important;
+  color:#fff !important;
+  box-shadow:0 8px 18px rgba(124,76,232,.28) !important;
+}
+.sidebar i,.sidebar svg{color:#c4b5fd;}
+.sidebar .active i,.sidebar .active svg,.sidebar a.active i,.sidebar a.active svg{color:#fff !important;}
+.sidebar .submenu,.sidebar .sub-menu{border-color:rgba(196,181,253,.13) !important;}
+.sidebar .user-profile,.sidebar .profile,.sidebar .sidebar-footer{
+  border-color:rgba(196,181,253,.13) !important;
+  background:rgba(255,255,255,.025) !important;
+}
+</style>
+
+<style id="work-status-redesign-v2-final">
+/* 오늘 근무현황 2안: 얼굴/응원문구 없이 근무율 + 상태별 컬러 카드 */
+.work-card{background:linear-gradient(145deg,#fff 58%,#FBF9FF 100%)!important;overflow:hidden}
+.work-card .home-card-title-lg:before{content:'●'!important;color:#8B5CF6!important;font-size:12px!important;margin-right:8px!important;vertical-align:2px!important}
+#todayScheduleWidget{padding:6px 18px 14px!important}
+.work-v2{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;align-items:stretch}
+.work-v2-rate{display:flex;align-items:center;justify-content:center;border-right:1px solid #E9E2F6;padding-right:14px}
+.work-v2-ring{--rate:0;position:relative;width:94px;height:94px;border-radius:50%;background:conic-gradient(#8B5CF6 calc(var(--rate)*1%),#EDE9FE 0);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(124,58,237,.04)}
+.work-v2-ring:before{content:'';position:absolute;inset:10px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(76,54,120,.06)}
+.work-v2-rate-text{position:relative;z-index:1;text-align:center;line-height:1}
+.work-v2-rate-text strong{display:block;font-size:25px;letter-spacing:-1px;color:#6D28D9;font-weight:850}
+.work-v2-rate-text span{display:block;margin-top:7px;font-size:10.5px;color:#7C738A;font-weight:700}
+.work-v2-statuses{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;min-width:0}
+.work-v2-status{min-width:0;border-radius:11px;padding:10px 5px 9px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid transparent;text-align:center}
+.work-v2-status i{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:5px;background:rgba(255,255,255,.72)}
+.work-v2-label{font-size:10px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;color:#41394E}
+.work-v2-value{font-size:14px;font-weight:850;margin-top:3px;color:#201B2B;white-space:nowrap}
+.work-v2-status.s1{background:#ECFDF5;border-color:#D1FAE5}.work-v2-status.s1 i{color:#059669}
+.work-v2-status.s2{background:#F5F3FF;border-color:#EDE9FE}.work-v2-status.s2 i{color:#7C3AED}
+.work-v2-status.s3{background:#FFF1F5;border-color:#FFE4E6}.work-v2-status.s3 i{color:#E11D48}
+.work-v2-status.s4{background:#EFF6FF;border-color:#DBEAFE}.work-v2-status.s4 i{color:#2563EB}
+.work-v2-status.s5{background:#FFF7ED;border-color:#FFEDD5}.work-v2-status.s5 i{color:#EA580C}
+.work-v2-empty{padding:28px 0;text-align:center;color:var(--t3);font-size:12px}
+@media(max-width:1350px){.work-v2{grid-template-columns:92px minmax(0,1fr);gap:10px}.work-v2-ring{width:80px;height:80px}.work-v2-rate{padding-right:10px}.work-v2-rate-text strong{font-size:21px}.work-v2-status{padding:8px 3px}.work-v2-status i{width:26px;height:26px;font-size:15px}.work-v2-label{font-size:9px}.work-v2-value{font-size:12px}}
+@media(max-width:1100px){.work-v2{grid-template-columns:110px minmax(0,1fr)}.work-v2-statuses{gap:8px}}
+</style>
+
 </head>
 <body class="locked">
 
@@ -1335,8 +1504,7 @@ body{background:var(--bg)}
       <div id="sbNav">
         <div class="sb-item on" data-view="home" onclick="goHome()"><span class="sb-emoji">🏠</span><span>홈</span></div>
         <div class="sb-divider"></div>
-        <div class="sb-item" data-view="b2c" onclick="filterPart2('B2C')"><span class="sb-textonly">B2C</span></div>
-        <div class="sb-item" data-view="b2b" onclick="filterPart2('B2B 상위기업')"><span class="sb-textonly">B2B</span></div>
+        <div class="sb-item" data-view="b2c" onclick="filterPart2('B2C')"><span class="sb-emoji">📚</span><span>공통 업무지식</span></div>
         <div class="sb-item" data-view="product" onclick="filterPart2('상품 안내')"><span class="sb-emoji">🎁</span><span>상품 안내</span></div>
         <div class="sb-item" data-view="error" onclick="openErrorView()"><span class="sb-emoji">🛠️</span><span>오류 처리방법</span></div>
         <div class="sb-item" data-view="ops" onclick="toggleOpsMenu()"><span class="sb-emoji">🎧</span><span>운영지원</span><i class="ti ti-chevron-down sb-chev" id="opsChevron" style="transform:rotate(-90deg)"></i></div>
@@ -1700,8 +1868,7 @@ body{background:var(--bg)}
   <div class="sb-scroll">
     <div class="sb-item" onclick="goHome();toggleMobMenu()"><span class="sb-emoji">🏠</span><span>홈</span></div>
     <div class="sb-divider"></div>
-    <div class="sb-item" onclick="filterPart2('B2C');toggleMobMenu()"><span class="sb-emoji">🎓</span><span>B2C</span></div>
-    <div class="sb-item" onclick="filterPart2('B2B 상위기업');toggleMobMenu()"><span class="sb-emoji">🏢</span><span>B2B</span></div>
+    <div class="sb-item" onclick="filterPart2('B2C');toggleMobMenu()"><span class="sb-emoji">📚</span><span>공통 업무지식</span></div>
     <div class="sb-item" onclick="filterPart2('상품 안내');toggleMobMenu()"><span class="sb-emoji">🎁</span><span>상품 안내</span></div>
     <div class="sb-item" onclick="openErrorView();toggleMobMenu()"><span class="sb-emoji">🛠️</span><span>오류 처리방법</span></div>
     <div class="sb-item" onclick="filterPart2('운영지원');toggleMobMenu()"><span class="sb-emoji">🎧</span><span>운영지원</span></div>
@@ -1833,865 +2000,38 @@ async function fbAutoLogin(){
   }catch(e){console.warn("Firebase 로그인 실패(무시):",e);return false;}
 }
 async function loadTodaySchedule(){
-  const box=document.getElementById("todayScheduleWidget");
-  if(!box)return;
+  const box=document.getElementById("todayScheduleWidget"); if(!box)return;
   const ok=await fbAutoLogin();
-  if(!ok){box.innerHTML=`<span style="color:var(--t3);font-size:12px">📡 내부망에서는 캘린더 위젯이 표시되지 않습니다</span>`;return;}
+  if(!ok){box.innerHTML=`<div class="work-v2-empty">📡 내부망에서는 근무 현황이 표시되지 않습니다</div>`;return;}
   try{
     const snap=await _fbDb.collection("appData").doc("schedule").get();
-    if(!snap.exists){box.innerHTML=`<span style="color:var(--t3);font-size:12px">일정 데이터 없음</span>`;return;}
-    const weeks=snap.data().weeks||[];
-    const now=new Date();
-    const tmr=new Date(now);tmr.setDate(tmr.getDate()+1);
-    const todayLabel=`${now.getMonth()+1}/${now.getDate()}`;
-    const tmrLabel=`${tmr.getMonth()+1}/${tmr.getDate()}`;
-    const dateKey=(s)=>{const m=(s||"").match(/(\d{1,2})\s*\/\s*(\d{1,2})/);return m?`${parseInt(m[1],10)}/${parseInt(m[2],10)}`:"";};
-    let todayData=null,tmrData=null;
-    for(const week of weeks){
-      for(const day of (week.days||[])){
-        const k=dateKey(day.date);
-        if(k===todayLabel)todayData=day;
-        if(k===tmrLabel)tmrData=day;
-      }
-    }
-    const HOLIDAY_WORDS=["선거","공휴","휴일","설날","추석","광복","개천","현충","어린이날","성탄","크리스마스","신정","삼일절","3·1","제헌","한글날","부처님","대체공휴","신정","근로자의날","노동절"];
-    const cleanDuty=s=>String(s||"").replace(/당직/g,"").replace(/[:：]/g,"").trim();
-    const buildRow=(data)=>{
-      if(!data)return`<span style="color:var(--t3);font-size:12px">일정 없음</span>`;
-      const absent=data.absentInfo||[];
-      const isMyday=a=>a.type==="마이데이"||a.type==="4일제";
-      const isDuty=a=>(a.type||"").includes("당직")||(a.name||"").includes("당직");
-      const early=data.early||"";
-      const chat=data.chat||"";
-      const edu=data.edu||"";
-      const rate=data.rate?Math.round(data.rate*100):null;
-      // ===== 공휴일 판정 =====
-      const dutyNames=[...new Set([...absent.filter(isDuty).map(a=>cleanDuty(a.name||a.type)),cleanDuty(data.duty),cleanDuty(data.dangjik),cleanDuty(data.onDuty)].filter(Boolean))];
-      const holidayName=(typeof data.holidayName==="string"&&data.holidayName)?data.holidayName:"";
-      const earlyHoliday=HOLIDAY_WORDS.map(w=>{const m=early.match(new RegExp("[가-힣]*"+w+"[가-힣]*"));return m?m[0]:"";}).find(Boolean)||"";
-      const isHoliday=data.holiday===true||!!data.isHoliday||!!holidayName||!!earlyHoliday||dutyNames.length>0;
-      if(isHoliday){
-        const hn=holidayName||earlyHoliday||"공휴일";
-        return`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <span style="font-size:11px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:4px 10px;border-radius:7px;white-space:nowrap">🔴 ${esc(hn)}</span>
-          <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;padding:4px 9px;border-radius:7px;white-space:nowrap">🔔 당직</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${dutyNames.length?esc(dutyNames.join(", ")):"미지정"}</span></div>
-        </div>`;
-      }
-      // ===== 평일 =====
-      const yeoncha=absent.filter(a=>!isMyday(a)&&!isDuty(a)).map(a=>a.name);
-      const myday=absent.filter(isMyday).map(a=>a.name);
-      return`<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#059669;background:#ECFDF5;padding:4px 9px;border-radius:7px;white-space:nowrap">⏰ 8시출근</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${early||"없음"}</span></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#0284C7;background:#E0F2FE;padding:4px 9px;border-radius:7px;white-space:nowrap">💬 채널톡</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${chat||"없음"}</span></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#1D4ED8;background:#EFF6FF;padding:4px 9px;border-radius:7px;white-space:nowrap">🖤 연차</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${yeoncha.length?yeoncha.join(", "):"없음"}</span></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#DB2777;background:#FDF2F8;padding:4px 9px;border-radius:7px;white-space:nowrap">🌸 마이데이</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${myday.length?myday.join(", "):"없음"}</span></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#16181D;background:#F4F6F8;padding:4px 9px;border-radius:7px;white-space:nowrap">📧 에듀/MG당직</span><span style="font-size:13px;font-weight:600;color:var(--t1)">${edu||"없음"}</span></div>
-        ${rate!==null?`<div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:700;color:#D97706;background:#FEF3C7;padding:4px 9px;border-radius:7px;white-space:nowrap">📊 근무율</span><span style="font-size:13px;font-weight:700;color:var(--t1)">${rate}%</span></div>`:""}
-      </div>`;
-    };
-    box.innerHTML=`
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px">오늘</div>
-          ${buildRow(todayData)}
-        </div>
-        <div style="height:1px;background:var(--border)"></div>
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px">내일 (${tmrLabel})</div>
-          ${buildRow(tmrData)}
-        </div>
-      </div>`;
-  }catch(e){box.innerHTML=`<span style="color:#EF4444;font-size:12px">불러오기 실패: ${e.message}</span>`;}
-}
-async function loadFirebaseNotices(){
-  const box=document.getElementById("homeNotices");
-  if(!box)return;
-  if(!_fbDb){renderLocalNotices();return;}
-  await fbAutoLogin();
-  try{
-    const snap=await _fbDb.collection("notices").orderBy("createdAt","desc").limit(5).get();
-    if(snap.empty){box.innerHTML=`<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">등록된 공지가 없습니다</div>`;return;}
-    window._fbNotices=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
-    box.innerHTML=window._fbNotices.map((n,i)=>{
-      const date=n.createdAt?.toDate?n.createdAt.toDate().toISOString().slice(0,10):n.createdAt?.slice?.(0,10)||"";
-      return`<div class="notice-item2" style="cursor:pointer" onclick="openFbNotice(${i})">
-        <div class="notice-dot"></div>
-        <div class="notice-nm2">${esc(n.title||"")}</div>
-        <div class="notice-date">${date}</div>
-      </div>`;
-    }).join("");
-  }catch(e){renderLocalNotices();}
-}
-async function loadFirebaseNoticesView(){
-  const box=document.getElementById("noticeListFromFb");
-  if(!box)return;
-  if(!_fbDb){box.innerHTML=`<div style="padding:14px;text-align:center;color:var(--t3);font-size:12px">📡 내부망에서는 팀 공지가 표시되지 않습니다</div>`;return;}
-  await fbAutoLogin();
-  try{
-    const snap=await _fbDb.collection("notices").orderBy("createdAt","desc").get();
-    if(snap.empty){box.innerHTML=`<div style="padding:14px;text-align:center;color:var(--t3);font-size:12px">등록된 공지가 없습니다</div>`;return;}
-    window._fbNotices=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
-    box.innerHTML=window._fbNotices.map((n,i)=>{
-      const date=n.createdAt?.toDate?n.createdAt.toDate().toISOString().slice(0,10):n.createdAt?.slice?.(0,10)||"";
-      return`<div onclick="openFbNotice(${i})" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s" onmouseover="this.style.background='#F0F4FF'" onmouseout="this.style.background=''">
-        <i class="ti ti-bell" style="font-size:13px;color:#16181D;flex-shrink:0"></i>
-        <span style="flex:1;font-size:13px;font-weight:500;color:var(--t1)">${esc(n.title||"")}</span>
-        <span style="font-size:11.5px;color:var(--t3);flex-shrink:0">${date}</span>
-      </div>`;
-    }).join("");
-  }catch(e){box.innerHTML=`<div style="padding:14px;text-align:center;color:#EF4444;font-size:12px">불러오기 실패</div>`;}
-}
-function openFbNotice(idx){
-  const n=(window._fbNotices||[])[idx];if(!n)return;
-  const date=n.createdAt?.toDate?n.createdAt.toDate().toISOString().slice(0,10):n.createdAt?.slice?.(0,10)||"";
-  document.getElementById("fbNoticeTitle").textContent=n.title||"";
-  document.getElementById("fbNoticeDate").textContent=date;
-  document.getElementById("fbNoticeBody").innerHTML=n.content||n.body||n.text||"내용 없음";
-  document.getElementById("fbNoticeModal").style.display="flex";
-}
-function renderLocalNotices(){
-  const box=document.getElementById("homeNotices");
-  if(!box)return;
-  box.innerHTML=notices.slice(0,4).map(n=>`
-    <div class="notice-item2" onclick="openNotice('${n.id}')">
-      <div class="notice-dot${n.isNew?" new":""}"></div>
-      <div class="notice-nm2">${n.isPinned?`<i class="ti ti-pin" style="font-size:11px;color:#16181D;margin-right:3px"></i>`:""}${esc(n.title)}${n.isNew?`<span class="badge-n">N</span>`:""}</div>
-      <div class="notice-date">${n.date||""}</div>
-    </div>`).join("")||`<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">등록된 공지가 없습니다</div>`;
-}
-const PARTS=["B2B 상위기업","B2C","상품 안내","LMS 기능","ADMIN/뉴어드민","운영지원"];
-const B2B_COS=[],B2C_PRODUCTS=[],LMS_CATS=[],ADMIN_SUBS=[],OPS_SUBS=["에듀매니저","랩스(LABS)","CTI","LMS","ADMIN","NEWADMIN","원격 지원","앱 설치 지원","업무 요청·이관"];
-let notices=[];
-let entries=[],selId=null,bookmarks=[],recentViewed=[],users=[],currentUser=null;
-let historyLog=[],knowledgeRequests=[],missingSearches=[],customCategories={},companyProfiles={},productProfiles={};
-let selectedCompany="전체",searchQ="",filterCo="전체",filterPart="전체",filterSub="전체";
-let selectedProduct="전체",selectedProductSection=null;
-let filterMultiple=[],curView="home",sortMode="recent",showChips=false;
-const BK="csBM_v1",RK="csRV_v1",SESSION="csSession",SK="csDB_v1";
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function today(){return new Date().toISOString().slice(0,10)}
-function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
-function policyFreshness(updated){
-  const m=(updated||"").match(/(\d{4})/);
-  if(!m)return{icon:"⚠",label:"기준일 미상 · 확인 필요",bg:"#F1EFE8",fg:"#5F5E5A",warn:"최종 수정일을 알 수 없어요. 안내 전 현재 운영방식을 확인하세요."};
-  const gap=new Date().getFullYear()-(+m[1]);
-  if(gap<=2)return{icon:"✓",label:gap<=0?"올해 기준 · 최신":gap+"년 전 · 비교적 최신",bg:"#EAF3DE",fg:"#3B6D11",warn:null};
-  if(gap<=5)return{icon:"⚠",label:gap+"년 경과 · 검토 권장",bg:"#FAEEDA",fg:"#854F0B",warn:"마지막 수정 후 "+gap+"년 지났어요. 운영방식이 바뀌었을 수 있으니 확인하세요."};
-  return{icon:"⚠",label:gap+"년+ 경과 · 확인 필요",bg:"#FCEBEB",fg:"#A32D2D",warn:"마지막 수정이 "+gap+"년 전이에요. 그대로 안내하지 말고 현재 정책을 반드시 확인하세요."};
-}
-function parsePolicy(raw){
-  raw=(raw||"").replace(/&#65279;/g,"").trim();
-  const chips=[];const add=(l,t)=>{if(!chips.find(c=>c[0]===l))chips.push([l,t]);};
-  if(/일괄\s*입과/.test(raw))add("일괄입과","info");
-  if(/자율\s*(신청|수강|가입)/.test(raw))add("자율수강·신청","info");
-  if(/기간\s*연장[^。.\n]{0,10}(불가|불가능|안되|안 되|X|x|없)/.test(raw))add("기간연장 불가","danger");
-  if(/재응시[^。.\n]{0,14}(불가|불가능|안되|X|x|없|소진)/.test(raw))add("재응시 제한","danger");
-  if(/재신청[^。.\n]{0,12}(불가|불가능|안되|X|x)/.test(raw))add("재신청 불가","danger");
-  if(/커스텀|자체\s*사이트|링크\s*포팅|sso|SSO/.test(raw))add("커스텀·자체사이트","info");
-  if(/법정\s*교육/.test(raw))add("법정교육","warn");
-  if(/미수료[^。.\n]{0,16}(불가|패널티|급여|공제|페널티)/.test(raw))add("미수료 패널티","warn");
-  const parts=raw.split(/(?=(?:^|\s)\d{1,2}\.\s)/);const items=[];let intro=[];
-  parts.forEach(p=>{const m=p.match(/^\s*(\d{1,2})\.\s*([가-힣A-Za-z()·\/]{2,12})\s*([\s\S]*)$/);if(m){items.push({n:m[1],label:m[2],body:(m[3]||"").trim()});}else if(p.trim())intro.push(p.trim());});
-  return{chips,items,intro:intro.join("\n")};
-}
-const POLICY_CATS=[
-  {name:"회원관리",icon:"ti-user-check",kw:["회원","가입","탈퇴","대상","아이디","로그인","비번","비밀번호","사번"]},
-  {name:"수강관리",icon:"ti-book-2",kw:["운영기간","수강","신청","입과","자율","취소","제한","상시","결재","연간","학습","과정","마이크로","오프라인"]},
-  {name:"기간·재응시",icon:"ti-refresh",kw:["기간연장","재응시","재신청","선수료","연장","재수강"]},
-  {name:"수료·평가",icon:"ti-certificate",kw:["수료","이수","설문","평가","역량","학점","진도","독려","교재"]},
-  {name:"시스템·접속",icon:"ti-device-desktop",kw:["모바일","커스텀","lms","LMS","원격","sso","SSO","CP","앱","사이트","연수원","포팅","외부"]},
-  {name:"기타",icon:"ti-dots",kw:[]}
-];
-function renderPolicyHtml(raw){
-  const {chips,items,intro}=parsePolicy(raw);
-  const TONE={info:["#E6F1FB","#0C447C"],warn:["#FAEEDA","#854F0B"],danger:["#FCEBEB","#A32D2D"]};
-  const groups={};
-  items.forEach(it=>{let cat="기타";for(const c of POLICY_CATS){if(c.name!=="기타"&&c.kw.some(k=>it.label.includes(k))){cat=c.name;break;}}(groups[cat]=groups[cat]||[]).push(it);});
-  let h="";
-  if(chips.length)h+='<div style="margin-bottom:10px;display:flex;flex-wrap:wrap">'+chips.map(c=>{const t=TONE[c[1]];return `<span style="display:inline-flex;font-size:11.5px;padding:3px 9px;border-radius:6px;margin:0 5px 5px 0;background:${t[0]};color:${t[1]};font-weight:600">${esc(c[0])}</span>`;}).join("")+"</div>";
-  if(intro)h+=`<div style="font-size:12.5px;line-height:1.6;color:var(--t2);background:var(--bg);padding:9px 11px;border-radius:8px;margin-bottom:10px;white-space:pre-wrap">${esc(intro)}</div>`;
-  POLICY_CATS.forEach(c=>{const g=groups[c.name];if(!g||!g.length)return;
-    const body=g.map(it=>`<div style="display:flex;gap:9px;align-items:flex-start"><span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--p);background:var(--p50);padding:3px 9px;border-radius:6px;min-width:78px;text-align:center">${esc(it.label)}</span><span style="font-size:13px;line-height:1.65;color:var(--t1);white-space:pre-wrap;flex:1;min-width:0">${esc(it.body)||"-"}</span></div>`).join("");
-    h+=`<details class="pfold"><summary><div style="width:30px;height:30px;background:var(--p50);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${c.icon}" style="font-size:16px;color:var(--p)"></i></div><span style="flex:1;font-size:13.5px;font-weight:700;color:var(--t1)">${c.name}</span><span style="font-size:12px;color:var(--t3);margin-right:2px">${g.length}건</span><i class="ti ti-chevron-right pf-chev" style="font-size:15px;color:var(--t3)"></i></summary><div style="padding:4px 14px 12px;display:flex;flex-direction:column;gap:7px">${body}</div></details>`;
-  });
-  if(!items.length&&!intro)h=`<div style="font-size:13px;line-height:1.7;color:var(--t1);white-space:pre-wrap">${esc(raw)}</div>`;
-  return h;
-}
-function policyGroups(raw){const {chips,items,intro}=parsePolicy(raw);const groups={};items.forEach(it=>{let cat="기타";for(const c of POLICY_CATS){if(c.name!=="기타"&&c.kw.some(k=>it.label.includes(k))){cat=c.name;break;}}(groups[cat]=groups[cat]||[]).push(it);});return {chips,intro,groups};}
-function policyHeaderHtml(raw){const {chips,intro}=policyGroups(raw);const TONE={info:["#E6F1FB","#0C447C"],warn:["#FAEEDA","#854F0B"],danger:["#FCEBEB","#A32D2D"]};let h="";if(chips.length)h+='<div style="margin-bottom:8px;display:flex;flex-wrap:wrap">'+chips.map(c=>{const t=TONE[c[1]];return `<span style="display:inline-flex;font-size:11.5px;padding:3px 9px;border-radius:6px;margin:0 5px 5px 0;background:${t[0]};color:${t[1]};font-weight:600">${esc(c[0])}</span>`;}).join("")+"</div>";if(intro)h+=`<div style="font-size:12.5px;line-height:1.6;color:var(--t2);background:var(--bg);padding:9px 11px;border-radius:8px;white-space:pre-wrap">${esc(intro)}</div>`;return h;}
-function policyItemsHtml(items){if(!items||!items.length)return"";return '<div style="display:flex;flex-direction:column;gap:7px">'+items.map(it=>`<div style="display:flex;gap:9px;align-items:flex-start"><span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--p);background:var(--p50);padding:3px 9px;border-radius:6px;min-width:78px;text-align:center">${esc(it.label)}</span><span style="font-size:13px;line-height:1.65;color:var(--t1);white-space:pre-wrap;flex:1;min-width:0">${esc(it.body)||"-"}</span></div>`).join("")+"</div>";}
-function policyCatIcon(name){const c=POLICY_CATS.find(x=>x.name===name);return c?c.icon:"ti-folder";}
-function policyCatOf(label){if(!label)return"기타";for(const c of POLICY_CATS){if(c.name===label)return c.name;}for(const c of POLICY_CATS){if(c.name!=="기타"&&c.kw.some(k=>label.includes(k)))return c.name;}return"기타";}
-function getGreeting(){const h=new Date().getHours();const n=currentUser?currentUser.id:"";if(h<12)return`좋은 아침이에요, ${n}님! ☀️`;if(h<18)return`안녕하세요, ${n}님! 👋`;return`수고 많으셨어요, ${n}님! 🌙`;}
-function saveAll(){
-  try{
-    const data={entries,users,historyLog,knowledgeRequests,missingSearches,customCategories,companyProfiles,productProfiles,notices};
-    localStorage.setItem(SK,JSON.stringify(data));
-    localStorage.setItem(BK,JSON.stringify(bookmarks));
-    localStorage.setItem(RK,JSON.stringify(recentViewed));
-  }catch(e){console.error("Save error:",e);}
-}
-function applyCustomCategories(){customCategories={b2b:[],b2c:[],lms:[],admin:[],ops:[],...customCategories};customCategories.b2b.forEach(x=>{if(!B2B_COS.includes(x))B2B_COS.push(x)});customCategories.b2c.forEach(x=>{if(!B2C_PRODUCTS.includes(x))B2C_PRODUCTS.push(x)});customCategories.lms.forEach(x=>{if(!LMS_CATS.includes(x))LMS_CATS.push(x)});customCategories.admin.forEach(x=>{if(!ADMIN_SUBS.includes(x))ADMIN_SUBS.push(x)});customCategories.ops.forEach(x=>{if(!OPS_SUBS.includes(x))OPS_SUBS.push(x)});}
-function statusLabel(s){return{active:"사용중",draft:"작성중",review:"검토중",hidden:"숨김"}[s||"active"]||"사용중";}
-function statusClass(s){return"status-badge status-"+(s||"active");}
-function loadData(){
-  try{
-    const raw=localStorage.getItem(SK);
-    if(raw){
-      const d=JSON.parse(raw);
-      entries=Array.isArray(d.entries)?d.entries:[];
-      users=Array.isArray(d.users)?d.users:[];
-      historyLog=Array.isArray(d.historyLog)?d.historyLog:[];
-      knowledgeRequests=Array.isArray(d.knowledgeRequests)?d.knowledgeRequests:[];
-      missingSearches=Array.isArray(d.missingSearches)?d.missingSearches:[];
-      customCategories=d.customCategories||{};
-      companyProfiles=d.companyProfiles||{};
-      productProfiles=d.productProfiles||{};
-      notices=Array.isArray(d.notices)?d.notices:[];
-    }
-  }catch(e){console.error("Load error:",e);}
-  const defaultUsers=[
-    {id:"admin",pw:"admin123",role:"admin",name:"관리자",createdAt:today()},
-    {id:"201978",pw:"201978",role:"counselor",name:"양하영",createdAt:today()},
-    {id:"2022057",pw:"2022057",role:"counselor",name:"최태준",createdAt:today()},
-    {id:"201990",pw:"201990",role:"counselor",name:"박빛나",createdAt:today()},
-    {id:"2026012",pw:"2026012",role:"counselor",name:"김다영",createdAt:today()},
-    {id:"402514",pw:"402514",role:"counselor",name:"윤지현",createdAt:today()},
-    {id:"402531",pw:"402531",role:"counselor",name:"허형석",createdAt:today()},
-    {id:"402510",pw:"402510",role:"counselor",name:"김세영",createdAt:today()},
-  ];
-  if(!Array.isArray(users))users=[];
-  defaultUsers.forEach(du=>{
-    if(!users.find(u=>u.id===du.id))users.push(du);
-  });
-  try{bookmarks=JSON.parse(localStorage.getItem(BK)||"[]")}catch{bookmarks=[];}
-  try{recentViewed=JSON.parse(localStorage.getItem(RK)||"[]")}catch{recentViewed=[];}
-  if(!Array.isArray(notices))notices=[];
-  applyCustomCategories();
-  entries=entries.map(e=>({...e,status:e.status||"active",history:e.history||[]}));
-  if(!Array.isArray(entries))entries=[];
-  let _migrated=false;
-  entries=entries.map(e=>{if(e.part==="오류 해결방법"){_migrated=true;return{...e,part:"오류 처리방법"};}return e;});
-  if(_migrated)saveAll();
-  initFilters();
-}
-function applyRoleUI(){
-  const isAdmin=currentUser&&currentUser.role==="admin";
-  document.body.classList.toggle("is-admin",!!isAdmin);
-  document.body.classList.toggle("locked",!currentUser);
-  document.getElementById("loginScreen").style.display=currentUser?"none":"flex";
-  const av=document.getElementById("sbAvatar"),un=document.getElementById("sbUname"),ur=document.getElementById("sbUrole");
-  if(currentUser){
-    av.textContent=currentUser.id.slice(0,2).toUpperCase();un.textContent=currentUser.id;ur.textContent=isAdmin?"관리자":"상담원";
-    const ma=document.getElementById("mobSbAvatar"),mu=document.getElementById("mobSbUname"),mr=document.getElementById("mobSbUrole");
-    if(ma)ma.textContent=currentUser.id.slice(0,2).toUpperCase();if(mu)mu.textContent=currentUser.id;if(mr)mr.textContent=isAdmin?"관리자":"상담원";
-  }else{av.textContent="?";un.textContent="로그인 전";ur.textContent="";}
-  const tib=document.getElementById("topImportBtn");
-  if(tib)tib.style.display=(currentUser&&!isAdmin)?"flex":"none";
-  if(currentUser)renderHome();
-}
-function restoreSession(){const sid=localStorage.getItem(SESSION);currentUser=users.find(u=>u.id===sid)||null;applyRoleUI();}
-const ACCESS_LOG_URL="https://script.google.com/macros/s/AKfycbztwxmlmI_OozaiPccuKJAX6_G-moR_cUaSo9lkRCUTp4YqNMfo4D3ItDwcxhRPPwhWBw/exec";
-function sendAccessLog(u){try{fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({id:u.id||"",name:u.name||"",role:u.role||""})});}catch(e){}}
-function login(ev){if(ev)ev.preventDefault();const id=document.getElementById("loginId").value.trim();const pw=document.getElementById("loginPw").value;let u=users.find(x=>x.id===id&&x.pw===pw);if(!u&&id==="admin"&&pw==="admin123"){u={id:"admin",pw:"admin123",role:"admin",name:"관리자",createdAt:today()};users=[u,...users.filter(x=>x.id!=="admin")];saveAll();}if(!u){document.getElementById("loginMsg").textContent="아이디 또는 비밀번호를 확인해주세요.";return;}currentUser={id:u.id,role:u.role,name:u.name};localStorage.setItem(SESSION,u.id);document.getElementById("loginPw").value="";sendAccessLog(currentUser);applyRoleUI();checkShowImportGuide();}
-function logout(){closeAdmin();currentUser=null;localStorage.removeItem(SESSION);applyRoleUI();}
-function requireAdmin(){if(currentUser&&currentUser.role==="admin")return true;alert("관리자만 사용할 수 있는 기능입니다.");return false;}
-function showView(v){["viewHome","viewList","viewCompanies","viewProducts","viewErrors","viewMySpace","viewHelper"].forEach(id=>{document.getElementById(id).style.display=id===v?"block":"none";});}
-function setSbView(v){document.querySelectorAll(".sb-item").forEach(el=>el.classList.toggle("on",el.dataset.view===v));}
-function setView(v){
-  curView=v;filterMultiple=[];
-  if(v==="home"){showView("viewHome");setSbView("home");renderHome();}
-  else if(v==="bookmarks"){showView("viewList");setSbView("");filterByIds(bookmarks,"즐겨찾기",`총 ${bookmarks.length}건`);}
-  else if(v==="recent"){showView("viewList");setSbView("");filterByIds(recentViewed,"최근 본 문서",`총 ${recentViewed.filter(id=>entries.find(e=>e.id===id)).length}건`);}
-  else if(v==="notices"){showView("viewList");setSbView("notices");renderNoticeList();if(window.loadFirebaseNoticesView)loadFirebaseNoticesView();}
-  else if(v==="newguide"){showView("viewList");setSbView("");const ng=entries.filter(e=>e.newGuide&&e.status!=="hidden");renderList(ng,"신규 상담사 가이드",`총 ${ng.length}건`);}
-  closeDetailPanel();
-}
-let _bulkType="";
-const BULK_CONFIG={
-  b2b:{title:"B2B 일괄 업로드",headers:["기업명*","카테고리","문의제목*","고객문의유형*","필수확인질문","답변내용*","이관기준","주의사항"],sample:[["LH중앙공동주택관리지원센터","회원가입","회원가입은 어떻게 하나요?","회원가입 하고 싶어요","1. 본인명의 휴대폰 확인","사이트 우측 상단 회원가입 클릭","해당없음",""],["지방공기업평가원","수강관리","수강기간은 얼마나 되나요?","수강기간이 얼마인지 궁금해요","","수강신청일로부터 30일","",""]],parse:(row)=>({part:"B2B 상위기업",company:row[0],companyCat:row[1],title:row[2],customerQ:row[3],checkQ:row[4],steps:row[5],escalation:row[6],caution:row[7]})},
-  b2c:{title:"B2C 일괄 업로드",headers:["제목*","고객문의유형*","원인","필수확인질문","처리방법*","예외케이스","이관기준","주의사항"],sample:[["수료증은 어디서 출력하나요?","수료증 출력하고 싶어요","수강 미완료","수강 완료 여부 확인","마이페이지 > 수료증 > 출력","","해당없음",""],["로그인이 안돼요","비밀번호를 잊어버렸어요","","가입 이메일 확인","비밀번호 찾기 클릭","SNS가입은 소셜로그인","해당없음",""]],parse:(row)=>({part:"B2C",title:row[0],customerQ:row[1],cause:row[2],checkQ:row[3],steps:row[4],exceptions:row[5],escalation:row[6],caution:row[7]})},
-  product:{title:"상품 안내 일괄 업로드",headers:["상품명*","구분(FAQ/제안서)*","제목*","답변내용*","주의사항"],sample:[["휴넷CEO","FAQ","Business Review란?","휴넷CEO 비즈니스 인사이트 서비스입니다",""],["리더십저니","FAQ","수강기간은 얼마나 되나요?","수강신청일로부터 30일입니다",""]],parse:(row)=>({part:"상품 안내",productName:row[0],productSection:row[1]||"FAQ",title:row[2],steps:row[3],caution:row[4]})},
-  error:{title:"오류 처리방법 일괄 업로드",headers:["오류제목*","오류내용(고객표현)*","처리방법*","주의사항"],sample:[["결제창이 뜨지 않아요","결제 버튼 눌러도 반응없어요","1. 팝업 차단 해제\n2. 다른 브라우저 시도","Chrome 권장"],["수료증 출력이 안돼요","수료증 버튼 눌러도 아무것도 안 나와요","1. 팝업 차단 해제\n2. 수강완료 확인",""]],parse:(row)=>({part:"오류 처리방법",title:row[0],customerQ:row[1],steps:row[2],caution:row[3]})},
-  list:{title:"일괄 업로드",headers:["분류","제목","고객문의유형","필수확인질문","답변/처리방법","이관기준","주의사항","기업명(B2B)","카테고리(B2B)","상품명(상품안내)","하위분류(운영지원/CTI·LMS 등)","관련매뉴얼/링크"],sample:[["운영지원","[CTI] 로그인 방법","CTI 로그인 방법","","1. cti.hunet.co.kr 접속  2. 아이디=사번  3. 초기 비밀번호=사번","해당없음","초기 비밀번호는 사번과 동일","","","","CTI",""]],parse:(row)=>{const P=["B2B 상위기업","B2C","상품 안내","오류 처리방법","LMS 기능","ADMIN/뉴어드민","운영지원"];const part=P.includes((row[0]||"").trim())?(row[0]||"").trim():"B2C";const sub=(row[10]||"").trim();return{part,title:row[1],customerQ:row[2],checkQ:row[3],steps:row[4],escalation:row[5],caution:row[6],company:row[7],companyCat:row[8],productName:row[9],opsSub:part==="운영지원"?sub:"",lmsCat:part==="LMS 기능"?sub:"",adminSub:part==="ADMIN/뉴어드민"?sub:"",relatedManuals:row[11]||""};}}
-};
-function openBulkUpload(type){if(!requireAdmin())return;_bulkType=type;const cfg=BULK_CONFIG[type]||BULK_CONFIG.list;document.getElementById("bulkUploadTitle").textContent=cfg.title;document.getElementById("bulkPreview").innerHTML="";document.getElementById("bulkFileInput").value="";document.getElementById("bulkUploadModal").style.display="flex";}
-function closeBulkUpload(){document.getElementById("bulkUploadModal").style.display="none";_bulkType="";}
-function downloadBulkSample(){if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const cfg=BULK_CONFIG[_bulkType]||BULK_CONFIG.list;const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet([cfg.headers,...cfg.sample]);ws["!cols"]=cfg.headers.map(()=>({wch:24}));XLSX.utils.book_append_sheet(wb,ws,"업로드양식");XLSX.writeFile(wb,`지식관리시스템_${cfg.title}_샘플.xlsx`);}
-function handleBulkFile(input){const file=input.files[0];if(!file)return;if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const reader=new FileReader();reader.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:"binary"});const ws=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});const dataRows=rows.slice(1).filter(r=>r[0]&&r[1]);if(!dataRows.length){alert("데이터가 없습니다. 샘플 양식을 확인해주세요.");return;}window._bulkRows=dataRows;document.getElementById("bulkPreview").innerHTML=`<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px"><div style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t1)">${dataRows.length}건 확인됨</div><div style="display:flex;flex-direction:column;gap:4px;max-height:150px;overflow-y:auto">${dataRows.slice(0,5).map(r=>`<div style="font-size:12px;color:var(--t2);padding:4px 0;border-bottom:1px solid #F3F5F9"><span style="font-weight:500">${esc(String(r[0]||""))}</span> — ${esc(String(r[1]||"").slice(0,40))}</div>`).join("")}${dataRows.length>5?`<div style="font-size:11px;color:var(--t3);padding:4px 0">... 외 ${dataRows.length-5}건</div>`:""}</div></div><button class="btn-save" onclick="confirmBulkImport()" style="display:flex;align-items:center;gap:6px;width:100%;justify-content:center"><i class="ti ti-check" style="font-size:13px"></i>${dataRows.length}건 추가하기</button>`;}catch(err){alert("파일을 읽는 중 오류가 발생했습니다.");}};reader.readAsBinaryString(file);input.value="";}
-function confirmBulkImport(){const rows=window._bulkRows;if(!rows||!rows.length)return;if(!confirm(`${rows.length}건을 추가할까요?`))return;const cfg=BULK_CONFIG[_bulkType]||BULK_CONFIG.list;let added=0;rows.forEach(r=>{const base=cfg.parse(r.map(v=>String(v||"").trim()));if(!base.title)return;if(base.company){if(!companyProfiles[base.company])companyProfiles[base.company]={code:"",manager:"",pcUrl:"",moUrl:"",cats:[]};if(base.companyCat&&base.companyCat.trim()){if(!companyProfiles[base.company].cats.includes(base.companyCat)){companyProfiles[base.company].cats.push(base.companyCat);}}}entries=[{...base,id:uid(),status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:today(),views:0,history:[],viewers:[],version:"1.0"},...entries];added++;});saveAll();closeBulkUpload();alert(`✅ ${added}건이 추가됐어요!`);if(_bulkType==="b2b")renderCompanyView("전체");else if(_bulkType==="product")renderProductView("전체");else if(_bulkType==="error")openErrorView();else renderResults();window._bulkRows=null;}
-function helperOpenDoc(id){openDetail(id);showView("viewHelper");setSbView("helper");curView="helper";}
-function openHelper(){curView="helper";showView("viewHelper");setSbView("helper");if(!document.getElementById("helperChat").children.length){addHelperMsg("bot","안녕하세요! 처리 방법이나 정책이 궁금한 내용을 질문해 주세요.\n예: 환불 철회 어떻게 해? / 회원 탈퇴 처리",[]);}setTimeout(function(){var i=document.getElementById("helperQ");if(i)i.focus();},50);}
-function helperScore(e,tokens){
-  var T=(e.title||"").toLowerCase();
-  var Q=(e.customerQ||"").toLowerCase();
-  var C=((e.company||"")+" "+(e.companyCat||"")+" "+(e.productName||"")).toLowerCase();
-  var S=((e.steps||"")+" "+(e.caution||"")+" "+(e.escalation||"")).toLowerCase();
-  var sc=0,hit=0,strongHit=0;
-  tokens.forEach(function(t){
-    var sv=0,strong=false;
-    if(T.indexOf(t)>=0){sv=5;strong=true;}
-    else if(Q.indexOf(t)>=0){sv=4;strong=true;}
-    else if(C.indexOf(t)>=0){sv=3;strong=true;}
-    else if(S.indexOf(t)>=0){sv=1;}
-    if(sv>0){sc+=sv;hit++;if(strong)strongHit++;}
-  });
-  if(!hit)return 0;
-  // 핵심(제목/질문/기업명)에 하나도 안 걸리면 신뢰도 낮음
-  var coverage=hit/tokens.length;
-  return {score:strongHit*100+sc, strongHit:strongHit, hit:hit, coverage:coverage};
-}
-function addHelperMsg(role,text,sources){var chat=document.getElementById("helperChat");var wrap=document.createElement("div");if(role==="user"){wrap.style.cssText="align-self:flex-end;max-width:75%;background:var(--p);color:#fff;border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:14px;line-height:1.6;white-space:pre-wrap";wrap.textContent=text;}else{wrap.style.cssText="align-self:flex-start;max-width:85%;background:#fff;border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:14px;line-height:1.7;color:var(--t1)";var html='<div style="white-space:pre-wrap">'+esc(text)+'</div>';if(sources&&sources.length){html+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11.5px;color:var(--t2);font-weight:600">참고 문서</div>';for(var k=0;k<sources.length;k++){var e=sources[k];html+='<div onclick="helperOpenDoc(\''+e.id+'\')" style="display:flex;align-items:center;gap:7px;background:#FAFBFC;border:1px solid var(--border);border-radius:8px;padding:7px 10px;margin-top:5px;cursor:pointer"><i class="ti ti-file-text" style="font-size:14px;color:var(--p)"></i><span style="font-size:12.5px;color:var(--t1);flex:1">'+esc(e.title)+'</span><i class="ti ti-chevron-right" style="font-size:13px;color:var(--t3)"></i></div>';}}wrap.innerHTML=html;}chat.appendChild(wrap);chat.scrollTop=chat.scrollHeight;}
-function askHelper(){
-  var inp=document.getElementById("helperQ");
-  var q=(inp.value||"").trim();
-  if(!q)return;
-  addHelperMsg("user",q,[]);
-  inp.value="";
-  var ql=q.toLowerCase();
-  // 흔한 단어 제외 (이런 게 걸려서 엉뚱한 문서가 매칭됨)
-  var STOP={"어떻게":1,"가능":1,"인가요":1,"하나요":1,"되나요":1,"있나요":1,"가요":1,"해":1,"해줘":1,"해요":1,"좀":1,
-    "의":1,"를":1,"을":1,"이":1,"가":1,"은":1,"는":1,"에":1,"수":1,"것":1,"때":1,"및":1,"등":1,"문의":1,"관련":1,
-    "확인":1,"방법":1,"처리":1,"안내":1,"내용":1,"경우":1,"어디":1,"무엇":1,"뭐":1,"알려줘":1,"궁금":1,"질문":1,"싶어":1,"하고":1,"에서":1,"으로":1,"뭔가":1};
-
-  var companies=getCompanyList();
-  var matched="";
-  for(var i=0;i<companies.length;i++){var c=companies[i];if(c&&ql.indexOf((""+c).toLowerCase())>=0&&(""+c).length>matched.length)matched=c;}
-  var tokens=ql.split(/\s+/).filter(function(t){return t.length>=2&&!STOP[t]&&(!matched||(""+matched).toLowerCase().indexOf(t)<0);});
-
-  // 답변 본문: 처리 방법(steps) 우선. script는 메뉴 경로라 보조로만.
-  function answerOf(e){
-    var a=((e.steps||"")+"").trim();
-    if(a)return a;
-    a=((e.script||"")+"").trim();
-    if(a)return "[메뉴 경로]\n"+a;
-    return "(답변 본문이 없어요. 아래 문서를 열어 확인해 주세요.)";
-  }
-
-  // 기업명이 명시된 경우
-  if(matched){
-    var companyDocs=entries.filter(function(e){return e.company===matched;});
-    var prof=(companyProfiles||{})[matched]||{};
-    if(tokens.length){
-      var sc=companyDocs.map(function(e){var r=helperScore(e,tokens);return{e:e,r:r};})
-        .filter(function(x){return x.r && x.r.strongHit>0;})
-        .sort(function(a,b){return b.r.score-a.r.score;});
-      if(sc.length){
-        addHelperMsg("bot",answerOf(sc[0].e),sc.slice(0,3).map(function(x){return x.e;}));
-      }else{
-        var m=matched+"에서 '"+tokens.join(" ")+"' 관련 문서를 못 찾았어요.";
-        if(companyDocs.length){m+="\n대신 "+matched+" 문서 목록이에요.";addHelperMsg("bot",m,companyDocs.slice(0,5));}
-        else if(prof.policy){m+="\n\n[운영 특이사항]\n"+(""+prof.policy);addHelperMsg("bot",m,[]);}
-        else{m+="\n"+matched+"에 등록된 문서가 없어요.";addHelperMsg("bot",m,[]);}
-      }
-    }else{
-      if(companyDocs.length){addHelperMsg("bot",matched+" 문서 "+companyDocs.length+"개예요. 어떤 내용이 궁금하세요?",companyDocs.slice(0,6));}
-      else if(prof.policy){addHelperMsg("bot",matched+"의 운영 특이사항이에요.\n\n"+(""+prof.policy),[]);}
-      else{addHelperMsg("bot",matched+"은 기업 목록엔 있지만 아직 등록된 문서가 없어요.",[]);}
-    }
-    return;
-  }
-
-  if(!tokens.length){addHelperMsg("bot","질문을 조금 더 구체적으로 입력해 주세요.\n예: 수료증 출력 / 환불 규정 / CTI 로그인",[]);return;}
-
-  // 일반 검색: 제목·질문·기업명에 실제로 걸린 것(strongHit)만 신뢰
-  var scored=entries.map(function(e){var r=helperScore(e,tokens);return{e:e,r:r};})
-    .filter(function(x){return x.r && x.r.strongHit>0;})
-    .sort(function(a,b){return b.r.score-a.r.score;});
-
-  if(!scored.length){
-    // 본문에만 살짝 걸린 것들 = 참고용 후보로만 제시 (답변인 척 안 함)
-    var weak=entries.map(function(e){var r=helperScore(e,tokens);return{e:e,r:r};})
-      .filter(function(x){return x.r && x.r.hit>0;})
-      .sort(function(a,b){return b.r.score-a.r.score;}).slice(0,3);
-    if(weak.length){
-      addHelperMsg("bot","'"+q+"'에 딱 맞는 문서를 못 찾았어요.\n혹시 이 문서들이 관련 있을까요?",weak.map(function(x){return x.e;}));
-    }else{
-      addHelperMsg("bot","'"+q+"' 관련 문서를 찾지 못했어요.\n다른 키워드로 질문하시거나, 상단 검색을 이용해 주세요.",[]);
-    }
-    return;
-  }
-
-  var top=scored[0];
-  // 신뢰도 낮으면(핵심 토큰 1개만 걸림 + 여러 토큰 중 일부만 매칭) 확신 없이 제시
-  var lowConfidence = top.r.strongHit===1 && tokens.length>=2 && top.r.coverage<0.6;
-  if(lowConfidence){
-    addHelperMsg("bot","'"+q+"'에 정확히 맞는 문서는 없지만, 아래 문서가 관련 있을 수 있어요.",scored.slice(0,3).map(function(x){return x.e;}));
-    return;
-  }
-  addHelperMsg("bot",answerOf(top.e),scored.slice(0,3).map(function(x){return x.e;}));
-}
-function openMySpace(){curView="myspace";showView("viewMySpace");setSbView("myspace");const bmItems=bookmarks.map(id=>entries.find(e=>e.id===id)).filter(Boolean);document.getElementById("bmCnt").textContent=`${bmItems.length}건`;document.getElementById("myBmList").innerHTML=bmItems.length?bmItems.map(e=>`<div class="r-card" onclick="openDetail('${e.id}')"><div class="r-card-top"><span class="r-card-title">${esc(e.title)}</span><button class="r-star on" onclick="toggleBM(event,'${e.id}')">★</button></div><div class="r-card-tags"><span class="r-tag">${esc(e.part)}</span>${e.company?`<span class="r-tag co">${esc(e.company)}</span>`:""}</div><div class="r-card-foot"><span><i class="ti ti-calendar"></i>${e.updatedAt||""}</span><span><i class="ti ti-eye"></i>${e.views||0}회</span></div></div>`).join(""):`<div class="empty-state" style="padding:32px 0"><i class="ti ti-star-off"></i><p style="font-size:12px">즐겨찾기한 문서가 없습니다</p></div>`;loadMemos();}
-function loadMemos(){const st=document.getElementById("memoStatus");const box=document.getElementById("myMemoList");if(!box||!currentUser)return;st.textContent="불러오는 중...";fetch(`${ACCESS_LOG_URL}?action=getMemos&id=${encodeURIComponent(currentUser.id)}`).then(r=>r.json()).then(d=>{st.textContent="";renderMemos((d&&d.ok&&Array.isArray(d.memos))?d.memos:[]);}).catch(()=>{st.textContent="(불러오기 실패 - 네트워크 확인)";renderMemos([]);});}
-function renderMemos(list){const box=document.getElementById("myMemoList");if(!box)return;if(!list.length){box.innerHTML=`<div style="padding:18px;text-align:center;color:var(--t3);font-size:12px;background:#FAFAFE;border:1px dashed var(--border);border-radius:11px">아직 메모가 없어요. 위에 입력하고 등록을 눌러보세요.</div>`;return;}box.innerHTML=list.map(m=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:#FFFDF7;border:1px solid var(--border);border-radius:11px"><div style="flex:1;min-width:0"><div style="font-size:13px;color:var(--t1);line-height:1.6;white-space:pre-wrap;word-break:break-word">${esc(m.memo)}</div><div style="font-size:11px;color:var(--t3);margin-top:6px"><i class="ti ti-clock" style="font-size:11px"></i> ${esc(m.time||"")}</div></div><button onclick="deleteMemo('${esc(m.memoId)}')" title="삭제" style="width:26px;height:26px;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:7px;color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.borderColor='#FECACA';this.style.color='#DC2626'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--t3)'"><i class="ti ti-x" style="font-size:13px"></i></button></div>`).join("");}
-function addMemo(){const ta=document.getElementById("myMemo");const btn=document.getElementById("memoSaveBtn");const st=document.getElementById("memoStatus");if(!ta||!currentUser)return;const text=ta.value.trim();if(!text){ta.focus();return;}const memoId=Date.now().toString(36)+Math.random().toString(36).slice(2,7);btn.disabled=true;btn.style.opacity="0.6";st.textContent="등록 중...";fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"addMemo",id:currentUser.id,name:currentUser.name,memo:text,memoId})}).finally(()=>{ta.value="";setTimeout(()=>{btn.disabled=false;btn.style.opacity="1";loadMemos();},900);});}
-function deleteMemo(memoId){if(!currentUser)return;if(!confirm("이 메모를 삭제할까요?"))return;document.getElementById("memoStatus").textContent="삭제 중...";fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"deleteMemo",id:currentUser.id,memoId})}).finally(()=>{setTimeout(loadMemos,900);});}
-function openSlackModal(){
-  const links=[
-    {label:"연수원-당직",url:"https://join.slack.com/share/enQtMTExNjM5MTMzMDU2NjgtMzA0NDE1NTdlOTkwZjY4NzhlMTFjNjQ4MDE2N2Q2YTdkYWNmMDYyNjY0NGVmMjgwMDQ2YzI3ZWRhZGJiYzkzZg"},
-    {label:"운영대표-공유사항",url:"https://join.slack.com/share/enQtMTExNDQ4NDc0NjIwMzktMmQ5Mjc3OGZjYzBjMzdhY2ViOTk0MTUzZTc4NWQ2MTI0N2JlNDNkMzIyYWJkZWMwM2NmODA2ZDliNWZkYWU0YQ"},
-    {label:"ask-가람디엠씨",url:"https://join.slack.com/share/enQtMTExNTM5MzQ5NDQ5NjMtODBkZGUwODBjOWZmMzQ2NTFlYmNkMDJmMjgzZTYzYTY1YzE4M2ExZDFiMWVmOTdkNTc5MjNhMTEzOTE5ODhjZA"},
-    {label:"ask-모바일앱팀",url:"https://join.slack.com/share/enQtMTExNTM5Mzc0ODkwNTktNjY5Njk1MWZlZjM3ZDUyZmE1NThkNDkyMjFjNTJkNDM1MWYwNmJkMzQ1YTVjNTc3ZTdlYjMzZmVlMjg4NDdiMg"},
-    {label:"ask-사업전략팀",url:"https://join.slack.com/share/enQtMTExNjIxNDc0NTIwODEtMDA2MDQ2ZDc0ZTUwNjQzYTdmYmNiZjcwMjU5N2QwYzNlYWQwNzA1ZDJjYjJhZjY4Y2I3ZTQzMWEwNjIzNTExZA"},
-    {label:"ask-인재경영팀",url:"https://join.slack.com/share/enQtMTExNTM5NjE5MzQ2NDMtOTMyNzhjODE2N2FlY2U4NmMyZmJjZGRiODE3YjA1MDhkMzcxYzNmYzc0ZDI5OTBlMjU2Njc4NzU5MWFhYTk4Mw"},
-    {label:"ask-hrd아카이브",url:"https://join.slack.com/share/enQtMTExNTM5NjQxODgyNDMtYjg0YmRhNTc2NGQ0NTVmNjZjYzA3MWExYTc2YTg3MDcyZDg5OGRhZjA1N2E1MzI0MDMxMTMxNGU3MjU4ZjBhMg"},
-    {label:"ask-it인프라팀-보안unit",url:"https://join.slack.com/share/enQtMTExNjAzMzg0OTg4NTAtOTEzMzhhYjc0NWJlNmM3MTg0YmE5MDcyNTNmYzcwNTk4ZjBlYzQxMzliNDdkMTRlMDI0ZDNhMGNhNWQ5ZDNmOA"},
-    {label:"ask-it인프라팀-시스템인프라",url:"https://join.slack.com/share/enQtMTExNDQ4ODQxNjk5NzUtYjI5YzhmMmYwMjcyNWExNzkxYjNhYjNkNTY5YTY1NDNjNWIxYTA2NWJjMGQyZTBmZDIzZjYzMjA5ZGM2YjRhNw"},
-    {label:"help-법정교육",url:"https://join.slack.com/share/enQtMTExNTgyNzY5MzEyNTQtNjRmYjVkNmUzNWE0ZDBiZmEyOTE5ZjllNWQ0NDI2Yzg3NmZmOTg4ZWY4Yjk1Njk0Njk5YjViN2NhYjc3Yjc3OQ"},
-    {label:"ask-연수원3.0",url:"https://join.slack.com/share/enQtMTExNjAzNTE2MzMxMzgtNzE4NTA4NThjMTM1ZmNmODE2ZTM0Mzg1NDY1NmI0NDg1MGQ0NTc5MzQyZDg4OWZhOTNmNTA4MzBkOTAyMDZhZA"},
-  ];
-  document.getElementById("slackLinkList").innerHTML=links.map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FAF5FF;border:1px solid #E9D5FF;border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;background:#F3E8FF;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brand-slack" style="font-size:16px;color:#4A154B"></i></div><span style="font-size:13px;font-weight:600;color:#1E293B">${l.label}</span></div><a href="${l.url}" target="_blank" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 12px;background:#4A154B;border-radius:8px;color:#fff;font-size:12px;font-weight:600;text-decoration:none;font-family:var(--font);white-space:nowrap"><i class="ti ti-external-link" style="font-size:12px"></i>바로가기</a></div>`).join("");
-  document.getElementById("slackModal").style.display="flex";
-}
-function openConfluenceModal(){
-  const links=[{label:"전사",url:"https://ihunet.atlassian.net/wiki/x/i4Tb6"},{label:"교육서비스본부",url:"https://ihunet.atlassian.net/wiki/x/-gGYMQE"},{label:"고객행복팀",url:"https://ihunet.atlassian.net/wiki/x/sQNO6w"},{label:"교육운영1팀",url:"https://ihunet.atlassian.net/wiki/x/VYJJ-/"},{label:"교육운영2팀",url:"https://ihunet.atlassian.net/wiki/x/5gJI-/"},{label:"교육운영3팀",url:"https://ihunet.atlassian.net/wiki/x/hAME-Q"}];
-  document.getElementById("confluenceLinkList").innerHTML=links.map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#F0F4FF;border:1px solid #BFDBFE;border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:#EFF6FF;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-books" style="font-size:17px;color:#1D4ED8"></i></div><span style="font-size:13px;font-weight:600;color:#1E293B">${l.label}</span></div><a href="${l.url}" target="_blank" style="display:flex;align-items:center;gap:5px;height:32px;padding:0 14px;background:#1D4ED8;border-radius:8px;color:#fff;font-size:12px;font-weight:600;text-decoration:none;font-family:var(--font)"><i class="ti ti-external-link" style="font-size:13px"></i>바로가기</a></div>`).join("");
-  document.getElementById("confluenceModal").style.display="flex";
-}
-function openJiraModal(){
-  const links=[{label:"교육운영팀 업무요청",url:"https://ihunet.atlassian.net/jira/core/projects/FIWQ/board?filter=reporter+%3D+%225bd12032d0f01e7162be68be%22&groupBy=status"},{label:"계산서 발행 업무요청",url:"https://ihunet.atlassian.net/jira/core/projects/CJKK/list"},{label:"고객행복팀 업무요청",url:"https://ihunet.atlassian.net/jira/core/projects/NNQB/board?filter=&groupBy=status"},{label:"VOC 업무요청",url:"https://ihunet.atlassian.net/jira/software/projects/VOC/boards/1498"},{label:"개발팀 업무요청",url:"https://ihunet.atlassian.net/jira/software/projects/HRFW/form"},{label:"컨매팀 업무요청",url:"https://ihunet.atlassian.net/jira/software/projects/INOQ/boards/1531"}];
-  document.getElementById("jiraLinkList").innerHTML=links.map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#F8F9FF;border:1px solid #DBEAFE;border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:#EFF6FF;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-layout-kanban" style="font-size:17px;color:#0052CC"></i></div><span style="font-size:13px;font-weight:600;color:#1E293B">${l.label}</span></div><a href="${l.url}" target="_blank" style="display:flex;align-items:center;gap:5px;height:32px;padding:0 14px;background:#0052CC;border-radius:8px;color:#fff;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;font-family:var(--font)"><i class="ti ti-external-link" style="font-size:13px"></i>바로가기</a></div>`).join("");
-  document.getElementById("jiraModal").style.display="flex";
-}
-function openQuickModal(file,title,icon){window.open(`https://hunet-cs.github.io/cs-knowledge/${file}`,"_blank");}
-function _sheetName(raw,used){
-  let n=String(raw||"시트").replace(/[\\\/\?\*\[\]:]/g,"_").replace(/^'+|'+$/g,"").trim().slice(0,28);
-  if(!n)n="시트";
-  let base=n,i=2;
-  while(used.has(n)){n=(base.slice(0,25)+"_"+i).slice(0,31);i++;}
-  used.add(n);
-  return n;
-}
-function downloadAllEntries(type){
-  if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}
-  try{
-    const wb=XLSX.utils.book_new();
-    const used=new Set();
-    const headers=["분류","제목","고객문의유형","필수확인질문","답변내용","이관기준","주의사항","기업명","카테고리","상품명","구분","상태","작성자","작성일"];
-    const toRow=e=>[e.part||"",e.title||"",e.customerQ||"",e.checkQ||"",e.steps||"",e.escalation||"",e.caution||"",e.company||"",e.companyCat||"",e.productName||"",e.productSection||"",e.status||"",e.updatedBy||"",e.updatedAt||""];
-    if(type==="b2b"){
-      const companies=[...new Set(entries.filter(e=>e.part==="B2B 상위기업").map(e=>e.company).filter(Boolean))];
-      if(!companies.length){alert("B2B 데이터가 없습니다.");return;}
-      companies.forEach(co=>{
-        const rows=entries.filter(e=>e.company===co);
-        const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);
-        ws["!cols"]=headers.map(()=>({wch:20}));
-        XLSX.utils.book_append_sheet(wb,ws,_sheetName(co,used));
-      });
-      const all=entries.filter(e=>e.part==="B2B 상위기업");
-      const wsAll=XLSX.utils.aoa_to_sheet([headers,...all.map(toRow)]);
-      XLSX.utils.book_append_sheet(wb,wsAll,_sheetName("전체",used));
-      XLSX.writeFile(wb,`지식관리시스템_B2B_전체_${today()}.xlsx`);
-    }else{
-      const partMap={list:"전체",error:"오류 처리방법",product:"상품 안내"};
-      const part=partMap[type];
-      const rows=part==="전체"?entries:entries.filter(e=>e.part===part);
-      if(!rows.length){alert("데이터가 없습니다.");return;}
-      const ws=XLSX.utils.aoa_to_sheet([headers,...rows.map(toRow)]);
-      ws["!cols"]=headers.map(()=>({wch:20}));
-      XLSX.utils.book_append_sheet(wb,ws,_sheetName(part,used));
-      XLSX.writeFile(wb,`지식관리시스템_${part}_${today()}.xlsx`);
-    }
-  }catch(err){
-    console.error(err);
-    alert("다운로드 중 오류가 발생했어요: "+err.message);
-  }
-}
-function downloadEntry(id){const e=entries.find(x=>x.id===id);if(!e)return;const lines=[`제목: ${e.title||""}`,`분류: ${e.part||""}`,e.company?`기업: ${e.company}`:"",e.productName?`상품: ${e.productName}`:"",`작성일: ${e.updatedAt||""}`,`작성자: ${e.updatedBy||""}`,"",e.customerQ?`[문의 유형]\n${e.customerQ}`:"",e.checkQ?`\n[필수 확인 질문]\n${e.checkQ}`:"",e.steps?`\n[답변/처리 방법]\n${e.steps}`:"",e.escalation?`\n[이관 기준]\n${e.escalation}`:"",e.caution?`\n[주의사항]\n${e.caution}`:"",e.script?`\n[상담사 멘트]\n${e.script}`:""].filter(Boolean).join("\n");const blob=new Blob([lines],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`${e.title||"항목"}.txt`;a.click();URL.revokeObjectURL(url);}
-function toggleMobMenu(){const menu=document.getElementById("mobMenu");const overlay=document.getElementById("mobOverlay");const isOpen=menu.classList.toggle("open");overlay.classList.toggle("show",isOpen);document.body.style.overflow=isOpen?"hidden":"";}
-
-function uField(label,val){
-  if(val===undefined||val===null||String(val).trim()==="")return"";
-  return `<div class="unified-field"><div class="unified-label">${label}</div><div class="unified-value">${esc(String(val))}</div></div>`;
-}
-function uDocDetail(e,backJs,editJs=""){
-  if(!e)return`<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>`;
-  const isAdmin=currentUser&&currentUser.role==="admin";
-  return `<div class="unified-pane">
-    <div class="unified-detail">
-      <div class="unified-breadcrumb">
-        <button class="ops-back-btn" onclick="${backJs}"><i class="ti ti-arrow-left"></i>목록</button>
-        <span>${esc(e.part||"")}</span>
-      </div>
-      <div class="unified-titlebar">
-        <h2>${esc(e.title)}</h2>
-        ${e.opsSub?`<span class="unified-chip">${esc(e.opsSub)}</span>`:""}
-        ${e.productSection?`<span class="unified-chip">${esc(e.productSection)}</span>`:""}
-        ${e.updatedAt?`<span class="unified-chip">${esc(e.updatedAt)}</span>`:""}
-        ${isAdmin&&editJs?`<div class="unified-actions"><button class="unified-detail-btn" onclick="${editJs}">수정</button></div>`:""}
-      </div>
-      <div class="unified-card">
-        ${uField("문의 유형",e.customerQ)}
-        ${uField("필수 확인",e.checkQ)}
-        ${uField(e.part==="상품 안내"?"답변":"처리 방법",e.steps)}
-        ${uField("이관 기준",e.escalation)}
-        ${uField("처리 완료",e.done)}
-        ${uField("상담 멘트",e.script)}
-        ${uField("관련 매뉴얼",e.relatedManuals)}
-      </div>
-      ${e.caution&&e.caution.trim()?`<div class="unified-caution"><strong>주의사항</strong><div>${esc(e.caution)}</div></div>`:""}
-      ${relatedDocsHtml(e)}
-    </div>
-  </div>`;
-}
-function uListPane(title,rowsHtml,count){
-  return `<div class="unified-pane unified-left">
-    <div class="unified-pane-head"><strong>${esc(title)}</strong><span class="unified-pane-sub">${count||""}</span></div>
-    <div class="unified-list">${rowsHtml}</div>
-  </div>`;
-}
-
-function toggleSidebar(){const sb=document.querySelector(".sb");const collapsed=sb.classList.toggle("collapsed");localStorage.setItem("sbCollapsed",collapsed?"1":"");const icon=sb.querySelector(".sb-toggle i");if(icon)icon.className=collapsed?"ti ti-layout-sidebar-left-expand":"ti ti-layout-sidebar-left-collapse";}
-function initSidebar(){if(localStorage.getItem("sbCollapsed")==="1"){document.querySelector(".sb")?.classList.add("collapsed");const icon=document.querySelector(".sb-toggle i");if(icon)icon.className="ti ti-layout-sidebar-left-expand";}}
-function goHome(){curView="home";filterMultiple=[];showView("viewHome");setSbView("home");renderHome();}
-function filterPart2(p){filterMultiple=[];filterPart=p;filterCo="전체";filterSub="전체";searchQ="";showChips=false;const ms=document.getElementById("mainSearch");if(ms)ms.value="";
-if(p==="B2B 상위기업"){curView="companies";showView("viewCompanies");setSbView("b2b");syncSidebarSelection("b2b");renderCompanyView("전체");return;}
-if(p==="상품 안내"){curView="products";showView("viewProducts");setSbView("product");syncSidebarSelection("product");renderProductView("전체");return;}
-if(p==="오류 처리방법"){openErrorView();return;}
-if(p==="운영지원"){kmsPushState({type:"ops",sub:"",detailId:null});renderOpsUnified("");return;}
-if(p==="B2C"){renderB2CUnified();return;}
-curView="list";showView("viewList");setSbView("");renderResults();closeDetailPanel();}
-function toggleOpsMenu(){const sub=document.getElementById("opsSubMenu");const chev=document.getElementById("opsChevron");const willOpen=sub.style.display==="none"||sub.style.display==="";sub.style.display=willOpen?"block":"none";if(chev)chev.style.transform=willOpen?"rotate(0deg)":"rotate(-90deg)";if(willOpen)filterPart2("운영지원");}
-
-function renderOpsUnified(sub="",id=null){
-  filterPart="운영지원";
-  filterSub=sub||"전체";
-  curView="list";
-  showView("viewList");
-  setSbView("ops");
-  syncSidebarSelection("ops",sub);
-
-  let list=entries.filter(e=>e.part==="운영지원"&&e.status!=="hidden");
-  if(sub) list=list.filter(e=>e.opsSub===sub);
-  list=list.sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
-
-  document.getElementById("listTitle").textContent=sub||"운영지원";
-  document.getElementById("listCnt").textContent=`총 ${list.length}건`;
-  document.getElementById("filterChips").innerHTML="";
-
-  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderOpsUnified('${esc(sub)}','${e.id}')">
-    <span class="unified-title">${esc(e.title)}</span>
-    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
-    <span class="unified-date">${esc(e.updatedAt||"")}</span>
-    <i class="ti ti-chevron-right"></i>
-  </div>`).join("");
-
-  if(!id){
-    // B2B의 '기업 목록' 첫 화면과 같은 개념: 목록만 전체 폭
-    document.getElementById("resultsList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head">
-        <strong>${esc(sub||"운영지원")}</strong>
-        <span class="unified-pane-sub">${list.length}건</span>
-      </div>
-      <div class="unified-list">
-        ${rows || `<div class="unified-empty">등록된 문서가 없습니다.</div>`}
+    if(!snap.exists){box.innerHTML=`<div class="work-v2-empty">일정 데이터 없음</div>`;return;}
+    const weeks=snap.data().weeks||[], now=new Date(), todayLabel=`${now.getMonth()+1}/${now.getDate()}`;
+    const dateKey=s=>{const m=(s||"").match(/(\d{1,2})\s*\/\s*(\d{1,2})/);return m?`${parseInt(m[1],10)}/${parseInt(m[2],10)}`:"";};
+    let data=null; for(const week of weeks){for(const day of (week.days||[])){if(dateKey(day.date)===todayLabel){data=day;break;}}if(data)break;}
+    if(!data){box.innerHTML=`<div class="work-v2-empty">오늘 일정 없음</div>`;return;}
+    const absent=data.absentInfo||[];
+    const isMyday=a=>a.type==="마이데이"||a.type==="4일제";
+    const isDuty=a=>(a.type||"").includes("당직")||(a.name||"").includes("당직");
+    const myday=[...new Set(absent.filter(isMyday).map(a=>a.name).filter(Boolean))];
+    const leave=[...new Set(absent.filter(a=>!isMyday(a)&&!isDuty(a)).map(a=>a.name).filter(Boolean))];
+    const clean=s=>String(s||"").replace(/당직/g,"").replace(/[:：]/g,"").trim();
+    const nameList=s=>clean(s).split(/[,/·\n]+/).map(x=>x.trim()).filter(Boolean);
+    const chat=nameList(data.chat), edu=nameList(data.edu), early=nameList(data.early);
+    const rate=data.rate!=null?Math.round(Number(data.rate)*100):0;
+    const status=(cls,label,icon,count)=>`<div class="work-v2-status ${cls}"><i class="ti ${icon}"></i><div class="work-v2-label">${label}</div><div class="work-v2-value">${count}명</div></div>`;
+    box.innerHTML=`<div class="work-v2">
+      <div class="work-v2-rate"><div class="work-v2-ring" style="--rate:${Math.max(0,Math.min(100,rate))}"><div class="work-v2-rate-text"><strong>${rate}%</strong><span>근무율</span></div></div></div>
+      <div class="work-v2-statuses">
+        ${status('s1','채널톡','ti-message-circle',chat.length)}
+        ${status('s2','에듀/mg','ti-school',edu.length)}
+        ${status('s3','마이데이','ti-calendar',myday.length)}
+        ${status('s4','8시 출근','ti-clock',early.length)}
+        ${status('s5','연차','ti-beach',leave.length)}
       </div>
     </div>`;
-  }else{
-    // B2B에서 기업 클릭 후와 동일: 왼쪽 목록 + 오른쪽 상세
-    const selected=list.find(e=>e.id===id);
-    document.getElementById("resultsList").innerHTML=`<div class="unified-split">
-      ${uListPane(sub||"운영지원",rows,`${list.length}건`)}
-      ${selected
-        ? uDocDetail(selected,`renderOpsUnified('${esc(sub)}')`,`openEdit('${selected.id}')`)
-        : `<div class="unified-pane"><div class="unified-empty">왼쪽 목록에서 문서를 선택해 주세요.</div></div>`}
-    </div>`;
-  }
-  closeDetailPanel();
+  }catch(e){box.innerHTML=`<div class="work-v2-empty" style="color:#DC2626">불러오기 실패</div>`;}
 }
-function filterOpsSub(sub){kmsPushState({type:"ops",sub,detailId:null});filterMultiple=[];filterPart="운영지원";filterCo="전체";filterSub=sub;searchQ="";showChips=false;const si=document.getElementById("mainSearch");if(si)si.value="";curView="list";showView("viewList");setSbView("ops");document.querySelectorAll(".sb-sub-item").forEach(el=>el.classList.toggle("on",el.dataset.sub===sub));const om=document.getElementById("opsSubMenu");if(om&&om.style.display==="none"){om.style.display="block";const c=document.getElementById("opsChevron");if(c)c.style.transform="rotate(0deg)";}renderResults();closeDetailPanel();}
-
-let _b2cSelected=null;
-function renderB2CUnified(id=null){
-  curView="list";filterPart="B2C";filterSub="전체";showView("viewList");setSbView("b2c");syncSidebarSelection("b2c");
-  const list=entries.filter(e=>e.part==="B2C"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
-  document.getElementById("listTitle").textContent="B2C";
-  document.getElementById("listCnt").textContent=`총 ${list.length}건`;
-  document.getElementById("filterChips").innerHTML="";
-
-  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderB2CUnified('${e.id}')">
-    <span class="unified-title">${esc(e.title)}</span>
-    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
-    <span class="unified-date">${esc(e.updatedAt||"")}</span>
-    <i class="ti ti-chevron-right"></i>
-  </div>`).join("");
-
-  if(!id){
-    document.getElementById("resultsList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>B2C 문서</strong><span class="unified-pane-sub">${list.length}건</span></div>
-      <div class="unified-list">${rows}</div>
-    </div>`;
-  }else{
-    const selected=list.find(e=>e.id===id);
-    document.getElementById("resultsList").innerHTML=`<div class="unified-split">
-      ${uListPane("B2C 문서",rows,`${list.length}건`)}
-      ${selected?uDocDetail(selected,"renderB2CUnified()",`openEdit('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">문서를 선택해 주세요.</div></div>`}
-    </div>`;
-  }
-  closeDetailPanel();
-}
-async function uploadFileToStorage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=e=>resolve(e.target.result);reader.onerror=()=>reject(new Error("파일 읽기 실패"));reader.readAsDataURL(file);});}
-function getProductList(){return Object.keys(productProfiles||{}).sort((a,b)=>a.localeCompare(b,"ko"));}
-function renderProductView(product="전체",section=null){
-  kmsPushState({type:"product",product,section});
-  window._curRender=()=>renderProductView(product,section);
-  curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");
-
-  const isAdmin=currentUser&&currentUser.role==="admin";
-  const all=entries.filter(e=>e.part==="상품 안내");
-  const products=getProductList();
-  document.getElementById("prSummary").innerHTML="";
-  document.getElementById("prCnt").textContent=`등록 상품 ${products.length}개`;
-
-  const productRows=products.map(p=>{
-    const cnt=all.filter(e=>e.productName===p).length;
-    return `<div class="unified-row${p===product?" on":""}" onclick="renderProductView('${esc(p)}')">
-      <span class="unified-title">${esc(p)}</span>
-      <span class="unified-count">${cnt}건</span>
-      <span class="unified-date"></span>
-      <i class="ti ti-chevron-right"></i>
-    </div>`;
-  }).join("");
-
-  if(product==="전체"){
-    document.getElementById("prResultsList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>상품 목록</strong><span class="unified-pane-sub">${products.length}개</span></div>
-      <div class="unified-list">${productRows}</div>
-    </div>`;
-    return;
-  }
-
-  const faq=all.filter(e=>e.productName===product&&e.productSection==="FAQ");
-  const proposal=all.filter(e=>e.productName===product&&e.productSection==="제안서");
-  let rightHtml="";
-
-  if(!section){
-    rightHtml=`<div class="unified-pane">
-      <div class="unified-detail">
-        <div class="unified-breadcrumb">
-          <button class="ops-back-btn" onclick="renderProductView('전체')"><i class="ti ti-arrow-left"></i>상품 목록</button>
-        </div>
-        <div class="unified-titlebar">
-          <h2>${esc(product)}</h2>
-          ${isAdmin?`<div class="unified-actions"><button class="unified-detail-btn" onclick="openAddProductForm('${esc(product)}')">수정</button></div>`:""}
-        </div>
-        <div class="unified-section-grid">
-          <div class="unified-section-card${section==="FAQ"?" on":""}" onclick="renderProductView('${esc(product)}','FAQ')">
-            <span class="unified-section-name">FAQ</span><span class="unified-section-count">${faq.length}건</span><i class="ti ti-chevron-right"></i>
-          </div>
-          <div class="unified-section-card${section==="제안서"?" on":""}" onclick="renderProductView('${esc(product)}','제안서')">
-            <span class="unified-section-name">제안서</span><span class="unified-section-count">${proposal.length}건</span><i class="ti ti-chevron-right"></i>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }else{
-    const docs=section==="FAQ"?faq:proposal;
-    rightHtml=`<div class="unified-pane">
-      <div class="unified-detail">
-        <div class="unified-breadcrumb">
-          <button class="ops-back-btn" onclick="renderProductView('${esc(product)}')"><i class="ti ti-arrow-left"></i>${esc(product)}</button>
-          <span>${esc(section)}</span>
-        </div>
-        <div class="unified-titlebar"><h2>${esc(section)}</h2><span class="unified-chip">${docs.length}건</span></div>
-        <div class="b2b-docs" style="padding:0">
-          ${docs.length?docs.map(e=>`<div class="b2b-doc-row" onclick="${section==="FAQ"?`renderProductEntryUnified('${esc(product)}','${esc(section)}','${e.id}')`:`openProductFile('${esc(e.fileUrl||"")}')`}">
-            <span class="b2b-doc-title">${esc(e.title)}</span>
-            <span class="b2b-doc-prev">${esc((e.steps||e.customerQ||"").split("\n")[0])}</span>
-            <span class="b2b-doc-meta">${(e.views||0).toLocaleString()}회</span>
-            <span class="b2b-doc-meta">${esc(e.updatedAt||"")}</span>
-            <i class="ti ti-chevron-right"></i>
-          </div>`).join(""):`<div class="unified-empty">등록된 ${esc(section)}가 없습니다.</div>`}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-    ${uListPane("상품 목록",productRows,`${products.length}개`)}
-    ${rightHtml}
-  </div>`;
-}
-function renderProductEntryUnified(product,section,id){
-  const all=entries.filter(e=>e.part==="상품 안내");
-  const products=getProductList();
-  const docs=all.filter(e=>e.productName===product&&e.productSection===section);
-  const selected=docs.find(e=>e.id===id);
-  const productRows=products.map(p=>{
-    const cnt=all.filter(e=>e.productName===p).length;
-    return `<div class="unified-row${p===product?" on":""}" onclick="renderProductView('${esc(p)}')">
-      <span class="unified-title">${esc(p)}</span><span class="unified-count">${cnt}건</span><span class="unified-date"></span><i class="ti ti-chevron-right"></i>
-    </div>`;
-  }).join("");
-
-  document.getElementById("prResultsList").innerHTML=`<div class="unified-split">
-    ${uListPane("상품 목록",productRows,`${products.length}개`)}
-    ${selected?uDocDetail(selected,`renderProductView('${esc(product)}','${esc(section)}')`,`openProductEntryForm('${selected.id}','${esc(product)}','${esc(section)}')`)
-      :`<div class="unified-pane"><div class="unified-empty">문서를 선택해 주세요.</div></div>`}
-  </div>`;
-}function openAddProductForm(product=""){if(!requireAdmin())return;const p=productProfiles[product]||{};const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:420px"><div class="modal-hd"><h2>${product?"상품 수정":"상품 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">상품명 *</label><input id="prName" value="${esc(product)}" placeholder="예: 패키지과정, MBA, FLEX"></div><div class="mrow"><label class="mlbl">설명</label><input id="prDesc" value="${esc(p.desc||"")}" placeholder="간단한 상품 설명"></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveProduct('${esc(product)}')">저장</button></div></div></div>`;ov.style.display="flex";}
-function saveProduct(oldName){const name=document.getElementById("prName").value.trim();if(!name){alert("상품명을 입력해주세요.");return;}if(name!==oldName&&oldName){const prev=productProfiles[oldName]||{};delete productProfiles[oldName];entries=entries.map(e=>e.productName===oldName?{...e,productName:name}:e);productProfiles[name]=prev;}productProfiles[name]={...(productProfiles[name]||{}),desc:document.getElementById("prDesc").value.trim()};saveAll();closeModal();renderProductView("전체");}
-function openProductEntryForm(id,product,section){if(!requireAdmin())return;const e=id?entries.find(x=>x.id===id):null;const isProposal=section==="제안서";const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:560px"><div class="modal-hd"><h2>${e?"수정":"추가"} · ${esc(product)} ${esc(section)}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">제목 *</label><input id="pe_title" value="${esc(e?.title||"")}" placeholder="${isProposal?"예: 2024년 법인 제안서":"예: 수강기간은 얼마나 되나요?"}"></div>${isProposal?`<div class="mrow"><label class="mlbl">설명</label><textarea id="pe_desc" placeholder="제안서에 대한 간단한 설명">${esc(e?.customerQ||"")}</textarea></div><div class="mrow"><label class="mlbl">파일 업로드</label>${e?.fileUrl?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 10px;background:#F3F5F9;border-radius:7px;font-size:12px"><i class="ti ti-paperclip" style="color:var(--p)"></i><span style="flex:1">${esc(e.fileName||"파일")}</span><a href="${esc(e.fileUrl)}" target="_blank" class="tb-btn" style="height:26px;padding:0 9px;font-size:11px">보기</a></div>`:""}<div class="img-upload-area" onclick="document.getElementById('prFileInput').click()" id="prDropZone"><i class="ti ti-cloud-upload" style="font-size:22px;color:var(--t3);display:block;margin-bottom:6px"></i><div style="font-size:12px;color:var(--t2)" id="prFileLabel">클릭하여 파일 선택 (PDF, PPT, Word, 이미지)</div><input type="file" id="prFileInput" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" onchange="onProductFileSelect(this)"></div></div>`:`<div class="mrow"><label class="mlbl">답변 *</label><textarea id="pe_steps" style="min-height:90px" placeholder="답변 내용을 입력하세요">${esc(e?.steps||"")}</textarea></div><div class="mrow warn"><label class="mlbl">주의사항</label><textarea id="pe_caution" placeholder="주의해야 할 사항">${esc(e?.caution||"")}</textarea></div>`}</div><div class="modal-foot"><div>${e?`<button class="btn-cancel" style="color:var(--red);border-color:#FECACA" onclick="deleteProductEntry('${e.id}','${esc(product)}','${esc(section)}')"><i class="ti ti-trash" style="font-size:11px"></i>삭제</button>`:""}</div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" id="pe_saveBtn" onclick="saveProductEntry('${id||""}','${esc(product)}','${esc(section)}')">저장</button></div></div></div>`;ov.style.display="flex";}
-let _prFile=null;
-function onProductFileSelect(input){_prFile=input.files[0];if(_prFile)document.getElementById("prFileLabel").textContent=`✓ ${_prFile.name} (${(_prFile.size/1024/1024).toFixed(1)}MB)`;}
-async function saveProductEntry(eid,product,section){const btn=document.getElementById("pe_saveBtn");btn.textContent="저장 중...";btn.disabled=true;const isProposal=section==="제안서";const title=(document.getElementById("pe_title")||{value:""}).value.trim();if(!title){alert("제목을 입력해주세요.");btn.textContent="저장";btn.disabled=false;return;}const ex=eid?entries.find(e=>e.id===eid):null;let fileUrl=ex?.fileUrl||"",fileName=ex?.fileName||"";if(_prFile){try{fileUrl=await uploadFileToStorage(_prFile);fileName=_prFile.name;_prFile=null;}catch(err){alert("파일 업로드 실패: "+err.message);btn.textContent="저장";btn.disabled=false;return;}}const g=id=>(document.getElementById(id)||{value:""}).value.trim();const entry={...(ex||{}),id:ex?ex.id:uid(),part:"상품 안내",productName:product,productSection:section,title,customerQ:isProposal?g("pe_desc"):"",steps:isProposal?"":g("pe_steps"),caution:isProposal?"":g("pe_caution"),fileUrl,fileName,status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:ex?.createdAt||today(),views:ex?.views||0,history:ex?.history||[]};if(ex)entries=entries.map(e=>e.id===entry.id?entry:e);else entries=[entry,...entries];saveAll();closeModal();renderProductView(product,section);}
-function deleteProductEntry(id,product,section){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();renderProductView(product,section);}
-function openProductFile(url){if(url)window.open(url,"_blank");}
-let _errorSelected=null;
-function openErrorView(id=null){curView="errors";showView("viewErrors");setSbView("error");syncSidebarSelection("error");renderErrorList(id);}
-function renderErrorList(id=null){
-  const list=entries.filter(e=>e.part==="오류 처리방법"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
-  document.getElementById("errCnt").textContent=`총 ${list.length}건`;
-
-  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderErrorList('${e.id}')">
-    <span class="unified-title">${esc(e.title)}</span>
-    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
-    <span class="unified-date">${esc(e.updatedAt||"")}</span>
-    <i class="ti ti-chevron-right"></i>
-  </div>`).join("");
-
-  if(!id){
-    document.getElementById("errList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>오류 처리방법</strong><span class="unified-pane-sub">${list.length}건</span></div>
-      <div class="unified-list">${rows}</div>
-    </div>`;
-  }else{
-    const selected=list.find(e=>e.id===id);
-    document.getElementById("errList").innerHTML=`<div class="unified-split">
-      ${uListPane("오류 처리방법",rows,`${list.length}건`)}
-      ${selected?uDocDetail(selected,"renderErrorList()",`openErrorForm('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>`}
-    </div>`;
-  }
-  closeDetailPanel();
-}
-function openErrorDetail(id){renderErrorList(id);}
-function openErrorForm(id){if(!requireAdmin())return;const e=id?entries.find(x=>x.id===id):null;const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:560px"><div class="modal-hd"><h2>${e?"오류 항목 수정":"오류 항목 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">오류 제목 *</label><input id="er_title" value="${esc(e?.title||"")}" placeholder="예: 결제창이 뜨지 않아요"></div><div class="mrow"><label class="mlbl">오류 내용 *</label><textarea id="er_q" style="min-height:70px" placeholder="예: 결제 버튼을 눌러도 아무 반응이 없어요">${esc(e?.customerQ||"")}</textarea></div><div class="mrow"><label class="mlbl">처리 방법 *</label><textarea id="er_steps" style="min-height:100px" placeholder="예:&#10;1. 브라우저 팝업 차단 해제&#10;2. 다른 브라우저 시도">${esc(e?.steps||"")}</textarea></div><div class="mrow warn"><label class="mlbl">주의사항</label><textarea id="er_caution">${esc(e?.caution||"")}</textarea></div></div><div class="modal-foot"><div>${e?`<button class="btn-cancel" style="color:var(--red);border-color:#FECACA" onclick="deleteError('${e.id}')"><i class="ti ti-trash" style="font-size:11px"></i>삭제</button>`:""}</div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveError('${id||""}')">저장</button></div></div></div>`;ov.style.display="flex";}
-function saveError(eid){const g=id=>(document.getElementById(id)||{value:""}).value.trim();const title=g("er_title"),q=g("er_q"),steps=g("er_steps");if(!title||!q||!steps){alert("제목, 오류 내용, 처리 방법은 필수입니다.");return;}const ex=eid?entries.find(e=>e.id===eid):null;const entry={...(ex||{}),id:ex?ex.id:uid(),part:"오류 처리방법",title,customerQ:q,steps,caution:g("er_caution"),status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:ex?.createdAt||today(),views:ex?.views||0,history:ex?.history||[]};if(ex)entries=entries.map(e=>e.id===entry.id?entry:e);else entries=[entry,...entries];saveAll();closeModal();renderErrorList();closeDetailPanel();}
-function deleteError(id){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();closeDetailPanel();renderErrorList();}
-function showAllRecent(){setView("recent");}
-function initFilters(){const coSel=document.getElementById("f-co");if(coSel)coSel.innerHTML=`<option value="전체">전체</option>`+B2B_COS.map(c=>`<option value="${esc(c)}">${c}</option>`).join("");const ptSel=document.getElementById("f-part");if(ptSel)ptSel.innerHTML=`<option value="전체">전체</option>`+PARTS.map(p=>`<option value="${esc(p)}">${p}</option>`).join("");}
-
-const SEARCH_HISTORY_KEY="kms_recent_searches_v1";
-
-function getRecentSearches(){
-  try{
-    const arr=JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY)||"[]");
-    return Array.isArray(arr)?arr.slice(0,6):[];
-  }catch(e){return[];}
-}
-function saveRecentSearch(q){
-  q=(q||"").trim();
-  if(!q)return;
-  let arr=getRecentSearches().filter(x=>x!==q);
-  arr.unshift(q);
-  arr=arr.slice(0,6);
-  try{localStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(arr));}catch(e){}
-}
-function removeRecentSearch(q){
-  const arr=getRecentSearches().filter(x=>x!==q);
-  try{localStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(arr));}catch(e){}
-  showSearchHome();
-}
-function clearRecentSearches(){
-  try{localStorage.removeItem(SEARCH_HISTORY_KEY);}catch(e){}
-  showSearchHome();
-}
-function searchFromHistory(q){
-  const input=document.getElementById("mainSearch");
-  if(input)input.value=q;
-  hideDd();
-  doSearch();
-}
-function getPopularSearchKeywords(){
-  const stop=new Set(["방법","안내","관련","문의","확인","처리","요청","등록","변경","사용","지원","대한","하는","어떻게","있나요","해주세요"]);
-  const score={};
-  entries.filter(e=>e.status!=="hidden").forEach(e=>{
-    const weight=Math.max(1,Math.min(20,Math.round((e.views||0)/10)+1));
-    const txt=[e.title,e.customerQ,e.company,e.opsSub,e.productName].filter(Boolean).join(" ");
-    (txt.match(/[가-힣A-Za-z0-9]{2,}/g)||[]).forEach(w=>{
-      if(stop.has(w)||w.length<2)return;
-      score[w]=(score[w]||0)+weight;
-    });
-  });
-  return Object.entries(score).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
-}
-function showSearchHome(){
-  const input=document.getElementById("mainSearch");
-  if(!input||input.value.trim())return;
-  const dd=document.getElementById("searchDd");
-  if(!dd)return;
-  const recent=getRecentSearches();
-  const popular=getPopularSearchKeywords();
-  dd.innerHTML=`
-    <div class="search-home-section">
-      <div class="search-home-hd"><span><i class="ti ti-history"></i> 최근 검색어</span>${recent.length?`<button class="search-home-clear" onclick="clearRecentSearches()">전체삭제</button>`:""}</div>
-      ${recent.length?recent.map(q=>`<div class="search-recent-row" onclick="searchFromHistory('${esc(q).replace(/'/g,"&#39;")}')"><i class="ti ti-clock"></i><span class="search-recent-text">${esc(q)}</span><button class="search-recent-remove" onclick="event.stopPropagation();removeRecentSearch('${esc(q).replace(/'/g,"&#39;")}')"><i class="ti ti-x"></i></button></div>`).join(""):`<div style="font-size:11px;color:#A0A9B5;padding:6px 3px">최근 검색어가 없습니다.</div>`}
-    </div>
-    <div class="search-home-section">
-      <div class="search-home-hd"><span><i class="ti ti-flame"></i> 인기 검색어</span></div>
-      <div class="search-popular">${popular.map(q=>`<button class="search-pop-chip" onclick="searchFromHistory('${esc(q).replace(/'/g,"&#39;")}')">${esc(q)}</button>`).join("")}</div>
-    </div>
-    <div class="search-tip"><i class="ti ti-bulb" style="font-size:12px"></i> TIP. 찾으시는 문서의 핵심 키워드를 입력해 보세요.</div>`;
-  dd.style.display="block";
-}
-function relatedDocsFor(entry,limit=5){
-  if(!entry)return[];
-  const baseTokens=[entry.title,entry.customerQ,entry.company,entry.opsSub,entry.productName,entry.companyCat]
-    .filter(Boolean).join(" ").toLowerCase().match(/[가-힣a-z0-9]{2,}/g)||[];
-  const tokenSet=new Set(baseTokens);
-  return entries
-    .filter(e=>e.id!==entry.id&&e.status!=="hidden")
-    .map(e=>{
-      let score=0;
-      if(e.part===entry.part)score+=3;
-      if(entry.company&&e.company===entry.company)score+=5;
-      if(entry.opsSub&&e.opsSub===entry.opsSub)score+=4;
-      if(entry.productName&&e.productName===entry.productName)score+=5;
-      if(entry.companyCat&&e.companyCat===entry.companyCat)score+=3;
-      const txt=entryText(e);
-      tokenSet.forEach(t=>{if(txt.includes(t))score+=1;});
-      return {e,score};
-    })
-    .filter(x=>x.score>2)
-    .sort((a,b)=>b.score-a.score||(b.e.views||0)-(a.e.views||0))
-    .slice(0,limit)
-    .map(x=>x.e);
-}
-function relatedDocsHtml(entry){
-  const rel=relatedDocsFor(entry,5);
-  if(!rel.length)return"";
-  return `<div class="related-reco full">
-    <div class="related-reco-hd"><span><i class="ti ti-files"></i> 관련 문서</span><span>${rel.length}개 추천</span></div>
-    <div class="related-reco-list">
-      ${rel.map(r=>{
-        const meta=[r.company||r.opsSub||r.productName||r.part,r.updatedAt].filter(Boolean).join(" · ");
-        return `<div class="related-reco-item" onclick="openDetail('${r.id}')">
-          <div class="related-reco-icon"><i class="ti ti-file-text"></i></div>
-          <div class="related-reco-body"><div class="related-reco-title">${esc(r.title)}</div><div class="related-reco-meta">${esc(meta)}</div></div>
-          <i class="ti ti-chevron-right related-reco-arrow"></i>
-        </div>`;
-      }).join("")}
-    </div>
-  </div>`;
-}
-
-function doSearch(){closeDetailPanel();curView="list";filterMultiple=[];showChips=true;searchQ=document.getElementById("mainSearch").value.trim();if(searchQ)saveRecentSearch(searchQ);filterPart="전체";filterCo="전체";filterSub="전체";showView("viewList");renderResults();if(searchQ&&getFiltered().length===0)logMissingSearch(searchQ);}
-function resetFilters(){searchQ="";filterCo="전체";filterPart="전체";filterSub="전체";filterMultiple=[];document.getElementById("mainSearch").value="";}
-function highlight(text,q){if(!q||!text)return esc(text||"");const tokens=q.toLowerCase().split(/\s+/).filter(Boolean);let result=esc(text);tokens.forEach(t=>{const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');result=result.replace(re,'<span class="hl">$1</span>');});return result;}
-function entryText(e){return ["title","company","customerQ","cause","steps","productType","productName","productSection","lmsCat","adminSub","opsSub","caution","escalation","done","script","relatedManuals","checkQ","exceptions"].map(k=>(e[k]||"")).join(" ").toLowerCase();}
-function matchQuery(text,q){const tokens=q.split(/\s+/).filter(Boolean);if(tokens.length>1) return tokens.every(t=>text.includes(t));if(text.includes(q)) return true;for(let i=1;i<q.length;i++){const a=q.slice(0,i),b=q.slice(i);if(a.length>=1&&b.length>=1&&text.includes(a)&&text.includes(b)) return true;}return false;}
-function getFiltered(){const isAdmin=currentUser&&currentUser.role==="admin";return entries.filter(e=>{if(!isAdmin&&e.status==="hidden")return false;if(filterMultiple.length){if(!filterMultiple.includes(e.part))return false;}else if(filterPart!=="전체"&&e.part!==filterPart)return false;if(filterCo!=="전체"&&e.company!==filterCo)return false;if(filterSub!=="전체"){const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";if(sub!==filterSub)return false;}if(searchQ) return matchQuery(entryText(e),searchQ.toLowerCase());return true;});}
-let _ddTimer=null,_ddFocus=-1,_ddItems=[];
-function onSearchInput(val){clearTimeout(_ddTimer);_ddFocus=-1;if(!val.trim()){showSearchHome();return;}_ddTimer=setTimeout(()=>showDd(val),180);}
-function showDd(q){const isAdmin=currentUser&&currentUser.role==="admin";const qq=q.toLowerCase();const coHits=Object.keys(companyProfiles||{}).filter(name=>{const pp=companyProfiles[name]||{};return name.toLowerCase().includes(qq)||(pp.policy||"").toLowerCase().includes(qq)||String(pp.code||"").toLowerCase().includes(qq);}).slice(0,5).map(name=>({__co:true,name}));const docHits=entries.filter(e=>(!(!isAdmin&&e.status==="hidden"))&&matchQuery(entryText(e),qq)).slice(0,10);_ddItems=[...coHits,...docHits];const dd=document.getElementById("searchDd");if(!_ddItems.length){dd.innerHTML=`<div class="sd-empty"><i class="ti ti-search-off" style="font-size:18px;display:block;margin-bottom:6px"></i>"${esc(q)}"에 해당하는 결과가 없어요</div>`;dd.style.display="block";return;}dd.innerHTML=`<div class="sd-group-label">추천 검색 결과</div>`+_ddItems.map((e,i)=>{if(e.__co){return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.name,q)}</div><div class="sd-meta">B2B 기업 · 운영 특이사항</div></div><span class="sd-badge co">B2B 기업</span></div>`;}const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const prev=(e.customerQ||"").split("\n")[0].slice(0,50);return`<div class="sd-item" id="sdi-${i}" onclick="selectDdItem(${i})"><div class="sd-item-body"><div class="sd-title">${highlight(e.title,q)}</div><div class="sd-meta">${sub?esc(sub)+" · ":""}${highlight(prev,q)}</div></div><span class="sd-badge${e.company?" co":""}">${esc((e.company||e.part).slice(0,10))}</span></div>`;}).join("");dd.style.display="block";}
-function selectDdItem(i){const it=_ddItems[i];if(!it)return;if(it.__co)selectCompanySuggestion(it.name);else selectSuggestion(it.id);}
-function selectCompanySuggestion(name){hideDd();const si=document.getElementById("mainSearch");if(si)si.value="";curView="companies";showView("viewCompanies");setSbView("b2b");renderCompanyView(name);closeDetailPanel();}
-function hideDd(){const dd=document.getElementById("searchDd");if(dd){dd.style.display="none";dd.innerHTML="";}_ddFocus=-1;}
-function selectSuggestion(id){hideDd();document.getElementById("mainSearch").value="";openDetail(id);if(curView!=="list"&&curView!=="companies"&&curView!=="home"){curView="list";showView("viewList");filterPart="전체";filterCo="전체";filterSub="전체";filterMultiple=[];renderResults();}}
-function onSearchKey(e){const items=document.querySelectorAll(".sd-item");if(e.key==="ArrowDown"){e.preventDefault();_ddFocus=Math.min(_ddFocus+1,items.length-1);items.forEach((el,i)=>el.classList.toggle("focus",i===_ddFocus));}else if(e.key==="ArrowUp"){e.preventDefault();_ddFocus=Math.max(_ddFocus-1,0);items.forEach((el,i)=>el.classList.toggle("focus",i===_ddFocus));}else if(e.key==="Enter"){if(_ddFocus>=0&&_ddItems[_ddFocus]){selectDdItem(_ddFocus);}else{hideDd();doSearch();}}else if(e.key==="Escape"){hideDd();}}
-document.addEventListener("click",e=>{if(!e.target.closest(".topbar-search"))hideDd();});
-function getSorted(arr){const m=(document.getElementById("sortSel")||{value:"recent"}).value;if(m==="views")return[...arr].sort((a,b)=>(b.views||0)-(a.views||0));if(m==="alpha")return[...arr].sort((a,b)=>(a.title||"").localeCompare(b.title||"","ko"));return[...arr].sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));}
-function logMissingSearch(q){const key=q.toLowerCase();const found=missingSearches.find(x=>x.key===key);if(found){found.count=(found.count||1)+1;found.lastAt=new Date().toLocaleString("ko-KR");}else missingSearches.unshift({key,query:q,count:1,lastAt:new Date().toLocaleString("ko-KR")});missingSearches=missingSearches.slice(0,50);saveAll();}
 function renderHome(){
   document.getElementById("homeGreeting").textContent=getGreeting();
   const importBtn=document.getElementById("topImportBtn");if(importBtn)importBtn.style.display=(currentUser&&currentUser.role!=="admin")?"flex":"none";
@@ -2712,8 +2052,8 @@ function renderHome(){
   ];
   document.getElementById("quickMenu").innerHTML=quickItems.map(q=>`<div style="position:relative"><button onclick="${q.action}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;min-width:110px;height:130px;background:${q.bg};border:1.5px solid ${q.color}33;border-radius:16px;color:${q.color};font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .18s;box-shadow:0 2px 10px ${q.color}15;flex-shrink:0" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px ${q.color}25'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 10px ${q.color}15'"><i class="ti ${q.icon}" style="font-size:28px"></i>${q.label}</button></div>`).join("");
   const cats=[
-    {label:"B2C",emoji:"🎓",cnt:()=>entries.filter(e=>e.part==="B2C").length,action:"filterPart2('B2C')"},
-    {label:"B2B",emoji:"🏢",cnt:()=>entries.filter(e=>e.part==="B2B 상위기업").length,action:"filterPart2('B2B 상위기업')"},
+    {label:"공통 업무지식",emoji:"📚",cnt:()=>entries.filter(e=>e.part==="B2C").length,action:"filterPart2('B2C')"},
+    {label:"게시판 답변",emoji:"💬",cnt:()=>boardAnswers?.length||0,action:"openBoardAnswers()"},
     {label:"상품 안내",emoji:"🎁",cnt:()=>entries.filter(e=>e.part==="상품 안내").length,action:"filterPart2('상품 안내')"},
     {label:"오류 처리방법",emoji:"🛠️",cnt:()=>entries.filter(e=>e.part==="오류 처리방법").length,action:"openErrorView()"},
     {label:"공지사항",emoji:"📢",cnt:()=>notices.length,action:"setView('notices')"},
@@ -2731,7 +2071,7 @@ function renderHome(){
   document.getElementById("newGuideBanner").style.display=entries.some(e=>e.newGuide&&e.status!=="hidden")?"flex":"none";
 }
 function renderResults(){window._curRender=null;showView("viewList");const f=getSorted(getFiltered());let title="검색 결과";if(searchQ)title=`"${searchQ}" 검색 결과`;else if(filterMultiple.length)title="오류 처리방법";else if(filterPart!=="전체")title=filterPart;renderList(f,title,`총 ${f.length}건`);if(showChips)renderFilterChips();else document.getElementById("filterChips").innerHTML="";}
-function renderFilterChips(){const chips=[{label:"전체",part:"전체",multi:[]},{label:"B2C",part:"B2C",multi:[]},{label:"B2B",part:"B2B 상위기업",multi:[]},{label:"상품 안내",part:"상품 안내",multi:[]},{label:"오류 처리방법",part:"",multi:["LMS 기능","ADMIN/뉴어드민"]},{label:"운영지원",part:"운영지원",multi:[]}];document.getElementById("filterChips").innerHTML=chips.map(c=>{const isAll=c.part==="전체"&&!c.multi.length;const isOn=isAll?(filterPart==="전체"&&!filterMultiple.length):(c.multi.length?JSON.stringify(filterMultiple)===JSON.stringify(c.multi):filterPart===c.part);const cnt=c.multi.length?entries.filter(e=>c.multi.includes(e.part)).length:c.part==="전체"?entries.length:entries.filter(e=>e.part===c.part).length;const onclick=isAll?`resetFiltersAndRender()`:(c.multi.length?`setChipFilter([${c.multi.map(x=>`'${x}'`).join(",")}])`:`setChipFilter([],'${c.part}')`);return`<button class="chip${isOn?" on":""}" onclick="${onclick}">${c.label} <span class="chip-cnt">${cnt}</span></button>`;}).join("");}
+function renderFilterChips(){const chips=[{label:"전체",part:"전체",multi:[]},{label:"공통 업무지식",part:"B2C",multi:[]},{label:"상품 안내",part:"상품 안내",multi:[]},{label:"오류 처리방법",part:"",multi:["LMS 기능","ADMIN/뉴어드민"]},{label:"운영지원",part:"운영지원",multi:[]}];document.getElementById("filterChips").innerHTML=chips.map(c=>{const isAll=c.part==="전체"&&!c.multi.length;const isOn=isAll?(filterPart==="전체"&&!filterMultiple.length):(c.multi.length?JSON.stringify(filterMultiple)===JSON.stringify(c.multi):filterPart===c.part);const cnt=c.multi.length?entries.filter(e=>c.multi.includes(e.part)).length:c.part==="전체"?entries.length:entries.filter(e=>e.part===c.part).length;const onclick=isAll?`resetFiltersAndRender()`:(c.multi.length?`setChipFilter([${c.multi.map(x=>`'${x}'`).join(",")}])`:`setChipFilter([],'${c.part}')`);return`<button class="chip${isOn?" on":""}" onclick="${onclick}">${c.label} <span class="chip-cnt">${cnt}</span></button>`;}).join("");}
 function resetFiltersAndRender(){filterPart="전체";filterCo="전체";filterSub="전체";filterMultiple=[];renderResults();}
 function setChipFilter(multi,part="전체"){filterMultiple=multi;filterPart=part;filterCo="전체";filterSub="전체";renderResults();}
 function renderList(f,title,cnt){document.getElementById("listTitle").textContent=title||"검색 결과";document.getElementById("listCnt").textContent=cnt||`총 ${f.length}건`;const isAdmin=currentUser&&currentUser.role==="admin";const showAdminChecks=isAdmin&&filterPart!=="운영지원";if(!f.length){document.getElementById("resultsList").innerHTML=`<div class="empty-state"><i class="ti ti-search-off"></i><p>결과가 없습니다<br><span style="font-size:11px">다른 키워드로 검색해 보세요</span></p></div>`;return;}const bulkBar=showAdminChecks?bulkBarHtml():"";const filterChipsEl=document.getElementById("filterChips");if(filterChipsEl){let bar=document.getElementById("bulkDeleteBar");if(showAdminChecks){if(!bar){bar=document.createElement("div");bar.id="bulkDeleteBar";filterChipsEl.parentNode.insertBefore(bar,filterChipsEl.nextSibling);}bar.innerHTML=bulkBar;}else if(bar){bar.remove();}}document.getElementById("resultsList").innerHTML=(f.length?`<div class="bd-list"><div class="bd-head"><span class="bd-title">제목</span><span class="bd-cat">분류</span><span class="bd-status">상태</span><span class="bd-views">조회</span><span class="bd-date">작성일</span><span style="width:58px;flex-shrink:0"></span></div>`:"")+f.map(e=>{const bm=bookmarks.includes(e.id);const sub=e.company||e.productType||e.lmsCat||e.adminSub||e.opsSub||"";const hasCaution=e.caution&&e.caution.trim();const hq=showChips?searchQ:"";return`<div class="bd-row${selId===e.id?" sel":""}" id="ri-${e.id}" onclick="openDetail('${e.id}')">${showAdminChecks?`<input type="checkbox" class="entry-chk" value="${e.id}" style="width:15px;height:15px;flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()">`:""}<span class="bd-title">${highlight(e.title,hq)}</span><span class="bd-cat">${esc(sub||e.part||"")}</span><span class="bd-status">${e.caution&&e.caution.trim()?`<span class="bd-caut">주의</span>`:""}${e.status==="hidden"?`<span class="bd-off">비공개</span>`:""}</span><span class="bd-views">${(e.views||0).toLocaleString()}</span><span class="bd-date">${e.updatedAt||""}</span><div class="bd-acts"><button class="bd-act" onclick="event.stopPropagation();downloadEntry('${e.id}')"><i class="ti ti-download"></i></button><button class="bd-act" onclick="toggleBM(event,'${e.id}')">${bm?"★":"☆"}</button></div></div>`;}).join("")+(f.length?`</div>`:"");const PDFBASE="https://hunet-cs.github.io/cs-knowledge";let pdfBar="";const mkBtn=(label,url)=>`<a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;background:#F4F6F8;border:1.5px solid #FFD0A8;border-radius:9px;color:#16181D;font-size:12.5px;font-weight:600;text-decoration:none;font-family:var(--font)"><i class="ti ti-file-type-pdf" style="font-size:15px"></i>${label}</a>`;if(filterSub==="CTI")pdfBar=mkBtn("CTI 매뉴얼 원본",`${PDFBASE}/cti_manual.pdf`)+mkBtn("CTI 상담유형 카테고리",`${PDFBASE}/cti_category.pdf`);else if(filterSub==="LMS")pdfBar=mkBtn("LMS 매뉴얼 원본",`${PDFBASE}/lms_manual.pdf`);if(pdfBar){const wrap=`<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:11px"><span style="font-size:12px;font-weight:600;color:var(--t2);margin-right:4px"><i class="ti ti-download" style="font-size:13px"></i> 원본 매뉴얼 다운로드</span>${pdfBar}</div>`;const rl=document.getElementById("resultsList");rl.innerHTML=wrap+rl.innerHTML;}}
@@ -2836,7 +2176,7 @@ function openLightbox(src){const lb=document.createElement("div");lb.className="
 function initFormImages(imgs){setTimeout(()=>renderImgPreviews(imgs||[]),50);}
 function openRequestModal(){const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal"><div class="modal-hd"><h2>지식 요청</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">요청 제목 *</label><input id="rqTitle" placeholder="예: 모바일 수료증 저장 문의"></div><div class="mrow"><label class="mlbl">필요한 지식 *</label><textarea id="rqBody" style="min-height:100px" placeholder="상담 중 찾지 못한 내용이나 새로 필요한 지식을 적어주세요"></textarea></div><div class="mrow"><label class="mlbl">요청 사유 *</label><textarea id="rqReason" style="min-height:80px" placeholder="예: 고객 문의가 자주 발생하는 내용인데 답변 기준이 없어서 요청드립니다"></textarea></div></div><div class="modal-foot"><div></div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveRequest()">등록</button></div></div></div>`;ov.style.display="flex";}
 function saveRequest(){const title=document.getElementById("rqTitle").value.trim();const body=document.getElementById("rqBody").value.trim();const reason=document.getElementById("rqReason").value.trim();if(!title||!body||!reason){alert("요청 제목, 필요한 지식, 요청 사유를 모두 입력해주세요.");return;}knowledgeRequests=[{id:uid(),title,body,reason,by:currentUser?currentUser.id:"",status:"new",createdAt:new Date().toLocaleString("ko-KR")},...knowledgeRequests];saveAll();closeModal();alert("지식 요청이 등록되었습니다.");}
-function downloadExcelTemplate(){if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const wb=XLSX.utils.book_new();const headers=[["분류","제목","고객문의유형","필수확인질문","답변/처리방법","이관기준","주의사항","기업명(B2B)","카테고리(B2B)","상품명(상품안내)","하위분류(운영지원/CTI·LMS 등)","관련매뉴얼/링크"]];const sample=[["B2B 상위기업","회원가입은 어떻게 하나요?","회원가입을 하고 싶어요","1. 본인명의 휴대폰 확인","사이트 우측 상단 회원가입 클릭","해당없음","","LH중앙공동주택관리지원센터","회원가입","","",""],["B2C","수료증은 언제 출력 가능한가요?","수료증 출력하고 싶어요","수강 완료 여부 확인","마이페이지 > 수료증 > 출력","해당없음","","","","","",""],["운영지원","[CTI] 로그인 방법","CTI에 로그인하고 싶어요","","1. cti.hunet.co.kr 접속  2. 아이디=사번","해당없음","초기 비밀번호는 사번과 동일","","","","CTI",""]];const ws=XLSX.utils.aoa_to_sheet([...headers,...sample]);ws["!cols"]=[{wch:15},{wch:30},{wch:25},{wch:20},{wch:30},{wch:15},{wch:15},{wch:20},{wch:15},{wch:15},{wch:22},{wch:40}];XLSX.utils.book_append_sheet(wb,ws,"업로드양식");XLSX.writeFile(wb,"지식관리시스템_업로드양식.xlsx");}
+function downloadExcelTemplate(){if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const wb=XLSX.utils.book_new();const headers=[["분류","제목","고객문의유형","필수확인질문","답변/처리방법","이관기준","주의사항","상품명(상품안내)","하위분류(운영지원/CTI·LMS 등)","관련매뉴얼/링크"]];const sample=[["B2C","수료증은 언제 출력 가능한가요?","수료증 출력하고 싶어요","수강 완료 여부 확인","마이페이지 > 수료증 > 출력","해당없음","","","",""],["운영지원","[CTI] 로그인 방법","CTI에 로그인하고 싶어요","","1. cti.hunet.co.kr 접속  2. 아이디=사번","해당없음","초기 비밀번호는 사번과 동일","","CTI",""]];const ws=XLSX.utils.aoa_to_sheet([...headers,...sample]);ws["!cols"]=[{wch:15},{wch:30},{wch:25},{wch:20},{wch:30},{wch:15},{wch:15},{wch:18},{wch:24},{wch:40}];XLSX.utils.book_append_sheet(wb,ws,"업로드양식");XLSX.writeFile(wb,"지식관리시스템_업로드양식.xlsx");}
 function handleExcelUpload(input){const file=input.files[0];if(!file)return;if(!window.XLSX){alert("라이브러리 로딩 중입니다.");return;}const reader=new FileReader();reader.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:"binary"});const ws=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});if(rows.length<2){alert("데이터가 없습니다.");return;}const dataRows=rows.slice(1).filter(r=>r[0]&&r[1]);window._excelRows=dataRows;document.getElementById("excelPreview").innerHTML=`<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px"><div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px">미리보기 (${dataRows.length}건 발견)</div><table style="width:100%;font-size:11.5px;border-collapse:collapse"><thead><tr style="background:#F7F8FA">${["분류","제목","고객문의","답변/처리방법","하위분류","주의사항"].map(h=>`<th style="padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);color:var(--t2)">${h}</th>`).join("")}</tr></thead><tbody>${dataRows.slice(0,5).map(r=>`<tr>${[r[0],r[1],r[2],r[4],r[10],r[6]].map(v=>`<td style="padding:6px 8px;border-bottom:1px solid #F3F5F9;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${String(v||"").slice(0,30)}</td>`).join("")}</tr>`).join("")}</tbody></table>${dataRows.length>5?`<div style="font-size:11px;color:var(--t3);padding:8px 0">... 외 ${dataRows.length-5}건</div>`:""}</div><button class="btn-save" onclick="importExcelData()" style="display:flex;align-items:center;gap:6px"><i class="ti ti-check" style="font-size:13px"></i>${dataRows.length}건 추가하기</button>`;}catch(err){alert("파일을 읽는 중 오류가 발생했습니다.");}};reader.readAsBinaryString(file);input.value="";}
 function importExcelData(){const rows=window._excelRows;if(!rows||!rows.length){alert("업로드된 데이터가 없습니다.");return;}if(!confirm(`${rows.length}건을 추가할까요?`))return;const PARTS2=["B2B 상위기업","B2C","상품 안내","오류 처리방법","LMS 기능","ADMIN/뉴어드민","운영지원"];rows.forEach(r=>{const part=PARTS2.includes(String(r[0]).trim())?String(r[0]).trim():"B2C";const sub=String(r[10]||"").trim();const company=String(r[7]||"").trim();const companyCat=String(r[8]||"").trim();if(company){if(!companyProfiles[company])companyProfiles[company]={code:"",manager:"",pcUrl:"",moUrl:"",cats:[]};if(companyCat&&!companyProfiles[company].cats.includes(companyCat))companyProfiles[company].cats.push(companyCat);}const entry={id:uid(),part,title:String(r[1]||"").trim(),customerQ:String(r[2]||"").trim(),checkQ:String(r[3]||"").trim(),steps:String(r[4]||"").trim(),escalation:String(r[5]||"").trim(),caution:String(r[6]||"").trim(),company,companyCat,productName:String(r[9]||"").trim(),productSection:"FAQ",opsSub:part==="운영지원"?sub:"",lmsCat:part==="LMS 기능"?sub:"",adminSub:part==="ADMIN/뉴어드민"?sub:"",relatedManuals:String(r[11]||"").trim(),status:"active",updatedBy:currentUser?.id||"",updatedAt:today(),createdAt:today(),views:0,history:[],viewers:[]};if(entry.title)entries=[entry,...entries];});saveAll();applyCustomCategories();renderAdminKnowledge();document.getElementById("excelPreview").innerHTML=`<div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:14px;color:#065F46;font-weight:600"><i class="ti ti-check"></i> ${rows.length}건이 추가됐어요!</div>`;window._excelRows=null;}
 function exportJSON(){const data={version:"1.0",exportedAt:new Date().toISOString(),entries,users,historyLog,knowledgeRequests,missingSearches,customCategories,companyProfiles,productProfiles,notices};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`지식관리시스템_백업_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);}
@@ -2889,32 +2229,35 @@ const _origApplyRoleUI=applyRoleUI;applyRoleUI=function(){_origApplyRoleUI();upd
 async function loadTodaySchedule(){
   const box=document.getElementById("todayScheduleWidget"); if(!box)return;
   const ok=await fbAutoLogin();
-  if(!ok){box.innerHTML=`<div style="padding:34px 0;text-align:center;color:var(--t3);font-size:12px">📡 내부망에서는 근무 현황이 표시되지 않습니다</div>`;return;}
+  if(!ok){box.innerHTML=`<div class="work-v2-empty">📡 내부망에서는 근무 현황이 표시되지 않습니다</div>`;return;}
   try{
     const snap=await _fbDb.collection("appData").doc("schedule").get();
-    if(!snap.exists){box.innerHTML=`<div style="padding:34px 0;text-align:center;color:var(--t3);font-size:12px">일정 데이터 없음</div>`;return;}
+    if(!snap.exists){box.innerHTML=`<div class="work-v2-empty">일정 데이터 없음</div>`;return;}
     const weeks=snap.data().weeks||[], now=new Date(), todayLabel=`${now.getMonth()+1}/${now.getDate()}`;
     const dateKey=s=>{const m=(s||"").match(/(\d{1,2})\s*\/\s*(\d{1,2})/);return m?`${parseInt(m[1],10)}/${parseInt(m[2],10)}`:"";};
     let data=null; for(const week of weeks){for(const day of (week.days||[])){if(dateKey(day.date)===todayLabel){data=day;break;}}if(data)break;}
-    if(!data){box.innerHTML=`<div style="padding:34px 0;text-align:center;color:var(--t3);font-size:12px">오늘 일정 없음</div>`;return;}
+    if(!data){box.innerHTML=`<div class="work-v2-empty">오늘 일정 없음</div>`;return;}
     const absent=data.absentInfo||[];
     const isMyday=a=>a.type==="마이데이"||a.type==="4일제";
     const isDuty=a=>(a.type||"").includes("당직")||(a.name||"").includes("당직");
     const myday=[...new Set(absent.filter(isMyday).map(a=>a.name).filter(Boolean))];
     const leave=[...new Set(absent.filter(a=>!isMyday(a)&&!isDuty(a)).map(a=>a.name).filter(Boolean))];
     const clean=s=>String(s||"").replace(/당직/g,"").replace(/[:：]/g,"").trim();
-    const splitNames=s=>clean(s).split(/[,/·\n]+/).map(x=>x.trim()).filter(Boolean).join(", ")||"없음";
-    const chat=splitNames(data.chat), edu=splitNames(data.edu), early=splitNames(data.early);
-    const rate=data.rate!=null?Math.round(Number(data.rate)*100):null;
-    const total=Number(data.total||data.totalCount||data.headcount||0);
-    const workerCount=Number(data.workerCount||data.workingCount||0)||(rate!=null&&total?Math.round(total*rate/100):0);
-    const metrics=[];
-    if(workerCount)metrics.push(`<div class="work-summary-item"><i class="ti ti-user"></i><span>근무자 <strong>${workerCount}</strong>명</span></div>`);
-    if(rate!=null)metrics.push(`<div class="work-summary-item"><i class="ti ti-chart-donut"></i><span>근무율 <strong>${rate}%</strong></span></div>`);
-    const metricHtml=metrics.length?`<div class="work-summary">${metrics.join('<div class="work-summary-divider"></div>')}</div>`:"";
-    const duty=(label,icon,name,leaveClass="")=>`<div class="work-duty ${leaveClass}"><div class="work-duty-label"><i class="ti ${icon}"></i>${label}</div><div class="work-duty-name" title="${esc(name)}">${esc(name)}</div></div>`;
-    box.innerHTML=metricHtml+`<div class="work-duty-box">${duty("채널톡","ti-message-circle",chat)}${duty("에듀/mg","ti-school",edu)}${duty("마이데이","ti-calendar",myday.join(", ")||"없음")}${duty("8시 출근","ti-clock",early)}${duty("연차","ti-beach",leave.join(", ")||"없음","leave")}</div>`;
-  }catch(e){box.innerHTML=`<div style="padding:34px 0;text-align:center;color:#DC2626;font-size:12px">불러오기 실패</div>`;}
+    const nameList=s=>clean(s).split(/[,/·\n]+/).map(x=>x.trim()).filter(Boolean);
+    const chat=nameList(data.chat), edu=nameList(data.edu), early=nameList(data.early);
+    const rate=data.rate!=null?Math.round(Number(data.rate)*100):0;
+    const status=(cls,label,icon,count)=>`<div class="work-v2-status ${cls}"><i class="ti ${icon}"></i><div class="work-v2-label">${label}</div><div class="work-v2-value">${count}명</div></div>`;
+    box.innerHTML=`<div class="work-v2">
+      <div class="work-v2-rate"><div class="work-v2-ring" style="--rate:${Math.max(0,Math.min(100,rate))}"><div class="work-v2-rate-text"><strong>${rate}%</strong><span>근무율</span></div></div></div>
+      <div class="work-v2-statuses">
+        ${status('s1','채널톡','ti-message-circle',chat.length)}
+        ${status('s2','에듀/mg','ti-school',edu.length)}
+        ${status('s3','마이데이','ti-calendar',myday.length)}
+        ${status('s4','8시 출근','ti-clock',early.length)}
+        ${status('s5','연차','ti-beach',leave.length)}
+      </div>
+    </div>`;
+  }catch(e){box.innerHTML=`<div class="work-v2-empty" style="color:#DC2626">불러오기 실패</div>`;}
 }
 function renderHome(){
   const now=new Date(),days=["일","월","화","수","목","금","토"];
@@ -3509,5 +2852,102 @@ function syncSidebarSelection(view,sub){
 })();
 </script>
 
+
+<script id="v19-privacy-b2b-cleanup">
+(function(){
+  function stripB2B(){
+    try{
+      if(Array.isArray(entries)) entries = entries.filter(e => e && e.part !== "B2B 상위기업");
+      if(typeof companyProfiles !== "undefined") companyProfiles = {};
+      if(typeof customCategories !== "undefined" && customCategories){ customCategories.b2b = []; }
+      if(Array.isArray(boardAnswers)){
+        boardAnswers = boardAnswers.map(x => ({...x, company:""}));
+        if(typeof saveBoardAnswers === "function") saveBoardAnswers();
+      }
+      if(typeof saveAll === "function") saveAll();
+    }catch(e){ console.warn("B2B cleanup skipped",e); }
+  }
+  stripB2B();
+
+  // B2B 화면/선택지는 혹시 남아 있어도 노출하지 않음
+  const privacyStyle=document.createElement('style');
+  privacyStyle.textContent=`
+    .sb-item[data-view="b2b"], #viewCompanies {display:none!important;}
+    select option[value="B2B 상위기업"]{display:none!important;}
+    .privacy-note{margin:8px 0 12px;padding:10px 12px;border:1px solid #F6C453;background:#FFF9E8;border-radius:9px;color:#76520A;font-size:11.5px;line-height:1.55}
+  `;
+  document.head.appendChild(privacyStyle);
+
+  // 홈의 근무현황/퀵메뉴는 원본 그대로 두고, 카테고리 영역만 정리
+  const originalRenderHome=window.renderHome;
+  if(typeof originalRenderHome==='function'){
+    window.renderHome=function(){
+      originalRenderHome();
+      document.querySelectorAll('#homeCats .home-cat').forEach(card=>{
+        const label=card.querySelector('.home-cat-label');
+        if(label?.textContent.trim()==='B2B') card.remove();
+        if(label?.textContent.trim()==='B2C') label.textContent='공통 업무지식';
+      });
+    };
+  }
+
+  // 지식 등록창: 개인정보 입력 금지 안내 + B2B 선택지 제거
+  const originalOpenAdd=window.openAdd;
+  if(typeof originalOpenAdd==='function'){
+    window.openAdd=function(){
+      const r=originalOpenAdd.apply(this,arguments);
+      setTimeout(()=>{
+        const mp=document.getElementById('mp');
+        if(mp){ [...mp.options].forEach(o=>{if(o.value==='B2B 상위기업')o.remove();}); }
+        const body=document.querySelector('#modalOv .modal-body');
+        if(body && !body.querySelector('.privacy-note')) body.insertAdjacentHTML('afterbegin','<div class="privacy-note"><b>개인정보 입력 금지</b> · 이름, 전화번호, 이메일, 생년월일 등 개인을 식별할 수 있는 정보는 지식에 등록하지 마세요.</div>');
+      },0);
+      return r;
+    };
+  }
+
+  // 게시판 답변은 기업별이 아닌 공통 답변으로 저장
+  window.openBoardAnswerForm=function(id=""){
+    const old=boardAnswers.find(x=>x.id===id)||{title:"",type:"",answer:"",note:""};
+    const ov=document.createElement("div");ov.className="modal-ov";
+    ov.innerHTML=`<div class="modal" style="max-width:720px"><div class="modal-hd"><h2>${id?"게시판 답변 수정":"게시판 답변 등록"}</h2><button class="modal-close" onclick="this.closest('.modal-ov').remove()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="privacy-note"><b>개인정보 입력 금지</b> · 고객 이름, 연락처, 이메일 등 개인정보는 답변에 포함하지 마세요.</div><div class="board-form-grid"><div><label>답변 제목</label><input id="bfTitle" value="${bEsc(old.title||'')}" placeholder="예: 수료증 발급 방법 안내"></div><div><label>문의 유형</label><input id="bfType" value="${bEsc(old.type||'')}" placeholder="예: 수료/증명서"></div><div class="full"><label>게시판용 답변</label><textarea id="bfAnswer" placeholder="게시판에 바로 복사해서 사용할 공통 답변을 입력하세요.">${bEsc(old.answer||'')}</textarea></div><div class="full"><label>참고사항 <span style="font-weight:400;color:var(--t3)">(내부 확인용)</span></label><textarea id="bfNote" class="note" placeholder="상담원만 확인할 주의사항 또는 기준을 입력하세요.">${bEsc(old.note||'')}</textarea></div></div></div><div class="modal-foot"><span></span><div style="display:flex;gap:7px">${id?`<button class="btn-cancel" style="color:#DC2626" onclick="deleteBoardAnswer('${id}')">삭제</button>`:""}<button class="btn-cancel" onclick="this.closest('.modal-ov').remove()">취소</button><button class="btn-save" onclick="saveBoardAnswerForm('${id}',this)">저장</button></div></div></div>`;
+    document.body.appendChild(ov);
+  };
+  window.saveBoardAnswerForm=function(id,btn){
+    const title=document.getElementById("bfTitle")?.value.trim()||"", type=document.getElementById("bfType")?.value.trim()||"", answer=document.getElementById("bfAnswer")?.value.trim()||"", note=document.getElementById("bfNote")?.value.trim()||"";
+    if(!title){alert("답변 제목을 입력해 주세요.");return;} if(!type){alert("문의 유형을 입력해 주세요.");return;} if(!answer){alert("게시판용 답변을 입력해 주세요.");return;}
+    const pii=/(01[016789][- ]?\d{3,4}[- ]?\d{4})|([\w.%+-]+@[\w.-]+\.[A-Za-z]{2,})|(\d{6}[- ]?[1-4]\d{6})/;
+    if(pii.test(title+' '+answer+' '+note) && !confirm('전화번호·이메일·주민등록번호 형태의 정보가 감지되었습니다. 개인정보가 아닌지 확인 후 저장하시겠어요?')) return;
+    const d=new Date().toISOString().slice(0,10);
+    if(id){const item=boardAnswers.find(x=>x.id===id);if(item)Object.assign(item,{company:"",title,type,answer,note,updatedAt:d});boardSelectedId=id;}
+    else{const item={id:"board_"+Date.now(),company:"",title,type,answer,note,updatedAt:d};boardAnswers.unshift(item);boardSelectedId=item.id;}
+    saveBoardAnswers();btn.closest('.modal-ov').remove();renderBoardAnswers();
+  };
+
+  // 공통 게시판 답변 화면에서 기업명 표시는 제거
+  const originalRenderBoardAnswers=window.renderBoardAnswers;
+  if(typeof originalRenderBoardAnswers==='function'){
+    window.renderBoardAnswers=function(){
+      originalRenderBoardAnswers();
+      document.querySelectorAll('.board-row-date').forEach(el=>{ if(el.textContent.trim()==='공통') el.style.display='none'; });
+      document.querySelectorAll('.board-detail-meta span,.board-breadcrumb').forEach(el=>{ if(el.textContent.includes('› 공통 ›')) el.textContent=el.textContent.replace('› 공통 ›','›'); });
+    };
+  }
+
+  // 일괄 업로드 설정에서 B2B 제거
+  try{
+    if(typeof BULK_CONFIG!=='undefined'){
+      delete BULK_CONFIG.b2b;
+      BULK_CONFIG.list={title:"일괄 업로드",headers:["분류","제목","고객문의유형","필수확인질문","답변/처리방법","이관기준","주의사항","상품명(상품안내)","하위분류(운영지원/CTI·LMS 등)","관련매뉴얼/링크"],sample:[["운영지원","[CTI] 로그인 방법","CTI 로그인 방법","","1. cti.hunet.co.kr 접속  2. 아이디=사번","해당없음","초기 비밀번호는 사번과 동일","","CTI",""]],parse:(row)=>{const P=["B2C","상품 안내","오류 처리방법","LMS 기능","ADMIN/뉴어드민","운영지원"];const part=P.includes((row[0]||"").trim())?(row[0]||"").trim():"B2C";const sub=(row[8]||"").trim();return{part,title:row[1],customerQ:row[2],checkQ:row[3],steps:row[4],escalation:row[5],caution:row[6],company:"",companyCat:"",productName:row[7],opsSub:part==="운영지원"?sub:"",lmsCat:part==="LMS 기능"?sub:"",adminSub:part==="ADMIN/뉴어드민"?sub:"",relatedManuals:row[9]||""};}};
+    }
+  }catch(e){}
+
+  // 최초 표시 갱신
+  setTimeout(()=>{ try{ if(typeof renderHome==='function') renderHome(); }catch(e){} },0);
+})();
+</script>
+
 </body>
 </html>
+지식관리시스템_퍼플_근무현황2안.html
+HTML
