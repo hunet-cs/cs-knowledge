@@ -3812,5 +3812,63 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
   };
 })();
 </script>
+
+<style id="knowledge-guide-ui-v2">
+/* 지식·가이드 전체 UI v2 — 메인/목록의 시선 우선순위만 정리, 상세/로그인/홈 로직 유지 */
+.product-main-card{min-height:84px;padding:15px 46px 14px 56px;display:flex;flex-direction:column;justify-content:center}
+.product-main-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:29px;height:29px;border-radius:9px;margin:0;background:#f3edff!important;color:#7c3aed!important;font-size:15px}
+.product-main-name{font-size:15px;font-weight:850;letter-spacing:-.25px;margin-bottom:4px;color:#1d1729}
+.product-main-meta{font-size:10.5px;color:#9a92a5}
+.product-main-arrow{right:15px;bottom:auto;top:50%;transform:translateY(-50%);font-size:15px;color:#a78bfa}
+.product-main-card:hover{transform:none;background:#fcfaff;border-color:#cdb8ff;box-shadow:0 6px 18px rgba(90,54,150,.07)}
+.product-main-card:hover .product-main-name{color:#6d28d9}
+
+.guide-main-page{padding:4px 0 0}.guide-main-head{margin-bottom:14px}.guide-main-head h2{font-size:20px;margin:0 0 5px;color:#19152a}.guide-main-head p{font-size:12px;color:#8b849b;margin:0}
+.guide-list-card{background:#fff;border:1px solid #e7e2ef;border-radius:14px;overflow:hidden}
+.guide-list-row{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr) 72px 92px 18px;gap:10px;align-items:center;padding:12px 15px;border-top:1px solid #f0edf3;cursor:pointer;transition:.14s}
+.guide-list-row:first-child{border-top:0}.guide-list-row:hover{background:#fcfaff}.guide-list-row.on{background:#f5f0ff;box-shadow:inset 3px 0 0 #8b5cf6}
+.guide-list-icon{width:27px;height:27px;border-radius:8px;background:#f3edff;color:#7c3aed;display:grid;place-items:center;font-size:14px}
+.guide-list-text{min-width:0}.guide-list-title{display:block;font-size:13px;font-weight:800;color:#241d31;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.guide-list-preview{display:block;font-size:10.5px;color:#9a92a5;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.guide-list-meta{font-size:10.5px;color:#958da0;text-align:center}.guide-list-row>i{color:#b1a7bd}
+.ops-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ops-main-card{position:relative;background:#fff;border:1px solid #e7e2ef;border-radius:14px;min-height:84px;padding:15px 44px 14px 56px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;transition:.15s}.ops-main-card:hover{background:#fcfaff;border-color:#cdb8ff;box-shadow:0 6px 18px rgba(90,54,150,.07)}.ops-main-card-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:29px;height:29px;border-radius:9px;background:#f3edff;color:#7c3aed;display:grid;place-items:center;font-size:15px}.ops-main-card strong{font-size:14px;color:#211a32}.ops-main-card small{font-size:10.5px;color:#968da2;margin-top:4px}.ops-main-card>i{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#a78bfa}
+@media(max-width:1150px){.ops-card-grid{grid-template-columns:repeat(2,1fr)}.guide-list-row{grid-template-columns:32px minmax(0,1fr) 60px 82px 16px}}
+</style>
+<script id="knowledge-guide-ui-v2-js">
+(function(){
+  const guideRows=(list,kind,selected,clickFn)=>list.map(e=>{const preview=(e.customerQ||e.steps||e.caution||'').split('\n')[0];const icon=kind==='error'?'ti-alert-triangle':kind==='ops'?'ti-tool':'ti-file-text';return `<div class="guide-list-row${e.id===selected?' on':''}" onclick="${clickFn(e)}"><span class="guide-list-icon"><i class="ti ${icon}"></i></span><span class="guide-list-text"><span class="guide-list-title">${esc(e.title)}</span><span class="guide-list-preview">${esc(preview||'내용을 확인해 보세요.')}</span></span><span class="guide-list-meta">${(e.views||0).toLocaleString()}회</span><span class="guide-list-meta">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`}).join('');
+
+  window.renderB2CUnified=function(id=null){
+    curView='list';filterPart='B2C';filterSub='전체';showView('viewList');setSbView('b2c');syncSidebarSelection('b2c');
+    const list=entries.filter(e=>e.part==='B2C'&&e.status!=='hidden').sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+    document.getElementById('listTitle').textContent='공통 업무지식';document.getElementById('listCnt').textContent=`총 ${list.length}건`;document.getElementById('filterChips').innerHTML='';
+    const rows=guideRows(list,'common',id,e=>`renderB2CUnified('${e.id}')`);
+    if(!id) document.getElementById('resultsList').innerHTML=`<div class="guide-main-page"><div class="guide-main-head"><h2>공통 업무지식</h2><p>상담 중 자주 확인하는 공통 업무 지식을 빠르게 찾아보세요.</p></div><div class="guide-list-card">${rows||'<div class="unified-empty">등록된 문서가 없습니다.</div>'}</div></div>`;
+    else {const selected=list.find(e=>e.id===id);document.getElementById('resultsList').innerHTML=`<div class="unified-split">${uListPane('공통 업무지식',list.map(e=>`<div class="unified-row${e.id===id?' on':''}" onclick="renderB2CUnified('${e.id}')"><span class="unified-title">${esc(e.title)}</span><span class="unified-count">${(e.views||0).toLocaleString()}회</span><span class="unified-date">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`).join(''),`${list.length}건`)}${selected?uDocDetail(selected,'renderB2CUnified()',`openEdit('${selected.id}')`):'<div class="unified-pane"><div class="unified-empty">문서를 선택해 주세요.</div></div>'}</div>`;}
+    closeDetailPanel();
+  };
+
+  window.renderErrorList=function(id=null){
+    const list=entries.filter(e=>e.part==='오류 처리방법'&&e.status!=='hidden').sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));document.getElementById('errCnt').textContent=`총 ${list.length}건`;
+    const rows=guideRows(list,'error',id,e=>`renderErrorList('${e.id}')`);
+    if(!id) document.getElementById('errList').innerHTML=`<div class="guide-main-page"><div class="guide-main-head"><h2>오류 처리방법</h2><p>자주 발생하는 오류와 처리 방법을 빠르게 확인하세요.</p></div><div class="guide-list-card">${rows||'<div class="unified-empty">등록된 문서가 없습니다.</div>'}</div></div>`;
+    else {const selected=list.find(e=>e.id===id), oldRows=list.map(e=>`<div class="unified-row${e.id===id?' on':''}" onclick="renderErrorList('${e.id}')"><span class="unified-title">${esc(e.title)}</span><span class="unified-count">${(e.views||0).toLocaleString()}회</span><span class="unified-date">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`).join('');document.getElementById('errList').innerHTML=`<div class="unified-split">${uListPane('오류 처리방법',oldRows,`${list.length}건`)}${selected?uDocDetail(selected,'renderErrorList()',`openErrorForm('${selected.id}')`):'<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>'}</div>`;}
+    closeDetailPanel();
+  };
+
+  const _opsDetail=window.renderOpsUnified;
+  window.renderOpsUnified=function(sub='',id=null){
+    if(sub||id){return _opsDetail(sub,id);}
+    filterPart='운영지원';filterSub='전체';curView='list';showView('viewList');setSbView('ops');syncSidebarSelection('ops','');document.getElementById('listTitle').textContent='운영지원';document.getElementById('filterChips').innerHTML='';
+    const all=entries.filter(e=>e.part==='운영지원'&&e.status!=='hidden');document.getElementById('listCnt').textContent=`총 ${all.length}건`;
+    const icons={'에듀매니저':'ti-user-cog','랩스(LABS)':'ti-flask','CTI':'ti-phone','LMS':'ti-school','ADMIN':'ti-settings','NEWADMIN':'ti-settings-2','원격 지원':'ti-device-desktop','앱 설치 지원':'ti-device-mobile','업무 요청·이관':'ti-send'};
+    const cards=OPS_SUBS.map(name=>{const cnt=all.filter(e=>e.opsSub===name).length;return `<div class="ops-main-card" onclick="renderOpsUnified('${esc(name)}')"><span class="ops-main-card-icon"><i class="ti ${icons[name]||'ti-tool'}"></i></span><strong>${esc(name)}</strong><small>${cnt}개의 문서</small><i class="ti ti-chevron-right"></i></div>`}).join('');
+    document.getElementById('resultsList').innerHTML=`<div class="guide-main-page"><div class="guide-main-head"><h2>운영지원</h2><p>시스템과 운영 업무별 가이드를 선택해 확인하세요.</p></div><div class="ops-card-grid">${cards}</div></div>`;closeDetailPanel();
+  };
+
+  /* 상품 메인 카드 아이콘은 하나의 작은 퍼플 스타일로 통일 */
+  const _product=window.renderProductView;
+  window.renderProductView=function(product='전체',section=null){_product(product,section);if(product==='전체'){document.querySelectorAll('.product-main-icon').forEach(el=>{el.innerHTML='<i class="ti ti-file-text"></i>'});}};
+})();
+</script>
 </body>
 </html>
