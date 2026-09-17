@@ -1676,22 +1676,46 @@ body,.app-main,.app-body{background:#F8F7FC}
           <button onclick="askHelper()" style="background:var(--p);color:#fff;border:none;border-radius:12px;padding:0 22px;font-size:14px;font-weight:500;cursor:pointer">묻기</button>
         </div>
       </div>
-      <div id="viewMySpace" class="list-view" style="display:none">
-        <div class="list-hd">
-          <span class="list-title">마이스페이스</span>
-          <button class="hd-btn-home" onclick="goHome()"><i class="ti ti-home-2" style="font-size:13px"></i>홈</button>
-        </div>
-        <div style="margin-bottom:24px">
-          <div style="font-size:12px;font-weight:700;color:#D97706;margin-bottom:10px;display:flex;align-items:center;gap:5px"><i class="ti ti-notes" style="font-size:14px"></i>나의 메모 <span id="memoStatus" style="font-weight:400;color:var(--t3);font-size:11px"></span></div>
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <textarea id="myMemo" placeholder="메모를 입력하고 등록을 누르세요. 등록할 때마다 아래에 쌓여요." style="flex:1;min-height:60px;box-sizing:border-box;padding:12px 14px;border:1px solid var(--border);border-radius:11px;font-family:var(--font);font-size:13px;line-height:1.6;color:var(--t1);resize:vertical;background:#FFFDF7" onkeydown="if(event.key==='Enter'&&(event.ctrlKey||event.metaKey))addMemo()"></textarea>
-            <button onclick="addMemo()" id="memoSaveBtn" style="display:inline-flex;align-items:center;gap:6px;height:60px;padding:0 18px;background:var(--p);color:#fff;border:none;border-radius:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);flex-shrink:0"><i class="ti ti-plus" style="font-size:15px"></i>등록</button>
+      <div id="viewMySpace" class="list-view myspace-view" style="display:none">
+        <div class="myspace-head">
+          <div>
+            <div class="myspace-title"><span class="myspace-title-icon"><i class="ti ti-home-heart"></i></span>마이스페이스</div>
+            <div class="myspace-sub">나만의 메모를 기록하고, 자주 사용하는 내용을 편리하게 관리해보세요.</div>
           </div>
-          <div id="myMemoList" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
         </div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--p);margin-bottom:10px;display:flex;align-items:center;gap:5px"><i class="ti ti-star" style="font-size:14px"></i>즐겨찾기 <span id="bmCnt" style="font-weight:400;color:var(--t3)"></span></div>
+
+        <section class="myspace-card memo-compose-card">
+          <div class="myspace-card-head">
+            <div class="myspace-card-title"><i class="ti ti-pencil"></i>새 메모 작성 <span id="memoStatus" class="memo-status"></span></div>
+            <span class="memo-count"><span id="memoCharCnt">0</span>/1,000</span>
+          </div>
+          <textarea id="myMemo" maxlength="1000" placeholder="메모를 입력하고 등록을 눌러주세요. 자주 쓰는 답변, 업무 참고사항, 아이디어 등을 자유롭게 기록할 수 있어요." oninput="document.getElementById('memoCharCnt').textContent=this.value.length" onkeydown="if(event.key==='Enter'&&(event.ctrlKey||event.metaKey))addMemo()"></textarea>
+          <div class="memo-compose-foot">
+            <div class="memo-hint"><i class="ti ti-keyboard"></i> Ctrl + Enter로 빠르게 등록</div>
+            <button onclick="addMemo()" id="memoSaveBtn" class="memo-save-btn"><i class="ti ti-send"></i>등록하기</button>
+          </div>
+        </section>
+
+        <section class="myspace-card memo-list-card">
+          <div class="memo-list-head">
+            <div class="myspace-card-title">내 메모 목록 <span id="memoListCnt" class="soft-count">0건</span></div>
+          </div>
+          <div id="myMemoList" class="memo-list-modern"></div>
+        </section>
+
+        <section class="myspace-card bookmark-card">
+          <div class="memo-list-head">
+            <div class="myspace-card-title"><i class="ti ti-star"></i>즐겨찾기 <span id="bmCnt" class="soft-count"></span></div>
+          </div>
           <div id="myBmList" class="r-list"></div>
+        </section>
+
+        <div class="myspace-guide">
+          <div class="guide-lead"><i class="ti ti-bulb"></i><strong>이렇게 활용해보세요!</strong></div>
+          <span><i class="ti ti-circle-check"></i>자주 사용하는 답변 문구 저장</span>
+          <span><i class="ti ti-circle-check"></i>업무 중 참고할 내용 메모</span>
+          <span><i class="ti ti-circle-check"></i>아이디어나 개선사항 기록</span>
+          <span><i class="ti ti-circle-check"></i>중요 문서는 즐겨찾기로 관리</span>
         </div>
       </div>
     </div>
@@ -2342,8 +2366,8 @@ function askHelper(){
 }
 function openMySpace(){curView="myspace";showView("viewMySpace");setSbView("myspace");const bmItems=bookmarks.map(id=>entries.find(e=>e.id===id)).filter(Boolean);document.getElementById("bmCnt").textContent=`${bmItems.length}건`;document.getElementById("myBmList").innerHTML=bmItems.length?bmItems.map(e=>`<div class="r-card" onclick="openDetail('${e.id}')"><div class="r-card-top"><span class="r-card-title">${esc(e.title)}</span><button class="r-star on" onclick="toggleBM(event,'${e.id}')">★</button></div><div class="r-card-tags"><span class="r-tag">${esc(e.part)}</span>${e.company?`<span class="r-tag co">${esc(e.company)}</span>`:""}</div><div class="r-card-foot"><span><i class="ti ti-calendar"></i>${e.updatedAt||""}</span><span><i class="ti ti-eye"></i>${e.views||0}회</span></div></div>`).join(""):`<div class="empty-state" style="padding:32px 0"><i class="ti ti-star-off"></i><p style="font-size:12px">즐겨찾기한 문서가 없습니다</p></div>`;loadMemos();}
 function loadMemos(){const st=document.getElementById("memoStatus");const box=document.getElementById("myMemoList");if(!box||!currentUser)return;st.textContent="불러오는 중...";fetch(`${ACCESS_LOG_URL}?action=getMemos&id=${encodeURIComponent(currentUser.id)}`).then(r=>r.json()).then(d=>{st.textContent="";renderMemos((d&&d.ok&&Array.isArray(d.memos))?d.memos:[]);}).catch(()=>{st.textContent="(불러오기 실패 - 네트워크 확인)";renderMemos([]);});}
-function renderMemos(list){const box=document.getElementById("myMemoList");if(!box)return;if(!list.length){box.innerHTML=`<div style="padding:18px;text-align:center;color:var(--t3);font-size:12px;background:#FAFAFE;border:1px dashed var(--border);border-radius:11px">아직 메모가 없어요. 위에 입력하고 등록을 눌러보세요.</div>`;return;}box.innerHTML=list.map(m=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:#FFFDF7;border:1px solid var(--border);border-radius:11px"><div style="flex:1;min-width:0"><div style="font-size:13px;color:var(--t1);line-height:1.6;white-space:pre-wrap;word-break:break-word">${esc(m.memo)}</div><div style="font-size:11px;color:var(--t3);margin-top:6px"><i class="ti ti-clock" style="font-size:11px"></i> ${esc(m.time||"")}</div></div><button onclick="deleteMemo('${esc(m.memoId)}')" title="삭제" style="width:26px;height:26px;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:7px;color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center" onmouseover="this.style.borderColor='#FECACA';this.style.color='#DC2626'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--t3)'"><i class="ti ti-x" style="font-size:13px"></i></button></div>`).join("");}
-function addMemo(){const ta=document.getElementById("myMemo");const btn=document.getElementById("memoSaveBtn");const st=document.getElementById("memoStatus");if(!ta||!currentUser)return;const text=ta.value.trim();if(!text){ta.focus();return;}const memoId=Date.now().toString(36)+Math.random().toString(36).slice(2,7);btn.disabled=true;btn.style.opacity="0.6";st.textContent="등록 중...";fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"addMemo",id:currentUser.id,name:currentUser.name,memo:text,memoId})}).finally(()=>{ta.value="";setTimeout(()=>{btn.disabled=false;btn.style.opacity="1";loadMemos();},900);});}
+function renderMemos(list){const box=document.getElementById("myMemoList");if(!box)return;const cnt=document.getElementById("memoListCnt");if(cnt)cnt.textContent=`${list.length}건`;if(!list.length){box.innerHTML=`<div class="memo-empty-modern"><div class="memo-empty-icon"><i class="ti ti-note"></i></div><strong>아직 등록된 메모가 없습니다.</strong><p>위에서 첫 메모를 작성해보세요.</p></div>`;return;}box.innerHTML=list.map(m=>`<div class="memo-item-modern"><div class="memo-item-text">${esc(m.memo)}<div class="memo-item-time"><i class="ti ti-clock"></i> ${esc(m.time||"")}</div></div><button class="memo-del" onclick="deleteMemo('${esc(m.memoId)}')" title="삭제"><i class="ti ti-x"></i></button></div>`).join("");}
+function addMemo(){const ta=document.getElementById("myMemo");const btn=document.getElementById("memoSaveBtn");const st=document.getElementById("memoStatus");if(!ta||!currentUser)return;const text=ta.value.trim();if(!text){ta.focus();return;}const memoId=Date.now().toString(36)+Math.random().toString(36).slice(2,7);btn.disabled=true;btn.style.opacity="0.6";st.textContent="등록 중...";fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"addMemo",id:currentUser.id,name:currentUser.name,memo:text,memoId})}).finally(()=>{ta.value="";const cc=document.getElementById("memoCharCnt");if(cc)cc.textContent="0";setTimeout(()=>{btn.disabled=false;btn.style.opacity="1";loadMemos();},900);});}
 function deleteMemo(memoId){if(!currentUser)return;if(!confirm("이 메모를 삭제할까요?"))return;document.getElementById("memoStatus").textContent="삭제 중...";fetch(ACCESS_LOG_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"deleteMemo",id:currentUser.id,memoId})}).finally(()=>{setTimeout(loadMemos,900);});}
 function openSlackModal(){
   const links=[
@@ -3832,6 +3856,30 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
 .guide-list-meta{font-size:10.5px;color:#958da0;text-align:center}.guide-list-row>i{color:#b1a7bd}
 .ops-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ops-main-card{position:relative;background:#fff;border:1px solid #e7e2ef;border-radius:14px;min-height:84px;padding:15px 44px 14px 56px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;transition:.15s}.ops-main-card:hover{background:#fcfaff;border-color:#cdb8ff;box-shadow:0 6px 18px rgba(90,54,150,.07)}.ops-main-card-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:29px;height:29px;border-radius:9px;background:#f3edff;color:#7c3aed;display:grid;place-items:center;font-size:15px}.ops-main-card strong{font-size:14px;color:#211a32}.ops-main-card small{font-size:10.5px;color:#968da2;margin-top:4px}.ops-main-card>i{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#a78bfa}
 @media(max-width:1150px){.ops-card-grid{grid-template-columns:repeat(2,1fr)}.guide-list-row{grid-template-columns:32px minmax(0,1fr) 60px 82px 16px}}
+
+/* MySpace redesign */
+.myspace-view{padding:26px 28px 34px!important;background:#F8F7FC;min-height:calc(100vh - 72px)}
+.myspace-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.myspace-title{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:800;color:var(--t1);letter-spacing:-.5px}
+.myspace-title-icon{width:36px;height:36px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:#F1EBFF;color:#7C3AED;font-size:19px}
+.myspace-sub{margin-top:6px;font-size:12.5px;color:var(--t2)}
+.myspace-card{background:#fff;border:1px solid #E7E2F0;border-radius:15px;box-shadow:0 2px 8px rgba(73,46,120,.035)}
+.memo-compose-card{padding:20px;margin-bottom:14px}
+.myspace-card-head,.memo-list-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.myspace-card-title{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:750;color:var(--t1)}
+.myspace-card-title>i{color:#7C3AED;font-size:17px}.memo-status{font-size:11px;font-weight:400;color:var(--t3)}
+.memo-count,.soft-count{font-size:11px;font-weight:500;color:#9A93AA}.soft-count{margin-left:2px}
+.memo-compose-card textarea{width:100%;min-height:94px;box-sizing:border-box;padding:15px 16px;border:1px solid #DED8E9;border-radius:11px;font-family:var(--font);font-size:13px;line-height:1.65;color:var(--t1);resize:vertical;background:#fff;outline:none;transition:.18s}
+.memo-compose-card textarea:focus{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(124,58,237,.08)}
+.memo-compose-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}.memo-hint{font-size:11px;color:#AAA3B6;display:flex;gap:5px;align-items:center}
+.memo-save-btn{height:40px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#6D28D9,#8B5CF6);color:#fff;font-family:var(--font);font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:7px;cursor:pointer;box-shadow:0 5px 14px rgba(124,58,237,.18)}
+.memo-save-btn:hover{transform:translateY(-1px)}
+.memo-list-card,.bookmark-card{padding:18px 20px;margin-bottom:14px}.memo-list-modern{display:flex;flex-direction:column;gap:8px}
+.memo-empty-modern{min-height:170px;border:1px dashed #DED8E9;border-radius:12px;background:#FCFBFE;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#8F879B}
+.memo-empty-icon{width:54px;height:54px;border-radius:50%;background:#F1EBFF;color:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:10px}.memo-empty-modern strong{font-size:14px;color:#3E374A}.memo-empty-modern p{font-size:11.5px;margin-top:5px}
+.memo-item-modern{display:flex;gap:12px;align-items:flex-start;padding:14px 15px;background:#fff;border:1px solid #E8E3EF;border-radius:11px}.memo-item-modern:hover{border-color:#CFC1F5;background:#FDFCFF}.memo-item-text{flex:1;min-width:0;font-size:13px;color:var(--t1);line-height:1.65;white-space:pre-wrap;word-break:break-word}.memo-item-time{font-size:10.5px;color:var(--t3);margin-top:6px}.memo-del{width:28px;height:28px;flex-shrink:0;background:#fff;border:1px solid #E6E1EB;border-radius:8px;color:#A29AAA;cursor:pointer;display:flex;align-items:center;justify-content:center}.memo-del:hover{border-color:#FECACA;color:#DC2626;background:#FFF7F7}
+.myspace-guide{display:grid;grid-template-columns:1.25fr repeat(4,1fr);align-items:center;gap:10px;padding:15px 18px;border:1px solid #E6DDFC;border-radius:13px;background:linear-gradient(90deg,#FBF9FF,#F7F3FF);font-size:11.5px;color:#665D75}.myspace-guide span,.guide-lead{display:flex;align-items:center;gap:6px}.myspace-guide i{color:#7C3AED}.guide-lead{color:#6D28D9;font-size:12px}
+@media(max-width:900px){.myspace-view{padding:18px!important}.myspace-guide{grid-template-columns:1fr 1fr}.guide-lead{grid-column:1/-1}}
 </style>
 <script id="knowledge-guide-ui-v2-js">
 (function(){
