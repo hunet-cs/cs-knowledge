@@ -3997,5 +3997,54 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
 })();
 </script>
 
+
+<style id="error-guide-redesign-v3">
+/* 오류 처리방법 전용 개편 — 다른 화면에는 영향 없음 */
+#errorView .unified-split{grid-template-columns:minmax(360px,34%) minmax(0,1fr);gap:14px;align-items:stretch}
+#errorView .unified-pane{border:1px solid #e6e0ef;border-radius:15px;background:#fff;overflow:hidden;box-shadow:0 2px 8px rgba(76,48,120,.035)}
+#errorView .unified-pane-head{padding:14px 16px;border-bottom:1px solid #eee9f4;background:#fff}
+.err-modern-row{display:grid;grid-template-columns:36px minmax(0,1fr) 82px 16px;gap:10px;align-items:center;padding:13px 14px;border-bottom:1px solid #f0ecf4;cursor:pointer;transition:.14s;background:#fff}
+.err-modern-row:last-child{border-bottom:0}.err-modern-row:hover{background:#fcfaff}.err-modern-row.on{background:#f5f0ff;box-shadow:inset 3px 0 0 #8b5cf6}
+.err-modern-icon{width:30px;height:30px;border-radius:9px;background:#f2ecff;color:#7c3aed;display:grid;place-items:center;font-size:15px}
+.err-modern-text{min-width:0}.err-modern-title{display:block;font-size:13px;font-weight:800;color:#241d31;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.err-modern-preview{display:block;font-size:10.5px;color:#948b9f;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.err-modern-date{font-size:10.5px;color:#9b93a5;text-align:right}.err-modern-row>i{color:#b1a7bd}
+.err-detail{padding:18px 18px 20px}.err-detail-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.err-back{height:32px;padding:0 11px;border:1px solid #e4deec;border-radius:8px;background:#fff;color:#6f667c;font:600 11.5px var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:5px}.err-back:hover{border-color:#bca7ee;color:#6d28d9}.err-actions{display:flex;gap:7px}.err-edit{height:32px;padding:0 12px;border:1px solid #d9ccfb;border-radius:8px;background:#f7f3ff;color:#6d28d9;font:700 11.5px var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.err-title-wrap{display:flex;align-items:flex-start;gap:12px;padding-bottom:18px;border-bottom:1px solid #eee9f4}.err-title-icon{width:46px;height:46px;border-radius:14px;background:#f2ecff;color:#7c3aed;display:grid;place-items:center;font-size:23px;flex-shrink:0}.err-title-main{min-width:0;flex:1}.err-title-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.err-title-line h2{font-size:21px;line-height:1.3;color:#1f1830;letter-spacing:-.45px;margin:0}.err-title-date{font-size:10.5px;color:#968da2}.err-subtitle{font-size:12px;color:#777083;line-height:1.65;margin-top:7px}
+.err-solution-card{margin-top:16px;border:1px solid #e6e0ef;border-radius:14px;padding:16px;background:#fff}.err-section-title{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:800;color:#251d34;margin-bottom:13px}.err-section-title i{width:28px;height:28px;border-radius:9px;background:#f2ecff;color:#7c3aed;display:grid;place-items:center;font-size:15px}.err-step-list{display:flex;flex-direction:column;gap:9px}.err-step{display:grid;grid-template-columns:54px minmax(0,1fr);gap:12px;align-items:start;padding:13px 14px;border:1px solid #e9e3f0;border-radius:11px;background:#fff}.err-step-num{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f5efff,#eee5ff);color:#6d28d9;display:grid;place-items:center;font-size:18px;font-weight:850}.err-step-body{font-size:12.5px;line-height:1.75;color:#4f465b;white-space:pre-wrap;word-break:break-word;padding-top:1px}.err-step-body strong{display:block;font-size:13.5px;color:#241d31;margin-bottom:2px}.err-step-body a{color:#6d28d9;text-decoration:none;font-weight:700}.err-step-body a:hover{text-decoration:underline}
+.err-link-card,.err-caution-card{margin-top:12px;border:1px solid #e6ddfb;border-radius:12px;background:#faf8ff;padding:13px 15px;display:flex;align-items:center;gap:10px}.err-link-card>i,.err-caution-card>i{color:#7c3aed;font-size:17px}.err-link-label{font-size:12.5px;font-weight:800;color:#49356d;white-space:nowrap}.err-link-btn{margin-left:6px;padding:7px 11px;border:1px solid #bca7ee;border-radius:8px;background:#fff;color:#6d28d9;font:700 11.5px var(--font);text-decoration:none}.err-link-btn:hover{background:#f3edff}.err-caution-card{border-color:#f1dfb8;background:#fffaf0;align-items:flex-start}.err-caution-card>i{color:#c27a0a;margin-top:2px}.err-caution-card div{font-size:12px;line-height:1.7;color:#675637;white-space:pre-wrap}
+@media(max-width:1050px){#errorView .unified-split{grid-template-columns:1fr}.err-modern-row{grid-template-columns:34px minmax(0,1fr) 72px 14px}}
+</style>
+<script id="error-guide-redesign-v3-js">
+(function(){
+  function splitSteps(text){
+    text=(text||'').trim(); if(!text)return [];
+    const lines=text.split(/\r?\n/); const arr=[]; let cur='';
+    lines.forEach(line=>{const t=line.trim(); if(!t)return; if(/^\d+[.)]\s*/.test(t)){if(cur)arr.push(cur.trim());cur=t.replace(/^\d+[.)]\s*/, '');}else{cur+=(cur?'\n':'')+t;}}); if(cur)arr.push(cur.trim());
+    return arr.length?arr:[text];
+  }
+  function linkify(text){
+    const safe=esc(text||'');
+    return safe.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">링크 바로가기 ↗</a>');
+  }
+  function stepHtml(text,i){
+    let body=linkify(text); const plain=(text||'').split(/\r?\n/); let title='';
+    if(plain.length>1 && plain[0].length<=38){title=esc(plain[0]);body=linkify(plain.slice(1).join('\n'));}
+    return `<div class="err-step"><div class="err-step-num">${String(i+1).padStart(2,'0')}</div><div class="err-step-body">${title?`<strong>${title}</strong>`:''}${body}</div></div>`;
+  }
+  window.renderErrorList=function(id=null){
+    const list=entries.filter(e=>e.part==='오류 처리방법'&&e.status!=='hidden').sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+    document.getElementById('errCnt').textContent=`총 ${list.length}건`;
+    if(!id){
+      const rows=list.map(e=>`<div class="err-modern-row" onclick="renderErrorList('${e.id}')"><span class="err-modern-icon"><i class="ti ti-alert-triangle"></i></span><span class="err-modern-text"><span class="err-modern-title">${esc(e.title)}</span><span class="err-modern-preview">${esc((e.customerQ||e.steps||'내용을 확인해 보세요.').split('\n')[0])}</span></span><span class="err-modern-date">${esc(e.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`).join('');
+      document.getElementById('errList').innerHTML=`<div class="guide-main-page"><div class="guide-main-head"><h2>오류 처리방법</h2><p>자주 발생하는 오류와 처리 방법을 빠르게 확인하세요.</p></div><div class="guide-list-card">${rows||'<div class="unified-empty">등록된 문서가 없습니다.</div>'}</div></div>`; closeDetailPanel(); return;
+    }
+    const e=list.find(x=>x.id===id); if(!e){renderErrorList();return;}
+    e.views=(e.views||0)+1; saveAll();
+    const rows=list.map(x=>`<div class="err-modern-row${x.id===id?' on':''}" onclick="renderErrorList('${x.id}')"><span class="err-modern-icon"><i class="ti ti-alert-triangle"></i></span><span class="err-modern-text"><span class="err-modern-title">${esc(x.title)}</span><span class="err-modern-preview">${esc((x.customerQ||x.steps||'').split('\n')[0])}</span></span><span class="err-modern-date">${esc(x.updatedAt||'')}</span><i class="ti ti-chevron-right"></i></div>`).join('');
+    const steps=splitSteps(e.steps); const urls=(e.steps||'').match(/https?:\/\/[^\s]+/g)||[]; const isAdmin=currentUser&&currentUser.role==='admin';
+    const detail=`<div class="unified-pane"><div class="err-detail"><div class="err-detail-top"><button class="err-back" onclick="renderErrorList()"><i class="ti ti-arrow-left"></i> 목록으로</button><div class="err-actions">${isAdmin?`<button class="err-edit" onclick="openErrorForm('${e.id}')"><i class="ti ti-edit"></i>수정</button>`:''}</div></div><div class="err-title-wrap"><span class="err-title-icon"><i class="ti ti-tool"></i></span><div class="err-title-main"><div class="err-title-line"><h2>${esc(e.title)}</h2>${e.updatedAt?`<span class="err-title-date">${esc(e.updatedAt)}</span>`:''}</div>${e.customerQ?`<div class="err-subtitle">${esc(e.customerQ)}</div>`:''}</div></div><div class="err-solution-card"><div class="err-section-title"><i class="ti ti-tools"></i>해결 방법</div><div class="err-step-list">${steps.map(stepHtml).join('')||'<div class="unified-empty">등록된 처리 방법이 없습니다.</div>'}</div></div>${urls.length?`<div class="err-link-card"><i class="ti ti-link"></i><span class="err-link-label">관련 링크</span><a class="err-link-btn" href="${esc(urls[0])}" target="_blank" rel="noopener">바로가기 ↗</a></div>`:''}${e.caution&&e.caution.trim()?`<div class="err-caution-card"><i class="ti ti-alert-triangle"></i><div><strong>확인해주세요</strong><br>${esc(e.caution)}</div></div>`:''}</div></div>`;
+    document.getElementById('errList').innerHTML=`<div class="unified-split"><div class="unified-pane"><div class="unified-pane-head"><strong>오류 처리방법</strong><span class="unified-pane-sub">${list.length}건</span></div>${rows}</div>${detail}</div>`; closeDetailPanel();
+  };
+})();
+</script>
 </body>
 </html>
