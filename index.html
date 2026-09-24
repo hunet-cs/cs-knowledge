@@ -1545,6 +1545,45 @@ body,.app-main,.app-body{background:#F8F7FC}
 @media(max-width:760px){.work-card .work-v2{grid-template-columns:1fr}.work-card .work-v2-statuses{grid-template-columns:repeat(2,1fr)}.work-card .work-v2-rate{padding:4px 0}}
 </style>
 
+
+<style id="work-status-fit-fix">
+/* 오늘 근무 현황 잘림 수정 — 홈/퀵메뉴/다른 화면에는 영향 없음 */
+.work-card .work-v2-body{
+  min-width:0 !important;
+  overflow:hidden !important;
+}
+.work-card .work-v2-status-grid{
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  width:auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+.work-card .work-v2-status{
+  width:auto !important;
+  min-width:0 !important;
+  padding-left:6px !important;
+  padding-right:6px !important;
+  box-sizing:border-box !important;
+}
+.work-card .work-v2-status .label{
+  white-space:nowrap !important;
+}
+@media (max-width:1180px){
+  .work-card .work-v2-ring{
+    flex:0 0 auto !important;
+  }
+  .work-card .work-v2-status-grid{
+    gap:7px !important;
+  }
+  .work-card .work-v2-status{
+    padding-left:4px !important;
+    padding-right:4px !important;
+  }
+}
+</style>
+
 </head>
 <body class="locked">
 
