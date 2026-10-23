@@ -1735,7 +1735,6 @@ body,.app-main,.app-body{background:#F8F7FC}
         </div>
         <div class="sb-divider"></div>
         <div class="sb-group-label">업무 편의</div>
-        <div class="sb-item sb-helper-item" data-view="helper" onclick="openHelper()"><i class="ti ti-message-bolt"></i><span>빠른 답변</span></div>
         <div class="sb-item" data-view="myspace" onclick="openMySpace()"><span class="sb-emoji">👤</span><span>마이스페이스</span></div>
         <div class="sb-divider sb-divider-soft"></div>
         <div class="sb-group-label">소식</div>
@@ -1839,6 +1838,7 @@ body,.app-main,.app-body{background:#F8F7FC}
           <button class="hd-btn-home" onclick="downloadAllEntries('list')"><i class="ti ti-download" style="font-size:13px"></i>전체 다운로드</button>
           <button class="hd-btn-home" onclick="goHome()"><i class="ti ti-home-2" style="font-size:13px"></i>홈</button>
         </div>
+        <section id="unifiedAnswer" class="unified-answer" style="display:none" aria-live="polite"></section>
         <div class="filter-chips" id="filterChips"></div>
         <div class="r-list" id="resultsList"></div>
       </div>
@@ -1936,14 +1936,10 @@ body,.app-main,.app-body{background:#F8F7FC}
         <div class="helper-examples"><b>예시 질문</b><button onclick="helperExample('환불 철회 어떻게 해?')">환불 철회 어떻게 해?</button><button onclick="helperExample('수료증 발급 방법')">수료증 발급 방법</button><button onclick="helperExample('모바일 수강은 어떻게 하나요?')">모바일 수강은 어떻게 하나요?</button><button onclick="helperExample('재응시 가능한가요?')">재응시 가능한가요?</button></div>
         <div class="helper-grid">
           <main class="helper-maincol">
-            <section class="helper-card helper-answer-card"><div class="helper-card-hd"><h2><i class="ti ti-sparkles"></i>추천 답변</h2><span class="helper-fit">가장 적합한 답변이에요!</span></div><div id="helperAnswer" class="helper-answer-empty"><i class="ti ti-message-search"></i><strong>궁금한 내용을 검색해보세요.</strong><span>질문과 가장 관련 있는 답변을 여기에 보여드려요.</span></div></section>
-            <section class="helper-card helper-related-card"><div class="helper-card-hd"><h2><i class="ti ti-files"></i>관련 문서 <span id="helperRelatedCount">0개</span></h2></div><div id="helperRelated" class="helper-related-empty">검색하면 관련 문서를 함께 보여드려요.</div></section>
+            <section class="helper-card helper-answer-card"><div class="helper-card-hd"><h2><i class="ti ti-sparkles"></i>검색 결과</h2></div><div id="helperAnswer" class="helper-answer-empty"><i class="ti ti-message-search"></i><strong>궁금한 내용을 검색해보세요.</strong><span>관련성이 확인된 답변만 보여드려요.</span></div></section>
+            <section class="helper-card helper-related-card" id="helperRelatedCard" style="display:none"><div class="helper-card-hd"><h2><i class="ti ti-files"></i>함께 볼 문서 <span id="helperRelatedCount">0개</span></h2></div><div id="helperRelated" class="helper-related-empty"></div></section>
+            <div class="helper-request helper-request-inline"><span class="helper-request-icon"><i class="ti ti-file-plus"></i></span><div><strong>찾는 답변이 없나요?</strong><p>필요한 지식을 요청할 수 있어요.</p></div><button onclick="openRequestModal()">지식 요청하기 <i class="ti ti-arrow-right"></i></button></div>
           </main>
-          <aside class="helper-sidecol">
-            <section class="helper-card"><div class="helper-card-hd"><h2><i class="ti ti-help-circle"></i>비슷한 질문 더보기</h2></div><div id="helperSimilar" class="helper-similar"><div class="helper-side-empty">검색 후 비슷한 질문을 확인할 수 있어요.</div></div></section>
-            <section class="helper-tip"><h3><i class="ti ti-bulb"></i>검색 Tip</h3><p>• 핵심 키워드로 질문을 입력해보세요.</p><p>• 짧고 구체적으로 작성할수록 정확한 답변을 찾을 수 있어요.</p><p>• 예시 질문을 누르면 더 빠르게 검색할 수 있어요.</p></section>
-            <section class="helper-request"><span class="helper-request-icon"><i class="ti ti-file-plus"></i></span><div><strong>원하는 답변을 찾지 못했다면?</strong><p>지식 요청을 통해 추가로 요청해주세요.</p><button onclick="openRequestModal()">지식 요청하기 <i class="ti ti-arrow-right"></i></button></div></section>
-          </aside>
         </div>
         <div id="helperChat" style="display:none"></div>
       </div>
@@ -2668,26 +2664,18 @@ function askHelper(){
     .sort(function(a,b){return b.r.score-a.r.score;});
 
   if(!scored.length){
-    // 본문에만 살짝 걸린 것들 = 참고용 후보로만 제시 (답변인 척 안 함)
-    var weak=entries.map(function(e){var r=helperScore(e,tokens);return{e:e,r:r};})
-      .filter(function(x){return x.r && x.r.hit>0;})
-      .sort(function(a,b){return b.r.score-a.r.score;}).slice(0,3);
-    if(weak.length){
-      addHelperMsg("bot","'"+q+"'에 딱 맞는 문서를 못 찾았어요.\n혹시 이 문서들이 관련 있을까요?",weak.map(function(x){return x.e;}));
-    }else{
-      addHelperMsg("bot","'"+q+"' 관련 문서를 찾지 못했어요.\n다른 키워드로 질문하시거나, 상단 검색을 이용해 주세요.",[]);
-    }
+    addHelperMsg("bot","정확히 일치하는 답변을 찾지 못했어요.",[]);
     return;
   }
 
   var top=scored[0];
   // 신뢰도 낮으면(핵심 토큰 1개만 걸림 + 여러 토큰 중 일부만 매칭) 확신 없이 제시
-  var lowConfidence = top.r.strongHit===1 && tokens.length>=2 && top.r.coverage<0.6;
+  var lowConfidence = tokens.length>=2 && (top.r.coverage<0.7 || top.r.strongHit<2);
   if(lowConfidence){
-    addHelperMsg("bot","'"+q+"'에 정확히 맞는 문서는 없지만, 아래 문서가 관련 있을 수 있어요.",scored.slice(0,3).map(function(x){return x.e;}));
+    addHelperMsg("bot","정확히 일치하는 답변을 찾지 못했어요.",[]);
     return;
   }
-  addHelperMsg("bot",answerOf(top.e),scored.slice(0,3).map(function(x){return x.e;}));
+  addHelperMsg("bot",answerOf(top.e),scored.filter(function(x){return x.r.score>=top.r.score*0.75 && (tokens.length<2||x.r.coverage>=0.7);}).slice(0,4).map(function(x){return x.e;}));
 }
 function openMySpace(){curView="myspace";showView("viewMySpace");setSbView("myspace");
   const bmItems=bookmarks.map(id=>entries.find(e=>e.id===id)).filter(Boolean);
@@ -4397,6 +4385,20 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
 .helper-related-empty,.helper-side-empty{padding:28px;text-align:center;font-size:11.5px;color:#9A92A5}.helper-related-row,.helper-similar-row{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid #F0ECF4;cursor:pointer}.helper-related-row:first-child,.helper-similar-row:first-child{border-top:0}.helper-related-row:hover,.helper-similar-row:hover{background:#FCFAFF}.helper-doc-icon{width:31px;height:31px;border-radius:9px;background:#F1EBFF;color:#7C3AED;display:grid;place-items:center;flex-shrink:0}.helper-doc-body{flex:1;min-width:0}.helper-doc-title{font-size:12.5px;font-weight:750;color:#2E2639;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.helper-doc-meta{font-size:10px;color:#9A92A5;margin-top:3px}.helper-related-row>i,.helper-similar-row>i{color:#B1A7BD}.helper-similar-row{padding:11px 14px}.helper-similar-row .helper-doc-title{font-size:11.5px}
 .helper-tip{padding:16px 17px;border:1px solid #DDD9F7;border-radius:15px;background:linear-gradient(135deg,#F9F8FF,#F1F4FF)}.helper-tip h3{display:flex;align-items:center;gap:6px;font-size:13px;color:#312850;margin-bottom:9px}.helper-tip h3 i{color:#4F46E5}.helper-tip p{font-size:10.5px;color:#655D72;line-height:1.65;margin:2px 0}.helper-request{display:flex;align-items:center;gap:13px;padding:18px;border:1px solid #E6DDFB;border-radius:15px;background:linear-gradient(135deg,#FBF8FF,#F3EDFF)}.helper-request-icon{width:46px;height:46px;border-radius:50%;background:#EDE4FF;color:#7C3AED;display:grid;place-items:center;font-size:21px;flex-shrink:0}.helper-request strong{font-size:12px;color:#342A43}.helper-request p{font-size:10.5px;color:#8B8198;margin:4px 0 10px}.helper-request button{height:32px;padding:0 11px;border:1px solid #A78BFA;border-radius:8px;background:#fff;color:#7C3AED;font-family:var(--font);font-size:10.5px;font-weight:700;cursor:pointer}
 @media(max-width:1050px){.helper-grid{grid-template-columns:1fr}.helper-sidecol{display:grid;grid-template-columns:1fr 1fr}.helper-sidecol>.helper-card{grid-column:1/-1}.helper-hero-note{display:none}}@media(max-width:760px){.helper-v2{padding:18px}.helper-search-btn{width:110px}.helper-answer-top{flex-direction:column}.helper-answer-actions{width:100%}.helper-sidecol{display:flex}.helper-hero{padding:17px}.helper-examples{display:none}}
+
+/* 빠른 답변 화면만 단순화 */
+.helper-v2{padding:30px max(28px,calc((100% - 1080px)/2)) 50px;background:#faf9fc}
+.helper-hero{min-height:auto;padding:0;border:0;background:transparent;margin-bottom:22px}
+.helper-hero-note{display:none}.helper-hero-copy{gap:12px}.helper-hero h1{font-size:23px}.helper-hero p{font-size:13px}
+.helper-examples{margin-bottom:24px}.helper-grid{display:block}.helper-maincol{gap:16px}
+.helper-answer-card{min-height:230px}.helper-answer-result{margin:0;border:0;background:#fff;padding:26px 28px;border-radius:0}
+.helper-answer-top{display:block}.helper-answer-title{font-size:19px;margin-bottom:16px}
+.helper-answer-body{font-size:14px;line-height:1.95;white-space:pre-wrap;overflow-wrap:anywhere}
+.helper-answer-actions{margin-top:24px}.helper-answer-meta{margin-top:16px;font-weight:500}
+.helper-fit,.helper-sidecol{display:none!important}.helper-request-inline{padding:16px 20px;background:#fff;border:1px solid #ece7f2}
+.helper-request-inline>div{flex:1}.helper-request-inline button{margin-left:auto;white-space:nowrap}
+.helper-related-card .helper-related-row{padding:14px 20px}
+@media(max-width:760px){.helper-v2{padding:20px 14px}.helper-answer-result{padding:20px}.helper-request-inline{flex-wrap:wrap}.helper-request-inline button{margin-left:0}}
 </style>
 <script id="quick-answer-redesign-v1-js">
 (function(){
@@ -4404,12 +4406,15 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
   window.helperCopy=function(id){var e=entries.find(function(x){return x.id===id;});if(!e)return;var text=((e.steps||e.script||'')+'').trim();if(!text)return;navigator.clipboard.writeText(text).then(function(){var b=document.getElementById('helperCopyBtn');if(b){var old=b.innerHTML;b.innerHTML='<i class="ti ti-check"></i>복사 완료';setTimeout(function(){b.innerHTML=old;},1200);}}).catch(function(){alert('복사하지 못했습니다.');});};
   function metaOf(e){var a=[];if(e.productName)a.push(e.productName);else if(e.part)a.push(e.part);if(e.opsSub)a.push(e.opsSub);if(e.updatedAt)a.push(e.updatedAt);return a.join(' · ');}
   function renderBot(text,sources){
-    var ans=document.getElementById('helperAnswer'),rel=document.getElementById('helperRelated'),sim=document.getElementById('helperSimilar'),cnt=document.getElementById('helperRelatedCount');if(!ans)return;
-    var docs=(sources||[]).filter(Boolean),top=docs[0];
-    if(top){var body=((top.steps||top.script||text||'')+'').trim();ans.innerHTML='<div class="helper-answer-result"><div class="helper-answer-top"><div class="helper-answer-text"><div class="helper-answer-title">'+esc(top.title)+'</div><div class="helper-answer-body">'+esc(body)+'</div></div><div class="helper-answer-actions"><button id="helperCopyBtn" class="helper-copy" onclick="helperCopy(\''+top.id+'\')"><i class="ti ti-copy"></i>답변 복사</button><button class="helper-detail" onclick="helperOpenDoc(\''+top.id+'\')">상세 보기 <i class="ti ti-external-link"></i></button></div></div><div class="helper-answer-meta"><i class="ti ti-folder"></i>'+esc(metaOf(top)||'지식 문서')+'</div></div>';
-    }else{ans.innerHTML='<div class="helper-answer-empty"><i class="ti ti-alert-circle"></i><strong>'+esc((text||'관련 답변을 찾지 못했어요.').split('\n')[0])+'</strong><span>다른 키워드로 다시 검색하거나 지식 요청을 이용해 주세요.</span></div>';}
-    cnt.textContent=docs.length+'개';rel.innerHTML=docs.length?docs.map(function(e){return '<div class="helper-related-row" onclick="helperOpenDoc(\''+e.id+'\')"><span class="helper-doc-icon"><i class="ti ti-file-text"></i></span><span class="helper-doc-body"><span class="helper-doc-title">'+esc(e.title)+'</span><span class="helper-doc-meta">'+esc(metaOf(e))+'</span></span><i class="ti ti-chevron-right"></i></div>';}).join(''):'<div class="helper-related-empty">관련 문서를 찾지 못했어요.</div>';
-    var similar=docs.slice(1,6);if(similar.length<5&&top){var extra=entries.filter(function(e){return e.id!==top.id&&!similar.some(function(x){return x.id===e.id;})&&e.status!=='hidden'&&(e.part===top.part||e.productName===top.productName);}).slice(0,5-similar.length);similar=similar.concat(extra);}sim.innerHTML=similar.length?similar.slice(0,5).map(function(e){return '<div class="helper-similar-row" onclick="helperOpenDoc(\''+e.id+'\')"><span class="helper-doc-body"><span class="helper-doc-title">'+esc(e.customerQ||e.title)+'</span></span><i class="ti ti-chevron-right"></i></div>';}).join(''):'<div class="helper-side-empty">비슷한 질문이 없습니다.</div>';
+    var ans=document.getElementById('helperAnswer'),rel=document.getElementById('helperRelated'),cnt=document.getElementById('helperRelatedCount'),card=document.getElementById('helperRelatedCard');if(!ans)return;
+    var docs=(sources||[]).filter(function(e){return e&&e.status!=='hidden';}),top=docs[0];
+    var caution=/정확히 맞는 문서는 없|딱 맞는 문서를 못 찾|관련 문서를 찾지 못|조금 더 구체적으로|등록된 문서가 없|어떤 내용이 궁금|관련 있을 수 있어|혹시 이 문서들이/.test(text||'');
+    if(top&&!caution){var body=((top.steps||top.script||text||'')+'').trim();ans.innerHTML='<div class="helper-answer-result"><div class="helper-answer-top"><div class="helper-answer-text"><div class="helper-answer-title">'+esc(top.title)+'</div><div class="helper-answer-body">'+esc(body)+'</div></div></div><div class="helper-answer-actions"><button id="helperCopyBtn" class="helper-copy" onclick="helperCopy(\''+top.id+'\')"><i class="ti ti-copy"></i>답변 복사</button><button class="helper-detail" onclick="helperOpenDoc(\''+top.id+'\')">원문 보기 <i class="ti ti-external-link"></i></button></div><div class="helper-answer-meta"><i class="ti ti-folder"></i>'+esc(metaOf(top)||'지식 문서')+'</div></div>';
+    }else{ans.innerHTML='<div class="helper-answer-empty"><i class="ti ti-search-off"></i><strong>정확히 일치하는 답변을 찾지 못했어요.</strong><span>검색어를 구체적으로 입력하거나 지식을 요청해 주세요.</span></div>';}
+    var related=top&&!caution?docs.slice(1,4):[];
+    if(card)card.style.display=related.length?'block':'none';
+    if(cnt)cnt.textContent=related.length+'개';
+    if(rel)rel.innerHTML=related.map(function(e){return '<div class="helper-related-row" onclick="helperOpenDoc(\''+e.id+'\')"><span class="helper-doc-icon"><i class="ti ti-file-text"></i></span><span class="helper-doc-body"><span class="helper-doc-title">'+esc(e.title)+'</span><span class="helper-doc-meta">'+esc(metaOf(e))+'</span></span><i class="ti ti-chevron-right"></i></div>';}).join('');
   }
   window.addHelperMsg=function(role,text,sources){if(role==='user'){window._helperLastQuestion=text;return;}renderBot(text,sources);};
   var oldOpen=window.openHelper;window.openHelper=function(){curView='helper';showView('viewHelper');setSbView('helper');setTimeout(function(){var i=document.getElementById('helperQ');if(i)i.focus();},50);};
@@ -4526,6 +4531,56 @@ window.renderOpsPanel=function(){
 window.openAdminRequestDetail=function(id){const r=knowledgeRequests.find(x=>x.id===id);if(!r)return;const [label,cls]=requestStatusMeta(r.status||'new');const ov=document.getElementById('modalOv');ov.innerHTML=`<div class="request-detail-v2"><div class="rd-head"><h2>지식 요청 상세</h2><button class="rd-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="rd-body"><div class="rd-top"><span class="adm-badge ${cls}">${label}</span><span class="rd-date">요청일 ${esc(r.createdAt||'-')}</span></div><div class="rd-card"><span class="rd-label">요청 제목</span><div class="rd-title">${esc(r.title||'')}</div></div><div class="rd-card"><span class="rd-label">요청자</span><div class="rd-text">${esc(r.by||'-')}</div></div><div class="rd-card"><span class="rd-label">필요한 지식</span><div class="rd-text">${esc(r.body||'')}</div></div><div class="rd-card"><span class="rd-label">요청 사유</span><div class="rd-text">${esc(r.reason||'')}</div></div><div class="rd-card"><span class="rd-label">관리자 메모</span><textarea id="requestAdminMemo" placeholder="처리 과정이나 메모를 입력하세요.">${esc(r.adminMemo||'')}</textarea></div></div><div class="rd-foot"><button class="rd-btn reject" onclick="setRequestStatusV2('${r.id}','rejected')"><i class="ti ti-trash"></i> 반려 처리</button><button class="rd-btn processing" onclick="setRequestStatusV2('${r.id}','processing')"><i class="ti ti-refresh"></i> 처리 중으로 변경</button><button class="rd-btn register" onclick="registerRequestAsKnowledge('${r.id}')"><i class="ti ti-file-plus"></i> 지식으로 등록</button></div></div>`;ov.style.display='flex';};
 window.setRequestStatusV2=function(id,status){const memo=document.getElementById('requestAdminMemo')?.value.trim()||'';knowledgeRequests=knowledgeRequests.map(r=>r.id===id?{...r,status,adminMemo:memo}:r);saveAll();closeModal();renderOpsPanel();};
 window.registerRequestAsKnowledge=function(id){const r=knowledgeRequests.find(x=>x.id===id);if(!r)return;const memo=document.getElementById('requestAdminMemo')?.value.trim()||'';knowledgeRequests=knowledgeRequests.map(x=>x.id===id?{...x,status:'processing',adminMemo:memo}:x);saveAll();closeModal();const pre={part:'공통 업무지식',title:r.title||'',customerQ:r.body||'',steps:'',caution:r.reason?`요청 사유: ${r.reason}`:'',version:'1.0',updatedBy:currentUser?currentUser.id:''};showForm(pre,false);};
+</script>
+<style id="unified-search-answer-v1">
+.unified-answer{margin:0 0 17px;border:1px solid #e4d8fb;border-radius:15px;background:#fff;overflow:hidden;box-shadow:0 3px 16px rgba(82,47,137,.045)}
+.unified-answer-head{padding:13px 18px;border-bottom:1px solid #eee9f5;display:flex;align-items:center;gap:9px;font-weight:750;font-size:14px;color:#3d2761}
+.unified-answer-head i{font-size:19px;color:#7c3aed}.unified-answer-meta{margin-left:auto;font-size:11px;font-weight:500;color:#857993}
+.unified-answer-body{padding:20px 22px}.unified-answer-title{font-size:17px;font-weight:750;margin-bottom:12px;color:#251d35}
+.unified-answer-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;font-size:14px;color:#342b40}
+.unified-answer-actions{display:flex;gap:8px;margin-top:18px}.unified-answer-actions button{border:1px solid #ddd4ea;border-radius:8px;padding:9px 14px;background:#fff;color:#534365;font-size:12px;font-family:var(--font);cursor:pointer}
+.unified-answer-actions button:first-child{background:#7c3aed;border-color:#7c3aed;color:#fff;font-weight:700}
+.unified-answer-empty{padding:14px 20px;color:#736b7e;font-size:12px;background:#faf9fc}
+@media(max-width:700px){.unified-answer-body{padding:16px}.unified-answer-actions{flex-wrap:wrap}}
+</style>
+<script id="unified-search-answer-v1-js">
+(function(){
+  var STOP=new Set(['안내','방법','문의','관련','확인','처리','내용','경우','어떻게','하나요','되나요','있나요','해주세요','알려줘','궁금','질문','학습자','학습','교육','과정','수강','가능']);
+  function terms(q){return (q||'').toLowerCase().replace(/[?!.,()[\]{}]/g,' ').split(/\s+/).map(x=>x.replace(/(은|는|을|를|에서|으로|에게|하고|인가요|하나요|되나요|해요|해주세요)$/,'')).filter(x=>x.length>=2&&!STOP.has(x));}
+  function bestAnswer(q){
+    var ts=terms(q);if(!ts.length)return null;
+    var visible=entries.filter(e=>e.status!=='hidden'&&((e.steps||'').trim()||(e.script||'').trim()));
+    var scored=visible.map(e=>{
+      var title=(e.title||'').toLowerCase(),question=(e.customerQ||'').toLowerCase();
+      var hits=ts.filter(t=>title.includes(t)||question.includes(t));
+      var titleHits=ts.filter(t=>title.includes(t));
+      var exact=title.includes(q.toLowerCase())||question.includes(q.toLowerCase());
+      var pass=exact||(hits.length===ts.length&&titleHits.length>=1);
+      return {e,pass,score:(exact?100:0)+titleHits.length*12+hits.length*4};
+    }).filter(x=>x.pass).sort((a,b)=>b.score-a.score);
+    if(!scored.length)return null;
+    if(scored.length>1&&scored[0].score===scored[1].score)return null; // ambiguous: no forced recommendation
+    return scored[0].e;
+  }
+  window.unifiedCopyAnswer=function(id){
+    var e=entries.find(x=>String(x.id)===String(id));if(!e)return;
+    var body=((e.steps||e.script||'')+'').trim();if(!body)return;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(body).then(()=>{var b=document.getElementById('unifiedCopyButton');if(b)b.textContent='✓ 복사 완료';}).catch(()=>alert('복사하지 못했습니다.'));}
+    else{var t=document.createElement('textarea');t.value=body;document.body.appendChild(t);t.select();try{document.execCommand('copy');var b=document.getElementById('unifiedCopyButton');if(b)b.textContent='✓ 복사 완료';}finally{t.remove();}}
+  };
+  window.renderUnifiedAnswer=function(){
+    var box=document.getElementById('unifiedAnswer');if(!box)return;
+    var q=(searchQ||'').trim();if(!q){box.style.display='none';box.innerHTML='';return;}
+    var e=bestAnswer(q);box.style.display='block';
+    if(!e){box.innerHTML='<div class="unified-answer-head"><i class="ti ti-message-search"></i>바로 사용할 답변</div><div class="unified-answer-empty">정확하게 일치하는 답변이 없어 아래 문서 검색 결과를 보여드려요.</div>';return;}
+    var body=((e.steps||e.script||'')+'').trim();
+    box.innerHTML='<div class="unified-answer-head"><i class="ti ti-message-bolt"></i>바로 사용할 답변<span class="unified-answer-meta">'+esc(e.part||'지식 문서')+'</span></div><div class="unified-answer-body"><div class="unified-answer-title">'+esc(e.title||'')+'</div><div class="unified-answer-text">'+esc(body)+'</div><div class="unified-answer-actions"><button id="unifiedCopyButton" onclick="unifiedCopyAnswer('+JSON.stringify(String(e.id)).replace(/"/g,'&quot;')+')"><i class="ti ti-copy"></i> 답변 복사</button><button onclick="openDetail('+JSON.stringify(String(e.id)).replace(/"/g,'&quot;')+')"><i class="ti ti-file-text"></i> 문서 상세 보기</button></div></div>';
+  };
+  var previous=window.renderResults;
+  window.renderResults=function(){previous.apply(this,arguments);renderUnifiedAnswer();};
+  var oldOpenHelper=window.openHelper;
+  window.openHelper=function(){var inp=document.getElementById('mainSearch');if(inp)inp.focus();};
+})();
 </script>
 </body>
 </html>
