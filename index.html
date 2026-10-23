@@ -1723,7 +1723,8 @@ body,.app-main,.app-body{background:#F8F7FC}
         <div class="sb-item" data-view="ops" onclick="toggleOpsMenu()"><span class="sb-emoji">🎧</span><span>운영지원</span><i class="ti ti-chevron-down sb-chev" id="opsChevron" style="transform:rotate(-90deg)"></i></div>
         <div class="sb-ops-sub" id="opsSubMenu">
           <div class="sb-sub-item" data-sub="에듀매니저" onclick="filterOpsSub('에듀매니저')"><span class="sb-emoji sm">🧑‍💼</span><span>에듀매니저</span></div>
-          <div class="sb-sub-item" data-sub="랩스(LABS)" onclick="filterOpsSub('랩스(LABS)')"><span class="sb-emoji sm">🧪</span><span>랩스 (LABS)</span></div>
+          <div class="sb-sub-item" data-sub="연수원3.0" onclick="filterOpsSub('연수원3.0')"><span class="sb-emoji sm">🏫</span><span>연수원3.0</span></div>
+          <div class="sb-sub-item" data-sub="랩스(LABS)" onclick="filterOpsSub('랩스(LABS)')"><span class="sb-emoji sm">🧪</span><span>LABS</span></div>
           <div class="sb-sub-item" data-sub="CTI" onclick="filterOpsSub('CTI')"><span class="sb-emoji sm">☎️</span><span>CTI</span></div>
           <div class="sb-sub-item" data-sub="LMS" onclick="filterOpsSub('LMS')"><span class="sb-emoji sm">🏫</span><span>LMS</span></div>
           <div class="sb-sub-item" data-sub="ADMIN" onclick="filterOpsSub('ADMIN')"><span class="sb-emoji sm">⚙️</span><span>ADMIN</span></div>
@@ -2134,7 +2135,8 @@ body,.app-main,.app-body{background:#F8F7FC}
     <div class="sb-item" onclick="openErrorView();toggleMobMenu()"><span class="sb-emoji">🛠️</span><span>오류 처리방법</span></div>
     <div class="sb-item" onclick="filterPart2('운영지원');toggleMobMenu()"><span class="sb-emoji">🎧</span><span>운영지원</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('에듀매니저');toggleMobMenu()"><span class="sb-emoji sm">🧑‍💼</span><span>에듀매니저</span></div>
-    <div class="sb-sub-item" onclick="filterOpsSub('랩스(LABS)');toggleMobMenu()"><span class="sb-emoji sm">🧪</span><span>랩스 (LABS)</span></div>
+    <div class="sb-sub-item" onclick="filterOpsSub('연수원3.0');toggleMobMenu()"><span class="sb-emoji sm">🏫</span><span>연수원3.0</span></div>
+    <div class="sb-sub-item" onclick="filterOpsSub('랩스(LABS)');toggleMobMenu()"><span class="sb-emoji sm">🧪</span><span>LABS</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('CTI');toggleMobMenu()"><span class="sb-emoji sm">☎️</span><span>CTI</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('LMS');toggleMobMenu()"><span class="sb-emoji sm">🏫</span><span>LMS</span></div>
     <div class="sb-sub-item" onclick="filterOpsSub('ADMIN');toggleMobMenu()"><span class="sb-emoji sm">⚙️</span><span>ADMIN</span></div>
@@ -2425,7 +2427,7 @@ function renderLocalNotices(){
     </div>`).join("")||`<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">등록된 공지가 없습니다</div>`;
 }
 const PARTS=["B2C","상품 안내","LMS 기능","ADMIN/뉴어드민","운영지원"];
-const B2B_COS=[],B2C_PRODUCTS=[],LMS_CATS=[],ADMIN_SUBS=[],OPS_SUBS=["에듀매니저","랩스(LABS)","CTI","LMS","ADMIN","NEWADMIN","원격 지원","앱 설치 지원","업무 요청·이관"];
+const B2B_COS=[],B2C_PRODUCTS=[],LMS_CATS=[],ADMIN_SUBS=[],OPS_SUBS=["에듀매니저","연수원3.0","랩스(LABS)","CTI","LMS","ADMIN","NEWADMIN","원격 지원","앱 설치 지원","업무 요청·이관"];
 let notices=[];
 let entries=[],selId=null,bookmarks=[],recentViewed=[],users=[],currentUser=null;
 let historyLog=[],knowledgeRequests=[],missingSearches=[],knowledgeFeedback=[],customCategories={},companyProfiles={},productProfiles={};
@@ -4373,8 +4375,8 @@ setTimeout(()=>{try{if(currentUser&&document.getElementById('todayScheduleWidget
     if(sub||id){return _opsDetail(sub,id);}
     filterPart='운영지원';filterSub='전체';curView='list';showView('viewList');setSbView('ops');syncSidebarSelection('ops','');document.getElementById('listTitle').textContent='운영지원';document.getElementById('filterChips').innerHTML='';
     const all=entries.filter(e=>e.part==='운영지원'&&e.status!=='hidden');document.getElementById('listCnt').textContent=`총 ${all.length}건`;
-    const icons={'에듀매니저':'ti-user-cog','랩스(LABS)':'ti-flask','CTI':'ti-phone','LMS':'ti-school','ADMIN':'ti-settings','NEWADMIN':'ti-settings-2','원격 지원':'ti-device-desktop','앱 설치 지원':'ti-device-mobile','업무 요청·이관':'ti-send'};
-    const cards=OPS_SUBS.map(name=>{const cnt=all.filter(e=>e.opsSub===name).length;return `<div class="ops-main-card" onclick="renderOpsUnified('${esc(name)}')"><span class="ops-main-card-icon"><i class="ti ${icons[name]||'ti-tool'}"></i></span><strong>${esc(name)}</strong><small>${cnt}개의 문서</small><i class="ti ti-chevron-right"></i></div>`}).join('');
+    const icons={'에듀매니저':'ti-user-cog','연수원3.0':'ti-school','랩스(LABS)':'ti-flask','CTI':'ti-phone','LMS':'ti-school','ADMIN':'ti-settings','NEWADMIN':'ti-settings-2','원격 지원':'ti-device-desktop','앱 설치 지원':'ti-device-mobile','업무 요청·이관':'ti-send'};
+    const cards=OPS_SUBS.map(name=>{const cnt=all.filter(e=>e.opsSub===name).length;return `<div class="ops-main-card" onclick="renderOpsUnified('${esc(name)}')"><span class="ops-main-card-icon"><i class="ti ${icons[name]||'ti-tool'}"></i></span><strong>${name==='랩스(LABS)'?'LABS':esc(name)}</strong><small>${cnt}개의 문서</small><i class="ti ti-chevron-right"></i></div>`}).join('');
     document.getElementById('resultsList').innerHTML=`<div class="guide-main-page"><div class="guide-main-head"><h2>운영지원</h2><p>시스템과 운영 업무별 가이드를 선택해 확인하세요.</p></div><div class="ops-card-grid">${cards}</div></div>`;closeDetailPanel();
   };
 
