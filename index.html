@@ -1693,6 +1693,36 @@ body,.app-main,.app-body{background:#F8F7FC}
 @media(max-width:1050px){.cs-admin-home-stats{grid-template-columns:repeat(2,1fr)}.cs-admin-home-grid{grid-template-columns:1fr}}
 </style>
 
+<style id="kms-product-error-refresh">
+/* 상품 안내·오류 처리방법 전용 스타일: 홈·근무현황·시스템 가이드에 영향 없음 */
+#viewProducts .kms-page-intro,#viewErrors .kms-page-intro{padding:18px 20px 8px;display:flex;align-items:center;gap:12px}
+#viewProducts .kms-page-intro h2,#viewErrors .kms-page-intro h2{font-size:19px;font-weight:800;margin:0;color:var(--t1,#29243b)}
+#viewProducts .kms-page-intro p,#viewErrors .kms-page-intro p{font-size:12px;color:var(--t2,#777);margin:4px 0 0}
+.kms-intro-icon{width:38px;height:38px;border-radius:11px;background:#eee8ff;color:#7251cc;display:grid;place-items:center;font-size:20px}
+#viewProducts .kms-product-toolbar,#viewErrors .kms-error-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 20px 18px}
+#viewProducts .kms-product-toolbar input,#viewErrors .kms-error-toolbar input{flex:1;min-width:190px;max-width:490px;padding:11px 13px;border:1px solid #e5e1ef;border-radius:9px;background:white;outline:none;font-size:13px}
+.kms-filter-chip{border:1px solid #e4dff0;background:#fff;color:#645c75;border-radius:18px;padding:7px 12px;font-size:12px;cursor:pointer}
+.kms-filter-chip.active{background:#7351ce;border-color:#7351ce;color:#fff}
+.kms-product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:4px 20px 24px}
+.kms-product-card{background:#fff;border:1px solid #eae6f2;border-radius:13px;padding:18px;display:flex;align-items:flex-start;gap:13px;cursor:pointer;text-align:left;min-width:0;transition:border-color .15s,box-shadow .15s}
+.kms-product-card:hover{border-color:#bda9ed;box-shadow:0 5px 20px #5b3b9a10}
+.kms-product-card-icon{width:43px;height:43px;border-radius:11px;background:#eee8ff;color:#7251cc;display:grid;place-items:center;flex-shrink:0;font-size:20px}
+.kms-product-card-body{min-width:0;flex:1}.kms-product-card-title{font-size:14px;font-weight:800;color:#322a45;margin-bottom:7px;overflow-wrap:anywhere}
+.kms-product-card-meta{font-size:11px;color:#827a90;margin-bottom:9px}.kms-product-card-desc{font-size:12px;color:#6c6479;line-height:1.5;overflow-wrap:anywhere}
+.kms-product-card .ti-chevron-right{color:#9b8cac;align-self:center}
+.kms-empty{padding:34px;text-align:center;color:#857d93;font-size:13px}
+.kms-error-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:14px;padding:0 20px 22px}
+.kms-error-side,.kms-error-main{background:#fff;border:1px solid #eae6f2;border-radius:12px;overflow:hidden}
+.kms-error-side{padding:13px}.kms-error-side-title{font-size:12px;font-weight:800;color:#403650;margin:4px 8px 11px}
+.kms-error-side button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:#625a70;text-align:left;cursor:pointer;font-size:12px;margin:2px 0}
+.kms-error-side button.active{background:#eee8ff;color:#6945be;font-weight:800}.kms-error-side button span{font-size:11px;opacity:.75}
+.kms-error-main-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #f0edf5;font-size:13px;font-weight:800;color:#3c334e}
+.kms-error-row{width:100%;display:flex;align-items:center;gap:12px;padding:15px 17px;border:0;border-bottom:1px solid #f2eff6;background:#fff;text-align:left;cursor:pointer}
+.kms-error-row:hover{background:#faf8ff}.kms-error-row.active{background:#f4efff}.kms-error-row-icon{width:33px;height:33px;border-radius:9px;display:grid;place-items:center;background:#f2ebff;color:#7b59cf;flex-shrink:0}
+.kms-error-row-body{flex:1;min-width:0}.kms-error-row-title{font-size:13px;font-weight:750;color:#352c44}.kms-error-row-desc{font-size:11px;color:#8b8494;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.kms-error-row-date{font-size:11px;color:#928a9e}
+.kms-error-detail{padding:16px}.kms-error-detail .unified-pane{border:0;box-shadow:none}
+@media(max-width:760px){.kms-product-grid{grid-template-columns:1fr}.kms-error-layout{grid-template-columns:1fr}.kms-error-side{display:flex;flex-wrap:wrap;gap:5px}.kms-error-side-title{width:100%}.kms-error-side button{width:auto}}
+</style>
 </head>
 <body class="locked">
 
@@ -2897,6 +2927,19 @@ function renderB2CUnified(id=null){
 async function uploadFileToStorage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=e=>resolve(e.target.result);reader.onerror=()=>reject(new Error("파일 읽기 실패"));reader.readAsDataURL(file);});}
 function getProductList(){return Object.keys(productProfiles||{}).sort((a,b)=>a.localeCompare(b,"ko"));}
 function renderProductView(product="전체",section=null){
+  if(product!=="전체"){
+    kmsRenderProductOriginal(product,section);
+    kmsAddProductHeader(false);
+    return;
+  }
+  kmsPushState({type:"product",product,section});
+  window._curRender=()=>renderProductView(product,section);
+  curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");
+  kmsAddProductHeader(true);
+  kmsRenderProductCards();
+}
+function kmsRenderProductOriginal(product,section){
+
   kmsPushState({type:"product",product,section});
   window._curRender=()=>renderProductView(product,section);
   curView="products";selectedProduct=product;selectedProductSection=section;showView("viewProducts");setSbView("product");
@@ -2976,6 +3019,42 @@ function renderProductView(product="전체",section=null){
     ${rightHtml}
   </div>`;
 }
+function kmsAddProductHeader(overview){
+ const root=document.getElementById("viewProducts");
+ let h=document.getElementById("kmsProductIntro");
+ if(!h){h=document.createElement("div");h.id="kmsProductIntro";h.className="kms-page-intro";root.querySelector(".list-hd").insertAdjacentElement("afterend",h)}
+ h.innerHTML='<div class="kms-intro-icon"><i class="ti ti-book-2"></i></div><div><h2>상품 안내</h2><p>상품별 FAQ 및 운영 기준을 확인하세요.</p></div>';
+ let bar=document.getElementById("kmsProductToolbar");
+ if(!bar){bar=document.createElement("div");bar.id="kmsProductToolbar";bar.className="kms-product-toolbar";h.insertAdjacentElement("afterend",bar)}
+ bar.style.display=overview?"flex":"none";
+ if(overview){
+   const topics=['학습기간','수료','재응시','수강신청','환불'];
+   bar.innerHTML=`<input id="kmsProductSearch" type="search" placeholder="상품명 또는 FAQ 내용 검색" aria-label="상품 검색" oninput="kmsRenderProductCards()"><button class="kms-filter-chip active" type="button" data-topic="전체">전체</button>`+topics.map(x=>`<button class="kms-filter-chip" type="button" data-topic="${x}">${x}</button>`).join('');
+   bar.querySelectorAll('.kms-filter-chip').forEach(b=>b.addEventListener('click',()=>kmsSetProductFilter(b.dataset.topic)));
+ }
+
+ const oldSearch=root.querySelector('.list-hd .hd-search');if(oldSearch){oldSearch.placeholder="상품명 또는 FAQ 검색";oldSearch.oninput=function(){const n=document.getElementById('kmsProductSearch');if(n){n.value=this.value;kmsRenderProductCards()}}}
+}
+let kmsProductTopic="전체";
+function kmsSetProductFilter(topic){kmsProductTopic=topic;document.querySelectorAll('#kmsProductToolbar .kms-filter-chip').forEach(b=>b.classList.toggle('active',(b.dataset.topic||'전체')===topic));kmsRenderProductCards()}
+function kmsRenderProductCards(){
+ const all=entries.filter(e=>e.part==="상품 안내"&&e.status!=="hidden");
+ const products=[...new Set([...getProductList(),...all.map(e=>e.productName).filter(Boolean)])].sort((a,b)=>a.localeCompare(b,'ko'));
+ const q=(document.getElementById('kmsProductSearch')?.value||'').trim().toLocaleLowerCase();
+ const rows=products.map(p=>({p,docs:all.filter(e=>e.productName===p)})).filter(({p,docs})=>{
+   const matching=docs.filter(e=>kmsProductTopic==='전체'||[e.title,e.customerQ,e.steps,e.caution].some(v=>String(v||'').includes(kmsProductTopic)));
+   return matching.length||(!docs.length&&kmsProductTopic==='전체');
+ }).filter(({p,docs})=>!q||[p,productProfiles?.[p]?.desc,...docs.flatMap(e=>[e.title,e.customerQ,e.steps])].some(v=>String(v||'').toLocaleLowerCase().includes(q)));
+ document.getElementById('prCnt').textContent=`등록 상품 ${products.length}개`;
+ document.getElementById('prSummary').innerHTML='';
+ document.getElementById('prResultsList').innerHTML=rows.length?'<div class="kms-product-grid">'+rows.map(({p,docs})=>{
+ const faq=docs.filter(e=>e.productSection==='FAQ').length;
+ const last=docs.map(e=>e.updatedAt||'').sort().reverse()[0]||'';
+ const desc=productProfiles?.[p]?.desc||'';
+ return '<button class="kms-product-card" type="button" data-product="'+esc(p)+'"><span class="kms-product-card-icon"><i class="ti ti-book"></i></span><span class="kms-product-card-body"><div class="kms-product-card-title">'+esc(p)+'</div><div class="kms-product-card-meta">FAQ '+faq+'건'+(last?' · 최종 수정 '+esc(last):'')+'</div>'+(desc?'<div class="kms-product-card-desc">'+esc(desc)+'</div>':'')+'</span><i class="ti ti-chevron-right"></i></button>';
+ }).join('')+'</div>':'<div class="kms-empty">검색 조건에 맞는 상품이 없습니다.</div>';
+ document.querySelectorAll('#prResultsList .kms-product-card').forEach(b=>b.addEventListener('click',()=>renderProductView(b.dataset.product)));
+}
 function renderProductEntryUnified(product,section,id){
   const all=entries.filter(e=>e.part==="상품 안내");
   const products=getProductList();
@@ -3002,31 +3081,39 @@ async function saveProductEntry(eid,product,section){const btn=document.getEleme
 function deleteProductEntry(id,product,section){if(!requireAdmin())return;if(!confirm("삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();closeModal();renderProductView(product,section);}
 function openProductFile(url){if(url)window.open(url,"_blank");}
 let _errorSelected=null;
-function openErrorView(id=null){curView="errors";showView("viewErrors");setSbView("error");syncSidebarSelection("error");renderErrorList(id);}
+let kmsErrorCategory='전체';let kmsErrorSearch='';
+function kmsErrorCategoryOf(e){
+ const text=[e.title,e.customerQ].join(' ').toLowerCase();
+ if(/로그인|비밀번호|아이디|계정|휴면/.test(text))return '로그인 오류';
+ if(/수강신청|신청 오류|입과/.test(text))return '수강신청 오류';
+ if(/수료증|이수증|수료 오류/.test(text))return '수료증 오류';
+ if(/결제|환불/.test(text))return '결제 오류';
+ if(/동영상|영상|재생|플레이어/.test(text))return '영상 재생 오류';
+ if(/접속|네트워크|브라우저/.test(text))return '접속 오류';
+ return '기타';
+}
+function openErrorView(id=null){curView='errors';showView('viewErrors');setSbView('error');syncSidebarSelection('error');renderErrorList(id)}
+function kmsSetErrorCategory(cat){kmsErrorCategory=cat;renderErrorList()}
 function renderErrorList(id=null){
-  const list=entries.filter(e=>e.part==="오류 처리방법"&&e.status!=="hidden").sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
-  document.getElementById("errCnt").textContent=`총 ${list.length}건`;
-
-  const rows=list.map(e=>`<div class="unified-row${e.id===id?" on":""}" onclick="renderErrorList('${e.id}')">
-    <span class="unified-title">${esc(e.title)}</span>
-    <span class="unified-count">${(e.views||0).toLocaleString()}회</span>
-    <span class="unified-date">${esc(e.updatedAt||"")}</span>
-    <i class="ti ti-chevron-right"></i>
-  </div>`).join("");
-
-  if(!id){
-    document.getElementById("errList").innerHTML=`<div class="unified-list-only">
-      <div class="unified-pane-head"><strong>오류 처리방법</strong><span class="unified-pane-sub">${list.length}건</span></div>
-      <div class="unified-list">${rows}</div>
-    </div>`;
-  }else{
-    const selected=list.find(e=>e.id===id);
-    document.getElementById("errList").innerHTML=`<div class="unified-split">
-      ${uListPane("오류 처리방법",rows,`${list.length}건`)}
-      ${selected?uDocDetail(selected,"renderErrorList()",`openErrorForm('${selected.id}')`):`<div class="unified-pane"><div class="unified-empty">항목을 선택해 주세요.</div></div>`}
-    </div>`;
-  }
-  closeDetailPanel();
+ const list=entries.filter(e=>e.part==='오류 처리방법'&&e.status!=='hidden');
+ const cats=['전체','로그인 오류','수강신청 오류','수료증 오류','결제 오류','영상 재생 오류','접속 오류','기타'];
+ const visible=list.filter(e=>(kmsErrorCategory==='전체'||kmsErrorCategoryOf(e)===kmsErrorCategory)&&(!kmsErrorSearch||[e.title,e.customerQ,e.steps].some(v=>String(v||'').toLocaleLowerCase().includes(kmsErrorSearch)))).sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+ document.getElementById('errCnt').textContent=`총 ${list.length}건`;
+ const root=document.getElementById('viewErrors');let intro=document.getElementById('kmsErrorIntro');
+ if(!intro){intro=document.createElement('div');intro.id='kmsErrorIntro';intro.className='kms-page-intro';root.querySelector('.list-hd').insertAdjacentElement('afterend',intro)}
+ intro.innerHTML='<div class="kms-intro-icon"><i class="ti ti-alert-triangle"></i></div><div><h2>오류 처리방법</h2><p>자주 발생하는 오류의 증상과 해결 방법을 확인하세요.</p></div>';
+ let toolbar=document.getElementById('kmsErrorToolbar');if(!toolbar){toolbar=document.createElement('div');toolbar.id='kmsErrorToolbar';toolbar.className='kms-error-toolbar';intro.insertAdjacentElement('afterend',toolbar)}
+ toolbar.innerHTML='<input id="kmsErrorSearch" type="search" placeholder="오류 증상 또는 키워드 검색" aria-label="오류 검색">';
+ const inp=toolbar.querySelector('input');inp.value=kmsErrorSearch;inp.oninput=()=>{kmsErrorSearch=inp.value.trim().toLocaleLowerCase();renderErrorList();const next=document.getElementById('kmsErrorSearch');next.focus();next.setSelectionRange(next.value.length,next.value.length)};
+ const oldSearch=root.querySelector('.list-hd .hd-search');if(oldSearch){oldSearch.placeholder='오류 증상 검색';oldSearch.oninput=function(){kmsErrorSearch=this.value.trim().toLocaleLowerCase();renderErrorList()}}
+ const counts=Object.fromEntries(cats.map(c=>[c,c==='전체'?list.length:list.filter(e=>kmsErrorCategoryOf(e)===c).length]));
+ const side='<aside class="kms-error-side"><div class="kms-error-side-title">오류 유형</div>'+cats.map(c=>'<button type="button" class="'+(kmsErrorCategory===c?'active':'')+'" data-error-category="'+esc(c)+'">'+esc(c)+'<span>'+counts[c]+'</span></button>').join('')+'</aside>';
+ const rows=visible.map(e=>'<button class="kms-error-row'+(id===e.id?' active':'')+'" type="button" data-error-id="'+esc(e.id)+'"><span class="kms-error-row-icon"><i class="ti ti-file-description"></i></span><span class="kms-error-row-body"><div class="kms-error-row-title">'+esc(e.title)+'</div><div class="kms-error-row-desc">'+esc((e.customerQ||e.steps||'').split('\n')[0])+'</div></span><span class="kms-error-row-date">'+esc(e.updatedAt||'')+'</span><i class="ti ti-chevron-right"></i></button>').join('');
+ const selected=visible.find(e=>e.id===id);
+ document.getElementById('errList').innerHTML='<div class="kms-error-layout">'+side+'<section class="kms-error-main"><div class="kms-error-main-head"><span>'+(selected?'오류 상세':'오류 해결 목록')+'</span><span>'+visible.length+'건</span></div>'+(selected?'<div class="kms-error-detail">'+uDocDetail(selected,'renderErrorList()',`openErrorForm('${selected.id}')`)+'</div>':(rows||'<div class="kms-empty">해당하는 오류 문서가 없습니다.</div>'))+'</section></div>';
+ document.querySelectorAll('#errList [data-error-category]').forEach(b=>b.addEventListener('click',()=>kmsSetErrorCategory(b.dataset.errorCategory)));
+ document.querySelectorAll('#errList [data-error-id]').forEach(b=>b.addEventListener('click',()=>renderErrorList(b.dataset.errorId)));
+ closeDetailPanel();
 }
 function openErrorDetail(id){renderErrorList(id);}
 function openErrorForm(id){if(!requireAdmin())return;const e=id?entries.find(x=>x.id===id):null;const ov=document.getElementById("modalOv");ov.innerHTML=`<div class="modal" style="max-width:560px"><div class="modal-hd"><h2>${e?"오류 항목 수정":"오류 항목 추가"}</h2><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="mrow"><label class="mlbl">오류 제목 *</label><input id="er_title" value="${esc(e?.title||"")}" placeholder="예: 결제창이 뜨지 않아요"></div><div class="mrow"><label class="mlbl">오류 내용 *</label><textarea id="er_q" style="min-height:70px" placeholder="예: 결제 버튼을 눌러도 아무 반응이 없어요">${esc(e?.customerQ||"")}</textarea></div><div class="mrow"><label class="mlbl">처리 방법 *</label><textarea id="er_steps" style="min-height:100px" placeholder="예:&#10;1. 브라우저 팝업 차단 해제&#10;2. 다른 브라우저 시도">${esc(e?.steps||"")}</textarea></div><div class="mrow warn"><label class="mlbl">주의사항</label><textarea id="er_caution">${esc(e?.caution||"")}</textarea></div></div><div class="modal-foot"><div>${e?`<button class="btn-cancel" style="color:var(--red);border-color:#FECACA" onclick="deleteError('${e.id}')"><i class="ti ti-trash" style="font-size:11px"></i>삭제</button>`:""}</div><div style="display:flex;gap:8px"><button class="btn-cancel" onclick="closeModal()">취소</button><button class="btn-save" onclick="saveError('${id||""}')">저장</button></div></div></div>`;ov.style.display="flex";}
@@ -3385,8 +3472,8 @@ function saveOpsEntry(eid,company){const g=id=>(document.getElementById(id)||{va
 function deleteOpsEntry(id,company){if(!requireAdmin())return;if(!confirm("이 항목을 삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();renderCompanyView(company);openOpsModal(company);}
 function doDelete(id){if(!requireAdmin())return;if(!confirm("이 항목을 삭제할까요?"))return;entries=entries.filter(e=>e.id!==id);saveAll();selId=null;closeDetailPanel();renderResults();}
 function filterListSearch(q){document.querySelectorAll("#resultsList .r-card, #resultsList .notice-modern-row").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
-function filterErrSearch(q){document.querySelectorAll("#errList .r-card").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
-function filterPrSearch(q){document.querySelectorAll("#prResultsList .r-card").forEach(card=>{card.style.display=(!q||card.textContent.toLowerCase().includes(q.toLowerCase()))?"":"none";});}
+function filterErrSearch(q){kmsErrorSearch=(q||"").trim().toLocaleLowerCase();renderErrorList();}
+function filterPrSearch(q){const el=document.getElementById("kmsProductSearch");if(el){el.value=q;kmsRenderProductCards();}}
 function filterCoSearch(q){const s=(q||"").trim().toLowerCase();document.querySelectorAll("#coResultsList .b2b-company-row,#coResultsList .b2b-mini-row").forEach(el=>{el.style.display=(!s||el.textContent.toLowerCase().includes(s))?"":"none";});}
 function listSelectAll(checked){document.querySelectorAll(".entry-chk").forEach(cb=>cb.checked=checked);}
 function bulkBarHtml(){const isAdmin=currentUser&&currentUser.role==="admin";if(!isAdmin)return"";return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:#F7F8FA;border-radius:10px;border:1px solid var(--border)"><label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);cursor:pointer"><input type="checkbox" id="listSelectAll" onchange="listSelectAll(this.checked)" style="width:15px;height:15px;cursor:pointer">전체 선택</label><button onclick="deleteSelectedEntries()" style="height:28px;padding:0 12px;background:#EF4444;border:none;border-radius:7px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:4px;margin-left:auto"><i class="ti ti-trash" style="font-size:13px"></i>선택 삭제</button></div>`;}
