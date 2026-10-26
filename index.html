@@ -1764,14 +1764,14 @@ html,body{font-size:14px}
 #viewHome .home-midgrid,#viewHome .home-bottomgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
 #viewHome .home-midgrid>.home-card,#viewHome .home-bottomgrid>.home-card{min-width:0}
 @media(max-width:900px){#viewHome .home-midgrid,#viewHome .home-bottomgrid{grid-template-columns:minmax(0,1fr)}}
-<style id="home-recent-column-alignment-fix">
+/* 최근 문서 정렬 보정: 기존 style 내부에서 유효한 CSS로 적용 */
 /* 최근 등록/수정 문서: 기존 표와 카드 배치 유지, 4개 열만 동일한 기준으로 정렬 */
 #viewHome #homeRecentAddedCard .recent-table-head,
 #viewHome #homeRecentAddedCard .recent-table-row,
 #viewHome #homeRecentCard .recent-table-head,
 #viewHome #homeRecentCard .recent-table-row {
   display:grid;
-  grid-template-columns:minmax(0, 2.3fr) minmax(110px, 1.25fr) minmax(64px, .55fr) minmax(92px, .7fr);
+  grid-template-columns:minmax(0, 46fr) minmax(0, 30fr) minmax(0, 10fr) minmax(0, 14fr);
   gap:12px;
   align-items:center;
   width:100%;
@@ -1793,7 +1793,6 @@ html,body{font-size:14px}
 #viewHome #homeRecentCard .recent-table-row > span:last-child {
   text-align:right;
 }
-</style>
 </style>
 </head>
 <body class="locked">
