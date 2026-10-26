@@ -1759,6 +1759,12 @@ html,body{font-size:14px}
   content: none !important;
 }
 </style>
+<style id="home-layout-knowledge-first-v3">
+/* 개선안 3: 근무현황/퀵메뉴 유지, 지식 목록 우선, 공지사항 우측 하단 */
+#viewHome .home-midgrid,#viewHome .home-bottomgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
+#viewHome .home-midgrid>.home-card,#viewHome .home-bottomgrid>.home-card{min-width:0}
+@media(max-width:900px){#viewHome .home-midgrid,#viewHome .home-bottomgrid{grid-template-columns:minmax(0,1fr)}}
+</style>
 </head>
 <body class="locked">
 
@@ -1856,23 +1862,14 @@ html,body{font-size:14px}
           </div>
         </div>
 
+        <!-- 홈 레이아웃 개선안 3: 지식 콘텐츠 우선, 공지사항은 우측 하단 -->
         <div class="home-midgrid">
-          <!-- 주요 카테고리 카드는 홈에서 제거. 기존 렌더링 참조는 숨김 컨테이너로 유지 -->
+          <!-- 주요 카테고리 제거 상태 유지, 기존 JS 참조용 숨김 노드 -->
           <div id="homeCats" hidden aria-hidden="true"></div>
-          <div class="home-card" id="homeNoticeCard">
-            <div class="hcard-hd">
-              <span class="hcard-title">공지사항</span>
-              <span class="hcard-more" onclick="setView('notices')">더보기 ›</span>
-            </div>
-            <div id="homeNotices"></div>
-          </div>
           <div class="home-card" id="homeTop5Card">
             <div class="hcard-hd"><span class="hcard-title">많이 본 문서 TOP 5</span><span class="hcard-more" onclick="showAllRecent()">더보기 ›</span></div>
             <div id="homeTop5"></div>
           </div>
-        </div>
-
-        <div class="home-bottomgrid">
           <div class="home-card" id="homeRecentAddedCard">
             <div class="hcard-hd">
               <span class="hcard-title">최근 등록한 문서</span>
@@ -1880,12 +1877,22 @@ html,body{font-size:14px}
             </div>
             <div id="homeRecentAdded" class="recent-list-wrap"></div>
           </div>
+        </div>
+
+        <div class="home-bottomgrid">
           <div class="home-card" id="homeRecentCard">
             <div class="hcard-hd">
               <span class="hcard-title">최근 수정된 문서</span>
               <span class="hcard-more" onclick="showAllRecent()">더보기 ›</span>
             </div>
             <div id="homeRecent" class="recent-list-wrap"></div>
+          </div>
+          <div class="home-card" id="homeNoticeCard">
+            <div class="hcard-hd">
+              <span class="hcard-title">공지사항</span>
+              <span class="hcard-more" onclick="setView('notices')">더보기 ›</span>
+            </div>
+            <div id="homeNotices"></div>
           </div>
         </div>
         <div id="homeGreeting" style="display:none"></div><div id="homeDateLine1" style="display:none"></div><div id="homeDateLine2" style="display:none"></div>
