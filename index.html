@@ -1723,6 +1723,42 @@ body,.app-main,.app-body{background:#F8F7FC}
 .kms-error-detail{padding:16px}.kms-error-detail .unified-pane{border:0;box-shadow:none}
 @media(max-width:760px){.kms-product-grid{grid-template-columns:1fr}.kms-error-layout{grid-template-columns:1fr}.kms-error-side{display:flex;flex-wrap:wrap;gap:5px}.kms-error-side-title{width:100%}.kms-error-side button{width:auto}}
 </style>
+
+<style id="home-typography-accent-refinement">
+/* 2026-10-26: readability and decorative accents; functional status colors untouched */
+html,body{font-size:14px}
+/* Homepage cards only: retain work-status and quick-menu component colors */
+.home-midgrid{grid-template-columns:1fr 1fr}
+.home-midgrid>.home-card:nth-child(2),
+.home-midgrid>.home-card:nth-child(3),
+.home-bottomgrid>.home-card:nth-child(1),
+.home-bottomgrid>.home-card:nth-child(2){border-top:2px solid #8B5CF6}
+#homeNoticeCard,#homeTop5Card,#homeRecentAddedCard,#homeRecentCard{border-top:2px solid #8B5CF6}
+#homeNoticeCard .hcard-title:before,#homeTop5Card .hcard-title:before,
+#homeRecentAddedCard .hcard-title:before,#homeRecentCard .hcard-title:before{color:#7C3AED}
+.hcard-title{font-size:15px}
+.hcard-more{font-size:12px}
+#homeNoticeCard .notice-item2,#homeTop5Card .top5-item2{font-size:13.5px}
+#homeNoticeCard .notice-nm2,#homeTop5Card .top5-nm2{font-size:13.5px}
+#homeRecentAddedCard .recent-table-row,#homeRecentCard .recent-table-row{font-size:13px}
+#homeRecentAddedCard .recent-table-head,#homeRecentCard .recent-table-head{font-size:12px}
+/* Preserve categorical badges, attendance statuses, warning banners, and quick-menu icon colors. */
+</style>
+
+<style id="home-no-decorative-accent">
+/* 홈 카드의 장식용 강조색과 상단 컬러 라인 제거. 근무 상태, 경고, 퀵메뉴는 유지. */
+.home-midgrid > .home-card,
+.home-bottomgrid > .home-card,
+#homeNoticeCard, #homeTop5Card, #homeRecentAddedCard, #homeRecentCard {
+  border-top: 1px solid #E9E5F1 !important;
+}
+#homeNoticeCard .hcard-title::before,
+#homeTop5Card .hcard-title::before,
+#homeRecentAddedCard .hcard-title::before,
+#homeRecentCard .hcard-title::before {
+  content: none !important;
+}
+</style>
 </head>
 <body class="locked">
 
@@ -1821,10 +1857,8 @@ body,.app-main,.app-body{background:#F8F7FC}
         </div>
 
         <div class="home-midgrid">
-          <div class="home-card" id="homeCatsCard">
-            <div class="hcard-hd"><span class="hcard-title">주요 카테고리</span></div>
-            <div id="homeCats" class="home-cat-list"></div>
-          </div>
+          <!-- 주요 카테고리 카드는 홈에서 제거. 기존 렌더링 참조는 숨김 컨테이너로 유지 -->
+          <div id="homeCats" hidden aria-hidden="true"></div>
           <div class="home-card" id="homeNoticeCard">
             <div class="hcard-hd">
               <span class="hcard-title">공지사항</span>
