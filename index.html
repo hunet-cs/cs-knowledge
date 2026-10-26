@@ -1764,6 +1764,36 @@ html,body{font-size:14px}
 #viewHome .home-midgrid,#viewHome .home-bottomgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
 #viewHome .home-midgrid>.home-card,#viewHome .home-bottomgrid>.home-card{min-width:0}
 @media(max-width:900px){#viewHome .home-midgrid,#viewHome .home-bottomgrid{grid-template-columns:minmax(0,1fr)}}
+<style id="home-recent-column-alignment-fix">
+/* 최근 등록/수정 문서: 기존 표와 카드 배치 유지, 4개 열만 동일한 기준으로 정렬 */
+#viewHome #homeRecentAddedCard .recent-table-head,
+#viewHome #homeRecentAddedCard .recent-table-row,
+#viewHome #homeRecentCard .recent-table-head,
+#viewHome #homeRecentCard .recent-table-row {
+  display:grid;
+  grid-template-columns:minmax(0, 2.3fr) minmax(110px, 1.25fr) minmax(64px, .55fr) minmax(92px, .7fr);
+  gap:12px;
+  align-items:center;
+  width:100%;
+  box-sizing:border-box;
+}
+#viewHome #homeRecentAddedCard .recent-table-head > span,
+#viewHome #homeRecentAddedCard .recent-table-row > span,
+#viewHome #homeRecentCard .recent-table-head > span,
+#viewHome #homeRecentCard .recent-table-row > span {
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:left;
+}
+#viewHome #homeRecentAddedCard .recent-table-head > span:last-child,
+#viewHome #homeRecentAddedCard .recent-table-row > span:last-child,
+#viewHome #homeRecentCard .recent-table-head > span:last-child,
+#viewHome #homeRecentCard .recent-table-row > span:last-child {
+  text-align:right;
+}
+</style>
 </style>
 </head>
 <body class="locked">
